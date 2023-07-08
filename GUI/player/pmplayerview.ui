@@ -11,7 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>PMPlayerView</string>
+   <string>Play, Music, Play!</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../../resources/icons/icons.qrc">
+    <normaloff>:/icons/disc.png</normaloff>:/icons/disc.png</iconset>
   </property>
   <property name="toolButtonStyle">
    <enum>Qt::ToolButtonIconOnly</enum>
@@ -92,11 +96,27 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="maximumSize">
+          <size>
+           <width>32</width>
+           <height>32</height>
+          </size>
+         </property>
          <property name="text">
           <string/>
          </property>
          <property name="icon">
-          <iconset theme="media-playback-stop"/>
+          <iconset resource="../../resources/icons/icons.qrc">
+           <normaloff>:/icons/stop.png</normaloff>:/icons/stop.png</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>16</width>
+           <height>16</height>
+          </size>
+         </property>
+         <property name="flat">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -108,11 +128,21 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="maximumSize">
+          <size>
+           <width>32</width>
+           <height>32</height>
+          </size>
+         </property>
          <property name="text">
           <string/>
          </property>
          <property name="icon">
-          <iconset theme="media-skip-backward"/>
+          <iconset resource="../../resources/icons/icons.qrc">
+           <normaloff>:/icons/back.png</normaloff>:/icons/back.png</iconset>
+         </property>
+         <property name="flat">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -124,11 +154,21 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="maximumSize">
+          <size>
+           <width>32</width>
+           <height>32</height>
+          </size>
+         </property>
          <property name="text">
           <string/>
          </property>
          <property name="icon">
-          <iconset theme="media-playback-start"/>
+          <iconset resource="../../resources/icons/icons.qrc">
+           <normaloff>:/icons/play.png</normaloff>:/icons/play.png</iconset>
+         </property>
+         <property name="flat">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -140,11 +180,21 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="maximumSize">
+          <size>
+           <width>32</width>
+           <height>32</height>
+          </size>
+         </property>
          <property name="text">
           <string/>
          </property>
          <property name="icon">
-          <iconset theme="media-skip-forward"/>
+          <iconset resource="../../resources/icons/icons.qrc">
+           <normaloff>:/icons/next.png</normaloff>:/icons/next.png</iconset>
+         </property>
+         <property name="flat">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -156,11 +206,21 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="maximumSize">
+          <size>
+           <width>32</width>
+           <height>32</height>
+          </size>
+         </property>
          <property name="text">
           <string/>
          </property>
          <property name="icon">
-          <iconset theme="audio-volume-high"/>
+          <iconset resource="../../resources/icons/icons.qrc">
+           <normaloff>:/icons/up.png</normaloff>:/icons/up.png</iconset>
+         </property>
+         <property name="flat">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -171,6 +231,9 @@
            <horstretch>4</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
+         </property>
+         <property name="value">
+          <number>99</number>
          </property>
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
@@ -256,6 +319,8 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../resources/icons/icons.qrc"/>
+ </resources>
  <connections/>
 </ui>
