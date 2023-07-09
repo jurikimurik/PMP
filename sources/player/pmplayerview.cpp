@@ -19,7 +19,7 @@ PMPlayerView::PMPlayerView(QWidget *parent, PMPlayerModel *model)
     createConnections();
 
 #if DEBUG
-    connect(m_model->player(), &QMediaPlayer::mediaStatusChanged, this, &PMPlayerView::statusChanged);
+    connect(m_model->player(), &QMediaPlayer::mediaStatusChanged, this, &PMPlayerView::playerStatusUpdated);
 #endif
 
     //TEST FILE
@@ -31,11 +31,42 @@ PMPlayerView::~PMPlayerView()
     delete ui;
 }
 
-#if DEBUG
-void PMPlayerView::statusChanged()
+void PMPlayerView::playerStatusUpdated(QMediaPlayer::MediaStatus status)
 {
-    qDebug() << m_model->player()->mediaStatus();
-    qDebug() << m_model->player()->playbackState();
+    switch(status)
+    {
+        case QMediaPlayer::NoMedia:
+
+        break;
+
+        case QMediaPlayer::LoadingMedia:
+
+        break;
+
+        case QMediaPlayer::LoadedMedia:
+
+        break;
+
+        case QMediaPlayer::StalledMedia:
+
+        break;
+
+        case QMediaPlayer::BufferingMedia:
+
+        break;
+
+        case QMediaPlayer::BufferedMedia:
+
+        break;
+
+        case QMediaPlayer::EndOfMedia:
+        stopMedia();
+        break;
+
+        case QMediaPlayer::InvalidMedia:
+
+        break;
+    };
 
 }
 
@@ -56,7 +87,6 @@ void PMPlayerView::setToPosition(int position)
 
     m_model->player()->setPosition(position);
 }
-#endif
 
 void PMPlayerView::previousMedia()
 {

@@ -18,10 +18,8 @@ public:
     PMPlayerView(QWidget *parent = nullptr, PMPlayerModel *model = nullptr);
     ~PMPlayerView();
 
-#if DEBUG
 public slots:
-    void statusChanged();
-#endif
+    void playerStatusUpdated(QMediaPlayer::MediaStatus);
 
 protected slots:
     void durationChanged(qint64);
