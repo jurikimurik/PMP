@@ -1,4 +1,6 @@
 QT       += core gui
+QT       += multimedia
+QT       += multimediawidgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -10,9 +12,11 @@ CONFIG += c++17
 
 SOURCES += \
     sources/main.cpp \
+    sources/player/pmplayermodel.cpp \
     sources/player/pmplayerview.cpp
 
 HEADERS += \
+    headers/player/pmplayermodel.h \
     headers/player/pmplayerview.h
 
 FORMS += \
