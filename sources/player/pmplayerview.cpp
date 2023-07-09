@@ -38,6 +38,26 @@ void PMPlayerView::statusChanged()
     qDebug() << m_model->player()->playbackState();
 
 }
+
+void PMPlayerView::durationChanged(qint64 duration)
+{
+#if DEBUG
+    qDebug() << "PMPlayerView::durationChanged(qint64): " << duration;
+#endif
+
+    ui->timelineSlider->setMaximum(duration);
+}
+
+void PMPlayerView::setToPosition(int position)
+{
+#if DEBUG
+    qDebug() << "PMPlayerView::setToPosition(int): " << position;
+#endif
+
+    if(!m_model->player()->isSeekable())
+        return;
+    m_model->player()->setPosition(position);
+}
 #endif
 
 void PMPlayerView::previousMedia()
@@ -133,6 +153,11 @@ void PMPlayerView::colorOptions()
 
 void PMPlayerView::createConnections()
 {
+    connect(m_model->player(), &QMediaPlayer::durationChanged, this, &PMPlayerView::durationChanged);
+    connect(m_model->player(), &QMediaPlayer::positionChanged, ui->timelineSlider, &QSlider::setValue);
+    connect(ui->timelineSlider, &QSlider::sliderMoved
+            , this, &PMPlayerView::setToPosition);
+
     connect(ui->openButton, &QPushButton::clicked, this, &PMPlayerView::openMedia);
     connect(ui->backwardButton, &QPushButton::clicked, this, &PMPlayerView::previousMedia);
     connect(ui->playButton, &QPushButton::clicked, this, &PMPlayerView::playStopMedia);

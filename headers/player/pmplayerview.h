@@ -1,10 +1,10 @@
 #ifndef PMPLAYERVIEW_H
 #define PMPLAYERVIEW_H
 
-#define DEBUG 1
-
 #include <QMainWindow>
 #include "pmplayermodel.h"
+
+#define DEBUG 1
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class PMPlayerView; }
@@ -24,13 +24,18 @@ public slots:
 #endif
 
 protected slots:
+    void durationChanged(qint64);
+    void setToPosition(int);
+
+    void openMedia();
     void previousMedia();
     void playStopMedia();
     void nextMedia();
-    void openFullscreen();
-    void openMedia();
+
     void muteMedia();
     void changeVolume(int);
+
+    void openFullscreen();
     void colorOptions();
 
 private:
