@@ -18,9 +18,7 @@ PMPlayerView::PMPlayerView(QWidget *parent, PMPlayerModel *model)
 
     createConnections();
 
-#if DEBUG
     connect(m_model->player(), &QMediaPlayer::mediaStatusChanged, this, &PMPlayerView::playerStatusUpdated);
-#endif
 
     //TEST FILE
     m_model->player()->setSource(QUrl::fromLocalFile("/Users/urijmakovskij/Desktop/audio/05 156 - Just Chill.mp3"));
@@ -77,6 +75,17 @@ void PMPlayerView::durationChanged(qint64 duration)
 #endif
 
     ui->timelineSlider->setMaximum(duration);
+    m_maxMediaTime.setHMS(0, 0, 0);
+    m_maxMediaTime = m_maxMediaTime.addMSecs(duration);
+    ui->maxTimeLabel->setText(m_maxMediaTime.toString("hh:mm:ss"));
+}
+
+void PMPlayerView::positionChanged(qint64 position)
+{
+    ui->timelineSlider->setValue(position);
+    m_currentMediaTime.setHMS(0, 0, 0);
+    m_currentMediaTime = m_currentMediaTime.addMSecs(position);
+    ui->currentTimeLabel->setText(m_currentMediaTime.toString("hh:mm:ss"));
 }
 
 void PMPlayerView::setToPosition(int position)
@@ -197,7 +206,7 @@ void PMPlayerView::colorOptions()
 void PMPlayerView::createConnections()
 {
     connect(m_model->player(), &QMediaPlayer::durationChanged, this, &PMPlayerView::durationChanged);
-    connect(m_model->player(), &QMediaPlayer::positionChanged, ui->timelineSlider, &QSlider::setValue);
+    connect(m_model->player(), &QMediaPlayer::positionChanged, this, &PMPlayerView::positionChanged);
     connect(ui->timelineSlider, &QSlider::sliderMoved, this, &PMPlayerView::setToPosition);
 
     connect(ui->stopButton, &QPushButton::clicked, this, &PMPlayerView::stopMedia);

@@ -2,6 +2,7 @@
 #define PMPLAYERVIEW_H
 
 #include <QMainWindow>
+#include <QTime>
 #include "pmplayermodel.h"
 
 #define DEBUG 1
@@ -23,6 +24,7 @@ public slots:
 
 protected slots:
     void durationChanged(qint64);
+    void positionChanged(qint64);
     void setToPosition(int);
 
     void openMedia();
@@ -40,6 +42,8 @@ protected slots:
 private:
     Ui::PMPlayerView *ui;
     PMPlayerModel* m_model;
+    QTime m_currentMediaTime;
+    QTime m_maxMediaTime;
 
     void createConnections();
 };

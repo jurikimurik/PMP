@@ -57,9 +57,23 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="timeLabel">
+        <widget class="QLabel" name="currentTimeLabel">
          <property name="text">
-          <string>00:00 / 00:00</string>
+          <string>00:00:00</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="timeSeparatorLabel">
+         <property name="text">
+          <string>/</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="maxTimeLabel">
+         <property name="text">
+          <string>00:00:00</string>
          </property>
         </widget>
        </item>
