@@ -291,6 +291,66 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <item>
+          <property name="text">
+           <string>x 0.10</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>x 0.25</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>x 0.50</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>x 0.75</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>x 1.0</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>x 1.25</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>x 1.5</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>x 2.0</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>x 2.5</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>x 3.0</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>x 5.0</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>x 10.0</string>
+          </property>
+         </item>
         </widget>
        </item>
        <item>
@@ -365,5 +425,25 @@
  <resources>
   <include location="../../resources/icons/icons.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>speedBox</sender>
+   <signal>activated(int)</signal>
+   <receiver>PMPlayerView</receiver>
+   <slot>changeSpeed(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>680</x>
+     <y>443</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>577</x>
+     <y>535</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>changeSpeed(int)</slot>
+ </slots>
 </ui>

@@ -193,6 +193,17 @@ void PMPlayerView::changeVolume(int)
 #endif
 }
 
+void PMPlayerView::changeSpeed(int index)
+{
+
+#if DEBUG
+    qDebug() << "PMPlayerView::changeSpeed(int index): " << index;
+#endif
+
+    double speed = ui->speedBox->currentText().remove("x").toDouble();
+    m_model->player()->setPlaybackRate(speed);
+}
+
 void PMPlayerView::colorOptions()
 {
 

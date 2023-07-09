@@ -36,6 +36,8 @@ protected slots:
     void muteMedia();
     void changeVolume(int);
 
+    void changeSpeed(int index);
+
     void openFullscreen();
     void colorOptions();
 
