@@ -89,6 +89,32 @@
         </widget>
        </item>
        <item>
+        <widget class="QPushButton" name="stopButton">
+         <property name="maximumSize">
+          <size>
+           <width>32</width>
+           <height>32</height>
+          </size>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="../../resources/icons/icons.qrc">
+           <normaloff>:/icons/stop.png</normaloff>:/icons/stop.png</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>32</width>
+           <height>32</height>
+          </size>
+         </property>
+         <property name="flat">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QPushButton" name="backwardButton">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -108,6 +134,12 @@
          <property name="icon">
           <iconset resource="../../resources/icons/icons.qrc">
            <normaloff>:/icons/back.png</normaloff>:/icons/back.png</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>32</width>
+           <height>32</height>
+          </size>
          </property>
          <property name="flat">
           <bool>true</bool>
@@ -134,7 +166,13 @@
          <property name="icon">
           <iconset resource="../../resources/icons/icons.qrc">
            <normaloff>:/icons/play.png</normaloff>
-           <normalon>:/icons/stop.png</normalon>:/icons/play.png</iconset>
+           <normalon>:/icons/pause.png</normalon>:/icons/play.png</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>32</width>
+           <height>32</height>
+          </size>
          </property>
          <property name="checkable">
           <bool>true</bool>
@@ -165,6 +203,12 @@
           <iconset resource="../../resources/icons/icons.qrc">
            <normaloff>:/icons/next.png</normaloff>:/icons/next.png</iconset>
          </property>
+         <property name="iconSize">
+          <size>
+           <width>32</width>
+           <height>32</height>
+          </size>
+         </property>
          <property name="flat">
           <bool>true</bool>
          </property>
@@ -191,6 +235,12 @@
           <iconset resource="../../resources/icons/icons.qrc">
            <normaloff>:/icons/up.png</normaloff>
            <normalon>:/icons/mute.png</normalon>:/icons/up.png</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>32</width>
+           <height>32</height>
+          </size>
          </property>
          <property name="checkable">
           <bool>true</bool>

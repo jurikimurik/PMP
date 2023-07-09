@@ -54,8 +54,6 @@ void PMPlayerView::setToPosition(int position)
     qDebug() << "PMPlayerView::setToPosition(int): " << position;
 #endif
 
-    if(!m_model->player()->isSeekable())
-        return;
     m_model->player()->setPosition(position);
 }
 #endif
@@ -68,12 +66,12 @@ void PMPlayerView::previousMedia()
 
 }
 
-void PMPlayerView::playStopMedia()
+void PMPlayerView::playPauseMedia()
 {
     //If something is playing right now
     if(m_model->player()->isPlaying())
     {
-        m_model->player()->stop();
+        m_model->player()->pause();
     } else {
         //Otherwise
         m_model->player()->play();
@@ -111,6 +109,21 @@ void PMPlayerView::openMedia()
     qDebug() << "PMPlayerView::openMedia()";
 #endif
 
+}
+
+void PMPlayerView::stopMedia()
+{
+    //If something is playing right now
+    if(m_model->player()->isPlaying())
+    {
+        m_model->player()->stop();
+    }
+
+    ui->playButton->setChecked(m_model->player()->isPlaying());
+
+#if DEBUG
+    qDebug() << "PMPlayerView::stopMedia():" << m_model->player()->isPlaying();
+#endif
 }
 
 void PMPlayerView::muteMedia()
@@ -155,12 +168,12 @@ void PMPlayerView::createConnections()
 {
     connect(m_model->player(), &QMediaPlayer::durationChanged, this, &PMPlayerView::durationChanged);
     connect(m_model->player(), &QMediaPlayer::positionChanged, ui->timelineSlider, &QSlider::setValue);
-    connect(ui->timelineSlider, &QSlider::sliderMoved
-            , this, &PMPlayerView::setToPosition);
+    connect(ui->timelineSlider, &QSlider::sliderMoved, this, &PMPlayerView::setToPosition);
 
+    connect(ui->stopButton, &QPushButton::clicked, this, &PMPlayerView::stopMedia);
     connect(ui->openButton, &QPushButton::clicked, this, &PMPlayerView::openMedia);
     connect(ui->backwardButton, &QPushButton::clicked, this, &PMPlayerView::previousMedia);
-    connect(ui->playButton, &QPushButton::clicked, this, &PMPlayerView::playStopMedia);
+    connect(ui->playButton, &QPushButton::clicked, this, &PMPlayerView::playPauseMedia);
     connect(ui->forwardButton, &QPushButton::clicked, this, &PMPlayerView::nextMedia);
     connect(ui->fullscreenButton, &QPushButton::clicked, this, &PMPlayerView::openFullscreen);
     connect(ui->volumeButton, &QPushButton::clicked, this, &PMPlayerView::muteMedia);

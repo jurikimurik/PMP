@@ -28,8 +28,9 @@ protected slots:
     void setToPosition(int);
 
     void openMedia();
+    void stopMedia();
     void previousMedia();
-    void playStopMedia();
+    void playPauseMedia();
     void nextMedia();
 
     void muteMedia();
