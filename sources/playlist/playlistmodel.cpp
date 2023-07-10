@@ -3,28 +3,34 @@
 PlaylistModel::PlaylistModel(QObject *parent) : QAbstractItemModel(parent)
 {}
 
-/*void PlaylistModel::add(const QUrl &url)
+void PlaylistModel::add(const QUrl &url)
 {
     QMediaPlayer* tempPlayer = new QMediaPlayer(this);
     tempPlayer->setSource(url);
 
     QMediaMetaData metaData = tempPlayer->metaData();
-    if(!m_values.contains(metaData) &&
+    if(!m_metaDatas.contains(metaData) &&
         (tempPlayer->error() == QMediaPlayer::NoError || tempPlayer->error() == QMediaPlayer::FormatError))
     {
-        m_values.push_back(tempPlayer->metaData());
+        m_metaDatas.push_back(tempPlayer->metaData());
+        m_urlPathes.push_back(tempPlayer->source());
+        dataChanged();
     }
 }
 
 void PlaylistModel::remove(const QString &title)
 {
-    for(int i = 0; i < m_values.size(); ++i)
+    for(int i = 0; i < m_metaDatas.size(); ++i)
     {
-        QMediaMetaData &data = m_values[i];
+        QMediaMetaData &data = m_metaDatas[i];
 
         if(data.value(QMediaMetaData::Title).toString() == title)
         {
-            m_values.remove(i);
+
+            m_metaDatas.remove(i);
+            m_urlPathes.remove(i);
+
+            dataChanged();
             return;
         }
     }
@@ -32,13 +38,15 @@ void PlaylistModel::remove(const QString &title)
 
 void PlaylistModel::remove(const QUrl &url)
 {
-    for(int i = 0; i < m_values.size(); ++i)
+    for(int i = 0; i < m_metaDatas.size(); ++i)
     {
-        QMediaMetaData &data = m_values[i];
+        QMediaMetaData &data = m_metaDatas[i];
 
         if(data.value(QMediaMetaData::Url).toUrl() == url)
         {
-            m_values.remove(i);
+            m_metaDatas.remove(i);
+            m_urlPathes.remove(i);
+            dataChanged();
             return;
         }
     }
@@ -46,28 +54,36 @@ void PlaylistModel::remove(const QUrl &url)
 
 void PlaylistModel::remove(const int &index)
 {
-    m_values.remove(index);
+    //Url first! (Because of &)
+    m_urlPathes.remove(index);
+    m_metaDatas.remove(index);
+    dataChanged();
 }
 
 QUrl PlaylistModel::getSourceURL(int index) const
 {
-    return m_values.value(index).value(QMediaMetaData::Url).toUrl();
+    return m_urlPathes.value(index);
 }
 
 QVariant PlaylistModel::getValueByKey(int index, QMediaMetaData::Key key) const
 {
-    return m_values.value(index).value(key);
+    return m_metaDatas.value(index).value(key);
 }
 
 QStringList PlaylistModel::getAllTitles() const
 {
     QStringList titles;
-    for(const QMediaMetaData &data : m_values)
+    for(const QMediaMetaData &data : m_metaDatas)
     {
         titles << data.value(QMediaMetaData::Title).toString();
     }
     return titles;
-}*/
+}
+
+void PlaylistModel::dataChanged()
+{
+    beginResetModel();
+}
 
 QModelIndex PlaylistModel::index(int row, int column, const QModelIndex &parent) const
 {
@@ -83,21 +99,22 @@ QModelIndex PlaylistModel::parent(const QModelIndex &child) const
 int PlaylistModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
-    return m_values.count();
+    return m_metaDatas.count();
 }
 
 int PlaylistModel::columnCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
-    return 28; // Because there is 28 types in QMediaMetaData::Key
+    return QMetaEnum::fromType<QMediaMetaData::Key>().keyCount(); // Because there is 28 types in QMediaMetaData::Key
 }
 
 QVariant PlaylistModel::data(const QModelIndex &index, int role) const
 {
     if(role == Qt::DisplayRole)
     {
-        return m_values.at(index.row()).value((QMediaMetaData::Key) index.column());
+        return m_metaDatas.at(index.row()).value((QMediaMetaData::Key) index.column());
     }
 
     return QVariant();
 }
+

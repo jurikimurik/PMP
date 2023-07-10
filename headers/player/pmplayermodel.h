@@ -6,6 +6,7 @@
 #include <QAudioOutput>
 #include <QTime>
 
+#include "../playlist/playlistmodel.h"
 
 class PMPlayerModel : public QObject
 {
@@ -51,6 +52,8 @@ private:
     QTime m_currentMediaTime;
     QTime m_maxMediaTime;
     QUrl m_sourceFile;
+
+    PlaylistModel* m_currentPlaylist;
 };
 
 #endif // PMPLAYERMODEL_H

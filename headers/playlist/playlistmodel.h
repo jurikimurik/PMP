@@ -13,21 +13,23 @@ signals:
 public:
     PlaylistModel(QObject *parent = nullptr);
 
-   /* void add(const QUrl &url);
+    void add(const QUrl &url);
 
     void remove(const QString &title);
     void remove(const QUrl &url);
     void remove(const int &index);
 
-    QUrl getSourceURL(int index) const;
-
     QVariant getValueByKey(int index, QMediaMetaData::Key key) const;
 
-    QStringList getAllTitles() const;*/
-
+    QUrl getSourceURL(int index) const;
+    QStringList getAllTitles() const;
 
 private:
-    QVector<QMediaMetaData> m_values;
+    void dataChanged();
+
+private:
+    QVector<QMediaMetaData> m_metaDatas;
+    QVector<QUrl> m_urlPathes;
 
     // QAbstractItemModel interface
 public:
