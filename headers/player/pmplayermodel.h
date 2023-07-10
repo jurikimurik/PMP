@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QMediaPlayer>
 #include <QAudioOutput>
+#include <QTime>
 
 
 class PMPlayerModel : public QObject
@@ -12,22 +13,43 @@ class PMPlayerModel : public QObject
 public:
     explicit PMPlayerModel(QObject *parent = nullptr);
 
-    QMediaPlayer *player() const;
-    void setPlayer(QMediaPlayer *newPlayer);
-    QAudioOutput *audioOutput() const;
-    void setAudioOutput(QAudioOutput *newAudioOutput);
+    QTime currentMediaTime() const;
+
+    QTime maxMediaTime() const;
 
 signals:
-
+    void playbackStateChanged(QMediaPlayer::PlaybackState);
     void playerChanged();
     void audioOutputChanged();
 
-private:
-    QMediaPlayer* m_player;
-    QAudioOutput* m_audioOutput;
+public:
+    const QMediaPlayer *player() const;
+    const QAudioOutput *audioOutput() const;
 
-    Q_PROPERTY(QMediaPlayer *player READ player WRITE setPlayer NOTIFY playerChanged)
-    Q_PROPERTY(QAudioOutput *audioOutput READ audioOutput WRITE setAudioOutput NOTIFY audioOutputChanged)
+public:
+    void durationChanged(qint64);
+    void positionChanged(qint64);
+    void setToPosition(int);
+
+    void openMedia(const QUrl& url);
+    void stopMedia();
+    void previousMedia();
+    void playPauseMedia();
+    void nextMedia();
+
+    void muteMedia();
+    void changeVolume(float);
+
+    void changeSpeed(float);
+
+private slots:
+    void playerStatusUpdated(QMediaPlayer::MediaStatus);
+
+private:
+    QMediaPlayer *m_player;
+    QAudioOutput *m_audioOutput;
+    QTime m_currentMediaTime;
+    QTime m_maxMediaTime;
 };
 
 #endif // PMPLAYERMODEL_H

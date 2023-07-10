@@ -19,8 +19,10 @@ public:
     PMPlayerView(QWidget *parent = nullptr, PMPlayerModel *model = nullptr);
     ~PMPlayerView();
 
+    //Slots connected with GUI (they call functions from model as well)
 public slots:
-    void playerStatusUpdated(QMediaPlayer::MediaStatus);
+    void playbackStateChanged(QMediaPlayer::PlaybackState);
+    void muteChanged(bool);
 
 protected slots:
     void durationChanged(qint64);
@@ -36,7 +38,7 @@ protected slots:
     void muteMedia();
     void changeVolume(int);
 
-    void changeSpeed(int index);
+    void changeSpeed();
 
     void openFullscreen();
     void colorOptions();
@@ -44,8 +46,6 @@ protected slots:
 private:
     Ui::PMPlayerView *ui;
     PMPlayerModel* m_model;
-    QTime m_currentMediaTime;
-    QTime m_maxMediaTime;
 
     void createConnections();
 };

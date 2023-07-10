@@ -17,11 +17,7 @@ PMPlayerView::PMPlayerView(QWidget *parent, PMPlayerModel *model)
         m_model = new PMPlayerModel(this);
 
     createConnections();
-
-    connect(m_model->player(), &QMediaPlayer::mediaStatusChanged, this, &PMPlayerView::playerStatusUpdated);
-
-    //TEST FILE
-    m_model->player()->setSource(QUrl::fromLocalFile("/Users/urijmakovskij/Desktop/audio/05 156 - Just Chill.mp3"));
+    durationChanged(m_model->player()->duration());
 }
 
 PMPlayerView::~PMPlayerView()
@@ -29,187 +25,94 @@ PMPlayerView::~PMPlayerView()
     delete ui;
 }
 
-void PMPlayerView::playerStatusUpdated(QMediaPlayer::MediaStatus status)
+void PMPlayerView::playbackStateChanged(QMediaPlayer::PlaybackState state)
 {
-    switch(status)
-    {
-        case QMediaPlayer::NoMedia:
+    switch(state) {
+    case QMediaPlayer::StoppedState: ui->playButton->setChecked(false); break;
 
-        break;
+    case QMediaPlayer::PlayingState: ui->playButton->setChecked(false); break;
 
-        case QMediaPlayer::LoadingMedia:
+    case QMediaPlayer::PausedState: ui->playButton->setChecked(true); break;
+    }
+}
 
-        break;
-
-        case QMediaPlayer::LoadedMedia:
-
-        break;
-
-        case QMediaPlayer::StalledMedia:
-
-        break;
-
-        case QMediaPlayer::BufferingMedia:
-
-        break;
-
-        case QMediaPlayer::BufferedMedia:
-
-        break;
-
-        case QMediaPlayer::EndOfMedia:
-        stopMedia();
-        break;
-
-        case QMediaPlayer::InvalidMedia:
-
-        break;
-    };
-
+void PMPlayerView::muteChanged(bool isMuted)
+{
+    if(isMuted) {
+        ui->volumeButton->setChecked(true);
+    } else {
+        ui->volumeButton->setChecked(false);
+    }
 }
 
 void PMPlayerView::durationChanged(qint64 duration)
 {
-#if DEBUG
-    qDebug() << "PMPlayerView::durationChanged(qint64): " << duration;
-#endif
-
     ui->timelineSlider->setMaximum(duration);
-    m_maxMediaTime.setHMS(0, 0, 0);
-    m_maxMediaTime = m_maxMediaTime.addMSecs(duration);
-    ui->maxTimeLabel->setText(m_maxMediaTime.toString("hh:mm:ss"));
+    m_model->durationChanged(duration);
+    ui->maxTimeLabel->setText(m_model->maxMediaTime().toString("hh:mm:ss"));
 }
 
 void PMPlayerView::positionChanged(qint64 position)
 {
     ui->timelineSlider->setValue(position);
-    m_currentMediaTime.setHMS(0, 0, 0);
-    m_currentMediaTime = m_currentMediaTime.addMSecs(position);
-    ui->currentTimeLabel->setText(m_currentMediaTime.toString("hh:mm:ss"));
+    m_model->positionChanged(position);
+    ui->currentTimeLabel->setText(m_model->currentMediaTime().toString("hh:mm:ss"));
 }
 
 void PMPlayerView::setToPosition(int position)
 {
-#if DEBUG
-    qDebug() << "PMPlayerView::setToPosition(int): " << position;
-#endif
-
-    m_model->player()->setPosition(position);
+    m_model->setToPosition(position);
 }
 
 void PMPlayerView::previousMedia()
 {
-#if DEBUG
-    qDebug() << "PMPlayerView::previousMedia()";
-#endif
 
 }
 
 void PMPlayerView::playPauseMedia()
 {
-    //If something is playing right now
-    if(m_model->player()->isPlaying())
-    {
-        m_model->player()->pause();
-    } else {
-        //Otherwise
-        m_model->player()->play();
-    }
-
-    ui->playButton->setChecked(m_model->player()->isPlaying());
-
-#if DEBUG
-    qDebug() << "PMPlayerView::playStopMedia():" << m_model->player()->isPlaying();
-#endif
+    m_model->playPauseMedia();
 }
 
 void PMPlayerView::nextMedia()
 {
-
-#if DEBUG
-    qDebug() << "PMPlayerView::nextMedia()";
-#endif
-
-}
-
-void PMPlayerView::openFullscreen()
-{
-
-#if DEBUG
-    qDebug() << "PMPlayerView::openFullscreen()";
-#endif
-
+    m_model->nextMedia();
 }
 
 void PMPlayerView::openMedia()
 {
 
-#if DEBUG
-    qDebug() << "PMPlayerView::openMedia()";
-#endif
-
 }
 
 void PMPlayerView::stopMedia()
 {
-    //If something is playing right now
-    if(m_model->player()->isPlaying())
-    {
-        m_model->player()->stop();
-    }
-
-    ui->playButton->setChecked(m_model->player()->isPlaying());
-
-#if DEBUG
-    qDebug() << "PMPlayerView::stopMedia():" << m_model->player()->isPlaying();
-#endif
+    m_model->stopMedia();
 }
 
 void PMPlayerView::muteMedia()
 {
-
-#if DEBUG
-    qDebug() << "PMPlayerView::muteMedia()";
-#endif
-
-    if(m_model->audioOutput()->isMuted())
-    {
-        m_model->audioOutput()->setMuted(false);
-    } else {
-        m_model->audioOutput()->setMuted(true);
-    }
-
-    ui->volumeButton->setChecked(m_model->audioOutput()->isMuted());
-
+    m_model->muteMedia();
 }
 
 void PMPlayerView::changeVolume(int)
 {
     float volume = ui->volumeSlider->value() / 100.0;
-    m_model->audioOutput()->setVolume(volume);
-
-#if DEBUG
-    qDebug() << "PMPlayerView::changeVolume(int): " << volume;
-#endif
+    m_model->changeVolume(volume);
 }
 
-void PMPlayerView::changeSpeed(int index)
+void PMPlayerView::changeSpeed()
+{
+    double speed = ui->speedBox->currentText().remove("x").toDouble();
+    m_model->changeSpeed(speed);
+}
+
+void PMPlayerView::openFullscreen()
 {
 
-#if DEBUG
-    qDebug() << "PMPlayerView::changeSpeed(int index): " << index;
-#endif
-
-    double speed = ui->speedBox->currentText().remove("x").toDouble();
-    m_model->player()->setPlaybackRate(speed);
 }
 
 void PMPlayerView::colorOptions()
 {
-
-#if DEBUG
-    qDebug() << "PMPlayerView::colorOptions()";
-#endif
 
 }
 
@@ -229,4 +132,7 @@ void PMPlayerView::createConnections()
     connect(ui->volumeButton, &QPushButton::clicked, this, &PMPlayerView::muteMedia);
     connect(ui->volumeSlider, &QSlider::valueChanged, this, &PMPlayerView::changeVolume);
     connect(ui->colorsButton, &QPushButton::clicked, this, &PMPlayerView::colorOptions);
+
+    connect(m_model->player(), &QMediaPlayer::playbackStateChanged, this, &PMPlayerView::playbackStateChanged);
+    connect(m_model->audioOutput(), &QAudioOutput::mutedChanged, this, &PMPlayerView::muteChanged);
 }

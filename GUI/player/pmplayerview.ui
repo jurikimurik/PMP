@@ -430,7 +430,7 @@
    <sender>speedBox</sender>
    <signal>activated(int)</signal>
    <receiver>PMPlayerView</receiver>
-   <slot>changeSpeed(int)</slot>
+   <slot>changeSpeed()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>680</x>
@@ -444,6 +444,6 @@
   </connection>
  </connections>
  <slots>
-  <slot>changeSpeed(int)</slot>
+  <slot>changeSpeed()</slot>
  </slots>
 </ui>
