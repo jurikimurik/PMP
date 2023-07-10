@@ -8,7 +8,8 @@ PMPlayerModel::PMPlayerModel(QObject *parent)
     m_player->setAudioOutput(m_audioOutput);
 
     //TEST FILE
-    m_player->setSource(QUrl::fromLocalFile("/Users/urijmakovskij/Desktop/audio/05 156 - Just Chill.mp3"));
+    m_sourceFile = QUrl::fromLocalFile("/Users/urijmakovskij/Desktop/audio/05 156 - Just Chill.mp3");
+    m_player->setSource(m_sourceFile);
 }
 
 void PMPlayerModel::durationChanged(qint64 duration)

@@ -50,6 +50,7 @@ private:
     QAudioOutput *m_audioOutput;
     QTime m_currentMediaTime;
     QTime m_maxMediaTime;
+    QUrl m_sourceFile;
 };
 
 #endif // PMPLAYERMODEL_H

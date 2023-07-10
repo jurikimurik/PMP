@@ -13,11 +13,13 @@ CONFIG += c++17
 SOURCES += \
     sources/main.cpp \
     sources/player/pmplayermodel.cpp \
-    sources/player/pmplayerview.cpp
+    sources/player/pmplayerview.cpp \
+    sources/playlist/playlistmodel.cpp
 
 HEADERS += \
     headers/player/pmplayermodel.h \
-    headers/player/pmplayerview.h
+    headers/player/pmplayerview.h \
+    headers/playlist/playlistmodel.h
 
 FORMS += \
     GUI/player/pmplayerview.ui
