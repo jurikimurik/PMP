@@ -3,7 +3,7 @@
 PlaylistModel::PlaylistModel(QObject *parent) : QAbstractItemModel(parent)
 {}
 
-void PlaylistModel::add(const QUrl &url)
+/*void PlaylistModel::add(const QUrl &url)
 {
     QMediaPlayer* tempPlayer = new QMediaPlayer(this);
     tempPlayer->setSource(url);
@@ -67,4 +67,37 @@ QStringList PlaylistModel::getAllTitles() const
         titles << data.value(QMediaMetaData::Title).toString();
     }
     return titles;
+}*/
+
+QModelIndex PlaylistModel::index(int row, int column, const QModelIndex &parent) const
+{
+    Q_UNUSED(parent);
+    return createIndex(row, column);
+}
+
+QModelIndex PlaylistModel::parent(const QModelIndex &child) const
+{
+    return createIndex(child.row(),0);
+}
+
+int PlaylistModel::rowCount(const QModelIndex &parent) const
+{
+    Q_UNUSED(parent);
+    return m_values.count();
+}
+
+int PlaylistModel::columnCount(const QModelIndex &parent) const
+{
+    Q_UNUSED(parent);
+    return 28; // Because there is 28 types in QMediaMetaData::Key
+}
+
+QVariant PlaylistModel::data(const QModelIndex &index, int role) const
+{
+    if(role == Qt::DisplayRole)
+    {
+        return m_values.at(index.row()).value((QMediaMetaData::Key) index.column());
+    }
+
+    return QVariant();
 }
