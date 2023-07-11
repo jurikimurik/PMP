@@ -25,7 +25,7 @@ public:
     QStringList getAllTitles() const;
 
 private:
-    void dataChanged();
+    void updateAllData();
 
 private:
     QVector<QMediaMetaData> m_metaDatas;

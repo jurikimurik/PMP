@@ -4,6 +4,7 @@
 #include <QGraphicsVideoItem>
 #include <QMediaDevices>
 #include <QAudioDevice>
+#include <QFileDialog>
 
 PMPlayerView::PMPlayerView(QWidget *parent, PMPlayerModel *model)
     : QMainWindow(parent)
@@ -85,6 +86,10 @@ void PMPlayerView::nextMedia()
 
 void PMPlayerView::openMedia()
 {
+    QUrl fileUrl = QUrl::fromLocalFile(QFileDialog::getOpenFileName(this, tr("Otworz plik")));
+    if(fileUrl.isValid())
+        m_model->openMedia(fileUrl);
+
 
 }
 

@@ -9,12 +9,12 @@ void PlaylistModel::add(const QUrl &url)
     tempPlayer->setSource(url);
 
     QMediaMetaData metaData = tempPlayer->metaData();
-    if(!m_metaDatas.contains(metaData) &&
-        (tempPlayer->error() == QMediaPlayer::NoError || tempPlayer->error() == QMediaPlayer::FormatError))
+    if(!m_urlPathes.contains(url) && (tempPlayer->error() == QMediaPlayer::NoError ||
+                                       tempPlayer->error() == QMediaPlayer::FormatError))
     {
-        m_metaDatas.push_back(tempPlayer->metaData());
+        m_metaDatas.push_back(metaData);
         m_urlPathes.push_back(tempPlayer->source());
-        dataChanged();
+        updateAllData();
     }
 }
 
@@ -26,11 +26,9 @@ void PlaylistModel::remove(const QString &title)
 
         if(data.value(QMediaMetaData::Title).toString() == title)
         {
-
             m_metaDatas.remove(i);
             m_urlPathes.remove(i);
-
-            dataChanged();
+            updateAllData();
             return;
         }
     }
@@ -46,7 +44,7 @@ void PlaylistModel::remove(const QUrl &url)
         {
             m_metaDatas.remove(i);
             m_urlPathes.remove(i);
-            dataChanged();
+            updateAllData();
             return;
         }
     }
@@ -57,7 +55,7 @@ void PlaylistModel::remove(const int &index)
     //Url first! (Because of &)
     m_urlPathes.remove(index);
     m_metaDatas.remove(index);
-    dataChanged();
+    updateAllData();
 }
 
 QUrl PlaylistModel::getSourceURL(int index) const
@@ -80,9 +78,10 @@ QStringList PlaylistModel::getAllTitles() const
     return titles;
 }
 
-void PlaylistModel::dataChanged()
+void PlaylistModel::updateAllData()
 {
     beginResetModel();
+    endResetModel();
 }
 
 QModelIndex PlaylistModel::index(int row, int column, const QModelIndex &parent) const

@@ -31,7 +31,7 @@ void PMPlayerModel::setToPosition(int position)
 
 void PMPlayerModel::openMedia(const QUrl &url)
 {
-
+    m_currentPlaylist->add(url);
 }
 
 void PMPlayerModel::stopMedia()
