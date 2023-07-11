@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QTime>
 #include "pmplayermodel.h"
+#include "../playlist/playlistview.h"
 
 #define DEBUG 1
 
@@ -46,6 +47,7 @@ protected slots:
 private:
     Ui::PMPlayerView *ui;
     PMPlayerModel* m_model;
+    PlaylistView *m_playlistView;
 
     void createConnections();
 };

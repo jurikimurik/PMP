@@ -18,6 +18,10 @@ PMPlayerView::PMPlayerView(QWidget *parent, PMPlayerModel *model)
 
     createConnections();
     durationChanged(m_model->player()->duration());
+
+    m_playlistView = new PlaylistView(this);
+    ui->mediaWidget->layout()->addWidget(m_playlistView);
+    m_playlistView->setModel(m_model->currentPlaylist());
 }
 
 PMPlayerView::~PMPlayerView()

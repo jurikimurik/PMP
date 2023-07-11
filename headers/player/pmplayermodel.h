@@ -26,6 +26,8 @@ signals:
 public:
     const QMediaPlayer *player() const;
     const QAudioOutput *audioOutput() const;
+    PlaylistModel *currentPlaylist() const;
+    void setCurrentPlaylist(PlaylistModel *newCurrentPlaylist);
 
 public:
     void durationChanged(qint64);
@@ -53,7 +55,7 @@ private:
     QTime m_maxMediaTime;
     QUrl m_sourceFile;
 
-    PlaylistModel* m_currentPlaylist;
+    PlaylistModel *m_currentPlaylist;
 };
 
 #endif // PMPLAYERMODEL_H

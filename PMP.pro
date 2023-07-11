@@ -11,6 +11,7 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    headers/playlist/playlistview.cpp \
     sources/main.cpp \
     sources/player/pmplayermodel.cpp \
     sources/player/pmplayerview.cpp \
@@ -19,7 +20,8 @@ SOURCES += \
 HEADERS += \
     headers/player/pmplayermodel.h \
     headers/player/pmplayerview.h \
-    headers/playlist/playlistmodel.h
+    headers/playlist/playlistmodel.h \
+    headers/playlist/playlistview.h
 
 FORMS += \
     GUI/player/pmplayerview.ui

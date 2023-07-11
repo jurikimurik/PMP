@@ -125,6 +125,16 @@ void PMPlayerModel::playerStatusUpdated(QMediaPlayer::MediaStatus status)
     };
 }
 
+PlaylistModel *PMPlayerModel::currentPlaylist() const
+{
+    return m_currentPlaylist;
+}
+
+void PMPlayerModel::setCurrentPlaylist(PlaylistModel *newCurrentPlaylist)
+{
+    m_currentPlaylist = newCurrentPlaylist;
+}
+
 const QAudioOutput *PMPlayerModel::audioOutput() const
 {
     return m_audioOutput;
