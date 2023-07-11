@@ -21,7 +21,7 @@ public:
 
     QVariant getValueByKey(int index, QMediaMetaData::Key key) const;
 
-    QUrl getSourceURL(int index) const;
+    QUrl getSourceURL(const QModelIndex &index) const;
     QStringList getAllTitles() const;
 
 private:

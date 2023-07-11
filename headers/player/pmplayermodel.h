@@ -34,6 +34,7 @@ public:
     void positionChanged(qint64);
     void setToPosition(int);
 
+
     void openMedia(const QUrl& url);
     void stopMedia();
     void previousMedia();
@@ -44,6 +45,9 @@ public:
     void changeVolume(float);
 
     void changeSpeed(float);
+
+public slots:
+    void loadMedia(const QModelIndex& index);
 
 private slots:
     void playerStatusUpdated(QMediaPlayer::MediaStatus);

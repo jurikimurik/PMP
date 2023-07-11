@@ -8,8 +8,6 @@ PMPlayerModel::PMPlayerModel(QObject *parent)
     m_player->setAudioOutput(m_audioOutput);
 
     m_currentPlaylist = new PlaylistModel(this);
-    m_currentPlaylist->add(QUrl::fromLocalFile("/Users/urijmakovskij/Desktop/audio/05 156 - Just Chill.mp3"));
-    m_player->setSource(m_currentPlaylist->getSourceURL(0));
 }
 
 void PMPlayerModel::durationChanged(qint64 duration)
@@ -27,6 +25,12 @@ void PMPlayerModel::positionChanged(qint64 position)
 void PMPlayerModel::setToPosition(int position)
 {
     m_player->setPosition(position);
+}
+
+void PMPlayerModel::loadMedia(const QModelIndex &index)
+{
+    stopMedia();
+    m_player->setSource(m_currentPlaylist->getSourceURL(index));
 }
 
 void PMPlayerModel::openMedia(const QUrl &url)

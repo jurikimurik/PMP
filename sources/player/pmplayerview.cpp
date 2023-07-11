@@ -23,6 +23,8 @@ PMPlayerView::PMPlayerView(QWidget *parent, PMPlayerModel *model)
     m_playlistView = new PlaylistView(this);
     ui->mediaWidget->layout()->addWidget(m_playlistView);
     m_playlistView->setModel(m_model->currentPlaylist());
+
+    connect(m_playlistView, &PlaylistView::doubleClicked, m_model, &PMPlayerModel::loadMedia);
 }
 
 PMPlayerView::~PMPlayerView()
@@ -35,9 +37,9 @@ void PMPlayerView::playbackStateChanged(QMediaPlayer::PlaybackState state)
     switch(state) {
     case QMediaPlayer::StoppedState: ui->playButton->setChecked(false); break;
 
-    case QMediaPlayer::PlayingState: ui->playButton->setChecked(false); break;
+    case QMediaPlayer::PlayingState: ui->playButton->setChecked(true); break;
 
-    case QMediaPlayer::PausedState: ui->playButton->setChecked(true); break;
+    case QMediaPlayer::PausedState: ui->playButton->setChecked(false); break;
     }
 }
 
@@ -71,7 +73,7 @@ void PMPlayerView::setToPosition(int position)
 
 void PMPlayerView::previousMedia()
 {
-
+    m_model->previousMedia();
 }
 
 void PMPlayerView::playPauseMedia()

@@ -58,9 +58,9 @@ void PlaylistModel::remove(const int &index)
     updateAllData();
 }
 
-QUrl PlaylistModel::getSourceURL(int index) const
+QUrl PlaylistModel::getSourceURL(const QModelIndex &index) const
 {
-    return m_urlPathes.value(index);
+    return m_urlPathes.value(index.row());
 }
 
 QVariant PlaylistModel::getValueByKey(int index, QMediaMetaData::Key key) const
