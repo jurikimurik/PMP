@@ -23,11 +23,15 @@ signals:
     void playerChanged();
     void audioOutputChanged();
 
+    void currentElementChanged();
+
 public:
     const QMediaPlayer *player() const;
     const QAudioOutput *audioOutput() const;
     PlaylistModel *currentPlaylist() const;
     void setCurrentPlaylist(PlaylistModel *newCurrentPlaylist);
+    PlaylistMediaElement currentElement() const;
+    void setCurrentElement(const PlaylistMediaElement &newCurrentElement);
 
 public:
     void durationChanged(qint64);
@@ -37,9 +41,7 @@ public:
 
     void openMedia(const QUrl& url);
     void stopMedia();
-    void previousMedia();
     void playPauseMedia();
-    void nextMedia();
 
     void muteMedia();
     void changeVolume(float);
@@ -51,15 +53,17 @@ public slots:
 
 private slots:
     void playerStatusUpdated(QMediaPlayer::MediaStatus);
+    void changeCurrentElement(const QUrl& source);
 
 private:
     QMediaPlayer *m_player;
     QAudioOutput *m_audioOutput;
     QTime m_currentMediaTime;
     QTime m_maxMediaTime;
-    QUrl m_sourceFile;
+    PlaylistMediaElement m_currentElement;
 
     PlaylistModel *m_currentPlaylist;
+    Q_PROPERTY(PlaylistMediaElement currentElement READ currentElement WRITE setCurrentElement NOTIFY currentElementChanged)
 };
 
 #endif // PMPLAYERMODEL_H

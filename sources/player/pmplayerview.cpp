@@ -25,6 +25,9 @@ PMPlayerView::PMPlayerView(QWidget *parent, PMPlayerModel *model)
     m_playlistView->setModel(m_model->currentPlaylist());
 
     connect(m_playlistView, &PlaylistView::doubleClicked, m_model, &PMPlayerModel::loadMedia);
+    connect(m_playlistView->selectionModel(), &QItemSelectionModel::currentRowChanged,
+            this, &PMPlayerView::currentSelectionChanged);
+    connect(m_model, &PMPlayerModel::currentElementChanged, this, &PMPlayerView::currentElementChanged);
 }
 
 PMPlayerView::~PMPlayerView()
@@ -73,7 +76,8 @@ void PMPlayerView::setToPosition(int position)
 
 void PMPlayerView::previousMedia()
 {
-    m_model->previousMedia();
+    QModelIndex newIndex = m_currentIndex.sibling(m_currentIndex.row()-1,m_currentIndex.column());
+    m_model->loadMedia(newIndex);
 }
 
 void PMPlayerView::playPauseMedia()
@@ -83,7 +87,8 @@ void PMPlayerView::playPauseMedia()
 
 void PMPlayerView::nextMedia()
 {
-    m_model->nextMedia();
+    QModelIndex newIndex = m_currentIndex.sibling(m_currentIndex.row()+1,m_currentIndex.column());
+    m_model->loadMedia(newIndex);
 }
 
 void PMPlayerView::openMedia()
@@ -91,8 +96,6 @@ void PMPlayerView::openMedia()
     QUrl fileUrl = QUrl::fromLocalFile(QFileDialog::getOpenFileName(this, tr("Otworz plik")));
     if(fileUrl.isValid())
         m_model->openMedia(fileUrl);
-
-
 }
 
 void PMPlayerView::stopMedia()
@@ -125,6 +128,25 @@ void PMPlayerView::openFullscreen()
 void PMPlayerView::colorOptions()
 {
 
+}
+
+void PMPlayerView::currentSelectionChanged(const QModelIndex &current)
+{
+    m_currentIndex = current;
+}
+
+void PMPlayerView::currentElementChanged()
+{
+    PlaylistMediaElement element = m_model->currentElement();
+    for(int i = 0; i < m_playlistView->model()->rowCount(); ++i)
+    {
+        QModelIndex index = m_playlistView->model()->index(i, 0);
+        QString mediaName = m_playlistView->model()->data(index).toString();
+        if(element.value(QMediaMetaData::Title).toString() == mediaName) {
+            m_playlistView->selectRow(i);
+            break;
+        }
+    }
 }
 
 

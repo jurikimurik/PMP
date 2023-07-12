@@ -8,6 +8,7 @@ PMPlayerModel::PMPlayerModel(QObject *parent)
     m_player->setAudioOutput(m_audioOutput);
 
     m_currentPlaylist = new PlaylistModel(this);
+    connect(m_player, &QMediaPlayer::sourceChanged, this, &PMPlayerModel::changeCurrentElement);
 }
 
 void PMPlayerModel::durationChanged(qint64 duration)
@@ -51,12 +52,6 @@ void PMPlayerModel::stopMedia()
     emit playbackStateChanged(m_player->playbackState());
 }
 
-void PMPlayerModel::previousMedia()
-{
-    stopMedia();
-
-}
-
 void PMPlayerModel::playPauseMedia()
 {
     if(m_player->source().isEmpty())
@@ -70,12 +65,6 @@ void PMPlayerModel::playPauseMedia()
         //Otherwise
         m_player->play();
     }
-}
-
-void PMPlayerModel::nextMedia()
-{
-    stopMedia();
-
 }
 
 void PMPlayerModel::muteMedia()
@@ -134,6 +123,24 @@ void PMPlayerModel::playerStatusUpdated(QMediaPlayer::MediaStatus status)
 
         break;
     };
+}
+
+void PMPlayerModel::changeCurrentElement(const QUrl &source)
+{
+    setCurrentElement(m_currentPlaylist->get(source));
+}
+
+PlaylistMediaElement PMPlayerModel::currentElement() const
+{
+    return m_currentElement;
+}
+
+void PMPlayerModel::setCurrentElement(const PlaylistMediaElement &newCurrentElement)
+{
+    if (m_currentElement == newCurrentElement)
+        return;
+    m_currentElement = newCurrentElement;
+    emit currentElementChanged();
 }
 
 PlaylistModel *PMPlayerModel::currentPlaylist() const

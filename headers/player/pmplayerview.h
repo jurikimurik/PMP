@@ -44,10 +44,13 @@ protected slots:
     void openFullscreen();
     void colorOptions();
 
+    void currentSelectionChanged(const QModelIndex &current);
+    void currentElementChanged();
 private:
     Ui::PMPlayerView *ui;
     PMPlayerModel* m_model;
     PlaylistView *m_playlistView;
+    QModelIndex m_currentIndex;
 
     void createConnections();
 };
