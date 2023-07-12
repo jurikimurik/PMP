@@ -9,6 +9,9 @@ class PlaylistView : public QTableView
 public:
     PlaylistView(QWidget *parent = nullptr);
 
+private slots:
+    void updateSelection();
+
     // QAbstractItemView interface
 public:
     virtual void setModel(QAbstractItemModel *model);
