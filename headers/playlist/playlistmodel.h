@@ -20,6 +20,8 @@ public:
     void remove(const QUrl &url);
     void remove(const int &index);
 
+    PlaylistMediaElement get(const QUrl &source);
+
     QVariant getValueByKey(int index, QMediaMetaData::Key key) const;
 
     QUrl getSourceURL(const QModelIndex &index) const;

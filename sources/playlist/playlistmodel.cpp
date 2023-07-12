@@ -53,6 +53,16 @@ void PlaylistModel::remove(const int &index)
     updateAllData();
 }
 
+PlaylistMediaElement PlaylistModel::get(const QUrl &source)
+{
+    for(const PlaylistMediaElement &element : m_mediaElements)
+    {
+        if(element.mediaPath() == source)
+            return element;
+    }
+    return PlaylistMediaElement();
+}
+
 QUrl PlaylistModel::getSourceURL(const QModelIndex &index) const
 {
     QString mediaName = data(index.parent(), Qt::DisplayRole).toString();
