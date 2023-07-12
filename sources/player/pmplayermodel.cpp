@@ -51,6 +51,7 @@ void PMPlayerModel::stopMedia()
 
 void PMPlayerModel::previousMedia()
 {
+    stopMedia();
 
 }
 
@@ -68,6 +69,7 @@ void PMPlayerModel::playPauseMedia()
 
 void PMPlayerModel::nextMedia()
 {
+    stopMedia();
 
 }
 

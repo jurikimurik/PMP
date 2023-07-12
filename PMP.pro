@@ -15,11 +15,13 @@ SOURCES += \
     sources/main.cpp \
     sources/player/pmplayermodel.cpp \
     sources/player/pmplayerview.cpp \
+    sources/playlist/element/playlistmediaelement.cpp \
     sources/playlist/playlistmodel.cpp
 
 HEADERS += \
     headers/player/pmplayermodel.h \
     headers/player/pmplayerview.h \
+    headers/playlist/element/playlistmediaelement.h \
     headers/playlist/playlistmodel.h \
     headers/playlist/playlistview.h
 
