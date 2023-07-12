@@ -55,7 +55,13 @@ void PlaylistModel::remove(const int &index)
 
 QUrl PlaylistModel::getSourceURL(const QModelIndex &index) const
 {
-    return m_mediaElements.value(index.row()).mediaPath();
+    QString mediaName = data(index.parent(), Qt::DisplayRole).toString();
+    for(const PlaylistMediaElement& element : m_mediaElements)
+    {
+        if(mediaName == element.value(QMediaMetaData::Title).toString())
+            return element.mediaPath();
+    }
+    return QUrl();
 }
 
 QVariant PlaylistModel::getValueByKey(int index, QMediaMetaData::Key key) const
@@ -106,7 +112,7 @@ QVariant PlaylistModel::data(const QModelIndex &index, int role) const
 {
     if(role == Qt::DisplayRole)
     {
-        return m_mediaElements.at(index.row()).value((QMediaMetaData::Key) index.column());
+        return m_mediaElements.value(index.row()).value((QMediaMetaData::Key) index.column());
     }
 
     return QVariant();

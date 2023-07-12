@@ -30,7 +30,9 @@ void PMPlayerModel::setToPosition(int position)
 void PMPlayerModel::loadMedia(const QModelIndex &index)
 {
     stopMedia();
-    m_player->setSource(m_currentPlaylist->getSourceURL(index));
+    QUrl url = m_currentPlaylist->getSourceURL(index);
+    if(url.isValid())
+        m_player->setSource(url);
 }
 
 void PMPlayerModel::openMedia(const QUrl &url)
@@ -57,6 +59,9 @@ void PMPlayerModel::previousMedia()
 
 void PMPlayerModel::playPauseMedia()
 {
+    if(m_player->source().isEmpty())
+        loadMedia(m_currentPlaylist->index(0, 0, QModelIndex()));
+
     //If something is playing right now
     if(m_player->isPlaying())
     {
