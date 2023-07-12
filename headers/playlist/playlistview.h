@@ -9,12 +9,16 @@ class PlaylistView : public QTableView
 public:
     PlaylistView(QWidget *parent = nullptr);
 
-private slots:
+public slots:
     void updateSelection();
 
     // QAbstractItemView interface
 public:
     virtual void setModel(QAbstractItemModel *model);
+
+    // QAbstractItemView interface
+protected slots:
+    virtual void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
 };
 
 #endif // PLAYLISTVIEW_H

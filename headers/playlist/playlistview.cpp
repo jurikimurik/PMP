@@ -30,3 +30,9 @@ void PlaylistView::setModel(QAbstractItemModel *model)
     }
     horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 }
+
+void PlaylistView::selectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
+{
+    QTableView::selectionChanged(selected, deselected);
+    updateSelection();
+}
