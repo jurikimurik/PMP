@@ -9,25 +9,23 @@ void PlaylistModel::add(const QUrl &url)
     tempPlayer->setSource(url);
 
     QMediaMetaData metaData = tempPlayer->metaData();
-    if(!m_urlPathes.contains(url) && (tempPlayer->error() == QMediaPlayer::NoError ||
-                                       tempPlayer->error() == QMediaPlayer::FormatError))
+    if(!m_mediaElements.contains(PlaylistMediaElement(metaData, tempPlayer->source())) &&
+        (tempPlayer->error() == QMediaPlayer::NoError || tempPlayer->error() == QMediaPlayer::FormatError))
     {
-        m_metaDatas.push_back(metaData);
-        m_urlPathes.push_back(tempPlayer->source());
+        m_mediaElements.push_back(PlaylistMediaElement(metaData, tempPlayer->source()));
         updateAllData();
     }
 }
 
 void PlaylistModel::remove(const QString &title)
 {
-    for(int i = 0; i < m_metaDatas.size(); ++i)
+    for(int i = 0; i < m_mediaElements.size(); ++i)
     {
-        QMediaMetaData &data = m_metaDatas[i];
+        QMediaMetaData &data = m_mediaElements[i];
 
         if(data.value(QMediaMetaData::Title).toString() == title)
         {
-            m_metaDatas.remove(i);
-            m_urlPathes.remove(i);
+            m_mediaElements.remove(i);
             updateAllData();
             return;
         }
@@ -36,14 +34,13 @@ void PlaylistModel::remove(const QString &title)
 
 void PlaylistModel::remove(const QUrl &url)
 {
-    for(int i = 0; i < m_metaDatas.size(); ++i)
+    for(int i = 0; i < m_mediaElements.size(); ++i)
     {
-        QMediaMetaData &data = m_metaDatas[i];
+        QMediaMetaData &data = m_mediaElements[i];
 
         if(data.value(QMediaMetaData::Url).toUrl() == url)
         {
-            m_metaDatas.remove(i);
-            m_urlPathes.remove(i);
+            m_mediaElements.remove(i);
             updateAllData();
             return;
         }
@@ -52,26 +49,24 @@ void PlaylistModel::remove(const QUrl &url)
 
 void PlaylistModel::remove(const int &index)
 {
-    //Url first! (Because of &)
-    m_urlPathes.remove(index);
-    m_metaDatas.remove(index);
+    m_mediaElements.remove(index);
     updateAllData();
 }
 
 QUrl PlaylistModel::getSourceURL(const QModelIndex &index) const
 {
-    return m_urlPathes.value(index.row());
+    return m_mediaElements.value(index.row()).mediaPath();
 }
 
 QVariant PlaylistModel::getValueByKey(int index, QMediaMetaData::Key key) const
 {
-    return m_metaDatas.value(index).value(key);
+    return m_mediaElements.value(index).value(key);
 }
 
 QStringList PlaylistModel::getAllTitles() const
 {
     QStringList titles;
-    for(const QMediaMetaData &data : m_metaDatas)
+    for(const QMediaMetaData &data : m_mediaElements)
     {
         titles << data.value(QMediaMetaData::Title).toString();
     }
@@ -98,7 +93,7 @@ QModelIndex PlaylistModel::parent(const QModelIndex &child) const
 int PlaylistModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
-    return m_metaDatas.count();
+    return m_mediaElements.count();
 }
 
 int PlaylistModel::columnCount(const QModelIndex &parent) const
@@ -111,7 +106,7 @@ QVariant PlaylistModel::data(const QModelIndex &index, int role) const
 {
     if(role == Qt::DisplayRole)
     {
-        return m_metaDatas.at(index.row()).value((QMediaMetaData::Key) index.column());
+        return m_mediaElements.at(index.row()).value((QMediaMetaData::Key) index.column());
     }
 
     return QVariant();

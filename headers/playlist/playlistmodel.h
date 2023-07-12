@@ -4,6 +4,7 @@
 #include <QAbstractItemModel>
 #include <QMediaMetaData>
 #include <QMediaPlayer>
+#include "element/playlistmediaelement.h"
 
 class PlaylistModel : public QAbstractItemModel
 {
@@ -28,8 +29,7 @@ private:
     void updateAllData();
 
 private:
-    QVector<QMediaMetaData> m_metaDatas;
-    QVector<QUrl> m_urlPathes;
+    QVector<PlaylistMediaElement> m_mediaElements;
 
     // QAbstractItemModel interface
 public:
