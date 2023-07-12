@@ -16,8 +16,20 @@ public:
     void setMediaPath(const QUrl &newMediaPath);
     bool isPathValid() const;
 
+    friend bool operator ==(const PlaylistMediaElement &a, const PlaylistMediaElement &b);
+    friend bool operator !=(const PlaylistMediaElement &a, const PlaylistMediaElement &b);
+
 private:
     QUrl m_mediaPath;
 };
+
+inline bool operator ==(const PlaylistMediaElement &a, const PlaylistMediaElement &b)
+{
+    return ((QMediaMetaData) a == (QMediaMetaData) b) || (a.mediaPath() == b.mediaPath());
+}
+inline bool operator !=(const PlaylistMediaElement &a, const PlaylistMediaElement &b)
+{
+    return ((QMediaMetaData) a != (QMediaMetaData) b) || (a.mediaPath() != b.mediaPath());
+}
 
 #endif // PLAYLISTMEDIAELEMENT_H
