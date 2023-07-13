@@ -17,19 +17,17 @@ PMPlayerView::PMPlayerView(QWidget *parent, PMPlayerModel *model)
     if(m_model == nullptr)
         m_model = new PMPlayerModel(this);
 
-    createConnections();
-    durationChanged(m_model->player()->duration());
-
     m_playlistView = new PlaylistView(this);
     ui->mediaWidget->layout()->addWidget(m_playlistView);
     m_playlistView->setModel(m_model->currentPlaylist());
 
-    connect(m_playlistView, &PlaylistView::doubleClicked, m_model, &PMPlayerModel::loadMedia);
-    connect(m_playlistView->selectionModel(), &QItemSelectionModel::currentRowChanged,
-            this, &PMPlayerView::currentSelectionChanged);
-    connect(m_model, &PMPlayerModel::currentElementChanged, this, &PMPlayerView::currentElementChanged);
+    m_playlistMenu = new QMenu(m_playlistView);
+    addMediaAction = new QAction(tr("Dodaj media"), m_playlistMenu);
+    removeMediaAction = new QAction(tr("Usun media"), m_playlistMenu);
+    m_playlistMenu->addActions({addMediaAction, removeMediaAction});
 
-
+    createConnections();
+    durationChanged(m_model->player()->duration());
 }
 
 PMPlayerView::~PMPlayerView()
@@ -74,6 +72,11 @@ void PMPlayerView::positionChanged(qint64 position)
 void PMPlayerView::setToPosition(int position)
 {
     m_model->setToPosition(position);
+}
+
+void PMPlayerView::removeMedia()
+{
+
 }
 
 void PMPlayerView::previousMedia()
@@ -151,6 +154,16 @@ void PMPlayerView::currentElementChanged()
     }
 }
 
+void PMPlayerView::actionTriggered(QAction *action)
+{
+    if(action == addMediaAction)
+    {
+        openMedia();
+    } else if (action == removeMediaAction) {
+        removeMedia();
+    }
+}
+
 
 void PMPlayerView::createConnections()
 {
@@ -170,12 +183,17 @@ void PMPlayerView::createConnections()
 
     connect(m_model->player(), &QMediaPlayer::playbackStateChanged, this, &PMPlayerView::playbackStateChanged);
     connect(m_model->audioOutput(), &QAudioOutput::mutedChanged, this, &PMPlayerView::muteChanged);
+
+    connect(m_playlistView, &PlaylistView::doubleClicked, m_model, &PMPlayerModel::loadMedia);
+    connect(m_playlistView->selectionModel(), &QItemSelectionModel::currentRowChanged,
+            this, &PMPlayerView::currentSelectionChanged);
+    connect(m_model, &PMPlayerModel::currentElementChanged, this, &PMPlayerView::currentElementChanged);
+
+    connect(m_playlistMenu, &QMenu::triggered, this, &PMPlayerView::actionTriggered);
 }
 
 void PMPlayerView::contextMenuEvent(QContextMenuEvent *event)
 {
-    QMenu *helpMenu = new QMenu(ui->menuPlaylist);
-    helpMenu->addActions(ui->menuPlaylist->actions());
-    helpMenu->move(event->globalPos());
-    helpMenu->show();
+    m_playlistMenu->move(event->globalPos());
+    m_playlistMenu->show();
 }

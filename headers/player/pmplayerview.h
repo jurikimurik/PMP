@@ -1,6 +1,7 @@
 #ifndef PMPLAYERVIEW_H
 #define PMPLAYERVIEW_H
 
+#include <QAction>
 #include <QContextMenuEvent>
 #include <QMainWindow>
 #include <QTime>
@@ -31,6 +32,7 @@ protected slots:
     void positionChanged(qint64);
     void setToPosition(int);
 
+    void removeMedia();
     void openMedia();
     void stopMedia();
     void previousMedia();
@@ -47,7 +49,12 @@ protected slots:
 
     void currentSelectionChanged(const QModelIndex &current);
     void currentElementChanged();
+    void actionTriggered(QAction*);
 private:
+    QMenu *m_playlistMenu;
+    QAction *addMediaAction;
+    QAction *removeMediaAction;
+
     Ui::PMPlayerView *ui;
     PMPlayerModel* m_model;
     PlaylistView *m_playlistView;
