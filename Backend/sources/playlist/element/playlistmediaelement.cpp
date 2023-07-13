@@ -12,7 +12,7 @@ PlaylistMediaElement::PlaylistMediaElement(const QMediaMetaData &meta, const QUr
     : QMediaMetaData(meta), m_mediaPath(urlSource)
 
 {
-    qDebug() << meta.value(QMediaMetaData::Title);
+
 }
 
 PlaylistMediaElement::PlaylistMediaElement(const QMediaMetaData &meta, const QString &pathToFile)

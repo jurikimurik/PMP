@@ -4,6 +4,7 @@
 #include <QMediaMetaData>
 #include <QUrl>
 
+//Basically represents one media in playlist. It combines meta data and url providing to file.
 class PlaylistMediaElement : public QMediaMetaData
 {
 public:
@@ -24,6 +25,7 @@ private:
     QUrl m_mediaPath;
 };
 
+//Due to a bug [QTBUG-76614] in QT framework, this additional comparation methods have been added.
 inline bool operator ==(const PlaylistMediaElement &a, const PlaylistMediaElement &b)
 {
     return ((QMediaMetaData) a == (QMediaMetaData) b) || (a.mediaPath() == b.mediaPath());
