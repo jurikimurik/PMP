@@ -1,4 +1,4 @@
-#include "headers/player/pmplayerview.h"
+#include "../../headers/player/pmplayerview.h"
 #include "ui_pmplayerview.h"
 
 #include <QGraphicsVideoItem>

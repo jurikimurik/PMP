@@ -5,7 +5,7 @@
 #include <QContextMenuEvent>
 #include <QMainWindow>
 #include <QTime>
-#include "pmplayermodel.h"
+#include "../../../Backend/headers/player/pmplayermodel.h"
 #include "../playlist/playlistview.h"
 
 #define DEBUG 1

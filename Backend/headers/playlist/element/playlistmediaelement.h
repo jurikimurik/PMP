@@ -8,7 +8,7 @@ class PlaylistMediaElement : public QMediaMetaData
 {
 public:
     PlaylistMediaElement();
-    PlaylistMediaElement(const QMediaMetaData& meta, const QUrl& urlSource);
+    PlaylistMediaElement(const QMediaMetaData &meta, const QUrl& urlSource);
     PlaylistMediaElement(const QMediaMetaData &meta, const QString& pathToFile);
 
 

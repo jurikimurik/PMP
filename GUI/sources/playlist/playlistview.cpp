@@ -1,4 +1,4 @@
-#include "playlistview.h"
+#include "../../headers/playlist/playlistview.h"
 
 #include <QHeaderView>
 

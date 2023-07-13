@@ -1,4 +1,4 @@
-#include "headers/player/pmplayerview.h"
+#include "../../GUI/headers/player/pmplayerview.h"
 
 #include <QApplication>
 #include <QLocale>
