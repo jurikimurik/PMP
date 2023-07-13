@@ -3,35 +3,19 @@
 PlaylistModel::PlaylistModel(QObject *parent) : QAbstractItemModel(parent)
 {}
 
+//Adding new media to playlist
 void PlaylistModel::add(const QUrl &url)
 {
-    QMediaPlayer* tempPlayer = new QMediaPlayer(this);
-    tempPlayer->setSource(url);
+    PlaylistMediaElement newElement(url);
 
-    QMediaMetaData metaData = tempPlayer->metaData();
-    if(!m_mediaElements.contains(PlaylistMediaElement(metaData, tempPlayer->source())) &&
-        (tempPlayer->error() == QMediaPlayer::NoError || tempPlayer->error() == QMediaPlayer::FormatError))
+    if(!m_mediaElements.contains(newElement) && newElement.isPathValid() && !newElement.isEmpty())
     {
-        m_mediaElements.push_back(PlaylistMediaElement(tempPlayer->source()));
+        m_mediaElements.push_back(newElement);
         updateAllData();
     }
 }
 
-void PlaylistModel::remove(const QString &title)
-{
-    for(int i = 0; i < m_mediaElements.size(); ++i)
-    {
-        QMediaMetaData &data = m_mediaElements[i];
-
-        if(data.value(QMediaMetaData::Title).toString() == title)
-        {
-            m_mediaElements.remove(i);
-            updateAllData();
-            return;
-        }
-    }
-}
-
+//Removing one media from playlist using url
 void PlaylistModel::remove(const QUrl &url)
 {
     for(int i = 0; i < m_mediaElements.size(); ++i)
@@ -47,12 +31,7 @@ void PlaylistModel::remove(const QUrl &url)
     }
 }
 
-void PlaylistModel::remove(const int &index)
-{
-    m_mediaElements.remove(index);
-    updateAllData();
-}
-
+//Getting copy of playlist element by url
 PlaylistMediaElement PlaylistModel::get(const QUrl &source)
 {
     for(const PlaylistMediaElement &element : m_mediaElements)
@@ -63,6 +42,9 @@ PlaylistMediaElement PlaylistModel::get(const QUrl &source)
     return PlaylistMediaElement();
 }
 
+//Getting playlist media source url using index in table!
+//  - Searching using title only. (May delete something else if have same names)
+//TODO: (getSourceURL) Better searching using more data.
 QUrl PlaylistModel::getSourceURL(const QModelIndex &index) const
 {
     QString mediaName = data(index.parent(), Qt::DisplayRole).toString();
@@ -74,26 +56,25 @@ QUrl PlaylistModel::getSourceURL(const QModelIndex &index) const
     return QUrl();
 }
 
-QVariant PlaylistModel::getValueByKey(int index, QMediaMetaData::Key key) const
+//Simply return all song requested data by QMediaMetaData key.
+QStringList PlaylistModel::getAllInfo(const QMediaMetaData::Key &key) const
 {
-    return m_mediaElements.value(index).value(key);
-}
-
-QStringList PlaylistModel::getAllTitles() const
-{
-    QStringList titles;
+    QStringList info;
     for(const QMediaMetaData &data : m_mediaElements)
     {
-        titles << data.value(QMediaMetaData::Title).toString();
+        info << data.value(key).toString();
     }
-    return titles;
+    return info;
 }
 
+//IMPORTANT: !!!!!! AFTER EVERY MANUPILATION ON m_mediaElements THIS NEEDS TO BE CALLED !!!!!!
 void PlaylistModel::updateAllData()
 {
     beginResetModel();
     endResetModel();
 }
+
+//---------------------- Reimplementing all necessary methods for QAbstractItemModel below... ----------------------
 
 QModelIndex PlaylistModel::index(int row, int column, const QModelIndex &parent) const
 {
@@ -115,7 +96,7 @@ int PlaylistModel::rowCount(const QModelIndex &parent) const
 int PlaylistModel::columnCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
-    return QMetaEnum::fromType<QMediaMetaData::Key>().keyCount(); // Because there is 28 types in QMediaMetaData::Key
+    return QMetaEnum::fromType<QMediaMetaData::Key>().keyCount();
 }
 
 QVariant PlaylistModel::data(const QModelIndex &index, int role) const

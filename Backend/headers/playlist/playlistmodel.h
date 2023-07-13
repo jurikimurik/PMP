@@ -15,17 +15,12 @@ public:
     PlaylistModel(QObject *parent = nullptr);
 
     void add(const QUrl &url);
-
-    void remove(const QString &title);
     void remove(const QUrl &url);
-    void remove(const int &index);
 
     PlaylistMediaElement get(const QUrl &source);
 
-    QVariant getValueByKey(int index, QMediaMetaData::Key key) const;
-
     QUrl getSourceURL(const QModelIndex &index) const;
-    QStringList getAllTitles() const;
+    QStringList getAllInfo(const QMediaMetaData::Key &key) const;
 
 private:
     void updateAllData();
