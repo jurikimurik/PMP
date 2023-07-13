@@ -28,6 +28,8 @@ PMPlayerView::PMPlayerView(QWidget *parent, PMPlayerModel *model)
     connect(m_playlistView->selectionModel(), &QItemSelectionModel::currentRowChanged,
             this, &PMPlayerView::currentSelectionChanged);
     connect(m_model, &PMPlayerModel::currentElementChanged, this, &PMPlayerView::currentElementChanged);
+
+
 }
 
 PMPlayerView::~PMPlayerView()
@@ -168,4 +170,12 @@ void PMPlayerView::createConnections()
 
     connect(m_model->player(), &QMediaPlayer::playbackStateChanged, this, &PMPlayerView::playbackStateChanged);
     connect(m_model->audioOutput(), &QAudioOutput::mutedChanged, this, &PMPlayerView::muteChanged);
+}
+
+void PMPlayerView::contextMenuEvent(QContextMenuEvent *event)
+{
+    QMenu *helpMenu = new QMenu(ui->menuPlaylist);
+    helpMenu->addActions(ui->menuPlaylist->actions());
+    helpMenu->move(event->globalPos());
+    helpMenu->show();
 }

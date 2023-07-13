@@ -1,6 +1,7 @@
 #ifndef PMPLAYERVIEW_H
 #define PMPLAYERVIEW_H
 
+#include <QContextMenuEvent>
 #include <QMainWindow>
 #include <QTime>
 #include "pmplayermodel.h"
@@ -53,5 +54,9 @@ private:
     QModelIndex m_currentIndex;
 
     void createConnections();
+
+    // QWidget interface
+protected:
+    virtual void contextMenuEvent(QContextMenuEvent *event);
 };
 #endif // PMPLAYERVIEW_H
