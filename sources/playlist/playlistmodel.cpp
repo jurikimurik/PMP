@@ -36,9 +36,9 @@ void PlaylistModel::remove(const QUrl &url)
 {
     for(int i = 0; i < m_mediaElements.size(); ++i)
     {
-        QMediaMetaData &data = m_mediaElements[i];
+        const PlaylistMediaElement &element = m_mediaElements[i];
 
-        if(data.value(QMediaMetaData::Url).toUrl() == url)
+        if(element.mediaPath()== url)
         {
             m_mediaElements.remove(i);
             updateAllData();
