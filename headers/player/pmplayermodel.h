@@ -50,6 +50,7 @@ public:
 
 public slots:
     void loadMedia(const QModelIndex& index);
+    void removeMedia(const QModelIndex& index);
 
 private slots:
     void playerStatusUpdated(QMediaPlayer::MediaStatus);
