@@ -10,6 +10,7 @@ public:
     PlaylistMediaElement();
     PlaylistMediaElement(const QMediaMetaData &meta, const QUrl& urlSource);
     PlaylistMediaElement(const QMediaMetaData &meta, const QString& pathToFile);
+    PlaylistMediaElement(const QUrl& urlSource);
 
 
     QUrl mediaPath() const;

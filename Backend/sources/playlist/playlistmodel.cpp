@@ -12,7 +12,7 @@ void PlaylistModel::add(const QUrl &url)
     if(!m_mediaElements.contains(PlaylistMediaElement(metaData, tempPlayer->source())) &&
         (tempPlayer->error() == QMediaPlayer::NoError || tempPlayer->error() == QMediaPlayer::FormatError))
     {
-        m_mediaElements.push_back(PlaylistMediaElement(metaData, tempPlayer->source()));
+        m_mediaElements.push_back(PlaylistMediaElement(tempPlayer->source()));
         updateAllData();
     }
 }
