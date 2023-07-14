@@ -31,6 +31,23 @@ void PlaylistModel::remove(const QUrl &url)
     }
 }
 
+void PlaylistModel::remove(const QList<QUrl> &urls)
+{
+    for(const QUrl& url : urls)
+        qDebug() << url;
+
+    for(int i = 0; i < m_mediaElements.size(); ++i)
+    {
+        const PlaylistMediaElement &element = m_mediaElements[i];
+
+        if(urls.contains(element.mediaPath()))
+        {
+            m_mediaElements.remove(i--);
+        }
+    }
+    updateAllData();
+}
+
 //Getting copy of playlist element by url
 PlaylistMediaElement PlaylistModel::get(const QUrl &source)
 {

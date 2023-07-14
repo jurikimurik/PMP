@@ -16,6 +16,7 @@ public:
 
     void add(const QUrl &url);
     void remove(const QUrl &url);
+    void remove(const QList<QUrl> &urls);
 
     PlaylistMediaElement get(const QUrl &source);
 

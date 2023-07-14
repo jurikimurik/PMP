@@ -45,6 +45,24 @@ void PMPlayerModel::removeMedia(const QModelIndex &index)
 
 }
 
+void PMPlayerModel::removeMedia(const QList<QModelIndex> &indexes)
+{
+    QList<QUrl> urls;
+    for(const QModelIndex &index : indexes) {
+        QUrl url = m_currentPlaylist->getSourceURL(index);
+        urls.push_back(url);
+
+        if(url == m_player->source()) {
+            stopMedia();
+            m_player->setSource(QUrl());
+        }
+    }
+
+    m_currentPlaylist->remove(urls);
+    if(m_player->source() == QUrl())
+        loadMedia(indexes.last());
+}
+
 void PMPlayerModel::loadMedia(const QModelIndex &index)
 {
     stopMedia();
