@@ -24,7 +24,8 @@ PMPlayerView::PMPlayerView(QWidget *parent, PMPlayerModel *model)
     m_playlistMenu = new QMenu(m_playlistView);
     addMediaAction = new QAction(tr("Dodaj media"), m_playlistMenu);
     removeMediaAction = new QAction(tr("Usun media"), m_playlistMenu);
-    m_playlistMenu->addActions({addMediaAction, removeMediaAction});
+    clearMediaAction = new QAction(tr("Wyczyszcz cala liste"), m_playlistMenu);
+    m_playlistMenu->addActions({addMediaAction, removeMediaAction, clearMediaAction});
 
     createConnections();
     durationChanged(m_model->player()->duration());
@@ -72,6 +73,11 @@ void PMPlayerView::positionChanged(qint64 position)
 void PMPlayerView::setToPosition(int position)
 {
     m_model->setToPosition(position);
+}
+
+void PMPlayerView::clearAllMedia()
+{
+    m_model->clearMedia();
 }
 
 void PMPlayerView::removeMedia()
@@ -161,6 +167,8 @@ void PMPlayerView::actionTriggered(QAction *action)
         openMedia();
     } else if (action == removeMediaAction) {
         removeMedia();
+    } else if (action == clearMediaAction) {
+        clearAllMedia();
     }
 }
 

@@ -32,8 +32,10 @@ protected slots:
     void positionChanged(qint64);
     void setToPosition(int);
 
+    void clearAllMedia();
     void removeMedia();
     void openMedia();
+
     void stopMedia();
     void previousMedia();
     void playPauseMedia();
@@ -54,6 +56,7 @@ private:
     QMenu *m_playlistMenu;
     QAction *addMediaAction;
     QAction *removeMediaAction;
+    QAction *clearMediaAction;
 
     Ui::PMPlayerView *ui;
     PMPlayerModel* m_model;

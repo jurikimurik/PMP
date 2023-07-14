@@ -38,7 +38,7 @@ public:
     void positionChanged(qint64);
     void setToPosition(int);
 
-
+    void clearMedia();
     void openMedia(const QUrl& url);
     void stopMedia();
     void playPauseMedia();
