@@ -76,8 +76,7 @@ void PMPlayerView::setToPosition(int position)
 
 void PMPlayerView::removeMedia()
 {
-    QModelIndex index(m_playlistView->selectionModel()->selectedRows().value(0));
-    m_model->removeMedia(index);
+    m_model->removeMedia(m_playlistView->selectionModel()->selectedRows());
 }
 
 void PMPlayerView::previousMedia()
