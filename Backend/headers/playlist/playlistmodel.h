@@ -23,6 +23,7 @@ public:
     QUrl getSourceURL(const QModelIndex &index) const;
     QStringList getAllInfo(const QMediaMetaData::Key &key) const;
     bool saveToFile(const QString &pathname);
+    bool loadFromFile(const QString &pathname);
 
 private:
     void updateAllData();

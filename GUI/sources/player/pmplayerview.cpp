@@ -29,7 +29,8 @@ PMPlayerView::PMPlayerView(QWidget *parent, PMPlayerModel *model)
     m_playlistMenu->addSeparator();
 
     savePlaylistAction = new QAction(tr("Zapisz playlistę"), m_playlistMenu);
-    m_playlistMenu->addActions({savePlaylistAction});
+    loadPlaylistAction = new QAction(tr("Zaladuj playlistę"), m_playlistMenu);
+    m_playlistMenu->addActions({savePlaylistAction, loadPlaylistAction});
 
     m_errorBox = new QErrorMessage(this);
 
@@ -95,7 +96,16 @@ void PMPlayerView::savePlaylist()
 
 void PMPlayerView::loadPlaylist()
 {
+    QString pathname = QFileDialog::getOpenFileName(this, tr("Zapisz playliste..."), QString(), tr("PLaylista PMP (*.pmplst)"));
 
+    if(pathname.isEmpty())
+        return;
+
+    if(!m_model->loadPlaylistFromFile(pathname)) {
+        m_errorBox->showMessage(tr("Nie udało się otworzyć pliku!"));
+    }
+
+    m_model->loadMedia(m_currentIndex);
 }
 
 void PMPlayerView::clearAllMedia()

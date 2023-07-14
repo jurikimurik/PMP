@@ -222,7 +222,7 @@ bool PMPlayerModel::savePlaylistToFile(const QString& pathname) const
 
 bool PMPlayerModel::loadPlaylistFromFile(const QString& pathname) const
 {
-
+    return m_currentPlaylist->loadFromFile(pathname);
 }
 
 QTime PMPlayerModel::currentMediaTime() const

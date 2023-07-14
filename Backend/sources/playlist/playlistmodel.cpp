@@ -87,6 +87,25 @@ QStringList PlaylistModel::getAllInfo(const QMediaMetaData::Key &key) const
     return info;
 }
 
+bool PlaylistModel::loadFromFile(const QString &pathname)
+{
+    QFile file(pathname);
+    if(!file.open(QIODevice::ReadOnly)) {
+        return false;
+    }
+
+
+    QTextStream stream(&file);
+    m_mediaElements.clear();
+    QString url;
+    while(stream.readLineInto(&url))
+        m_mediaElements.push_back(PlaylistMediaElement(QUrl(url)));
+
+    file.close();
+    updateAllData();
+    return true;
+}
+
 bool PlaylistModel::saveToFile(const QString &pathname)
 {
     QFile file(pathname);
