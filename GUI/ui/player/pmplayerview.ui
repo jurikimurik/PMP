@@ -14,7 +14,7 @@
    <string>Play, Music, Play!</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../../resources/icons/icons.qrc">
+   <iconset resource="../../../resources/icons/icons.qrc">
     <normaloff>:/icons/disc.png</normaloff>:/icons/disc.png</iconset>
   </property>
   <property name="toolButtonStyle">
@@ -111,7 +111,7 @@
           <string/>
          </property>
          <property name="icon">
-          <iconset resource="../../resources/icons/icons.qrc">
+          <iconset resource="../../../resources/icons/icons.qrc">
            <normaloff>:/icons/stop.png</normaloff>:/icons/stop.png</iconset>
          </property>
          <property name="iconSize">
@@ -143,7 +143,7 @@
           <string/>
          </property>
          <property name="icon">
-          <iconset resource="../../resources/icons/icons.qrc">
+          <iconset resource="../../../resources/icons/icons.qrc">
            <normaloff>:/icons/back.png</normaloff>:/icons/back.png</iconset>
          </property>
          <property name="iconSize">
@@ -175,7 +175,7 @@
           <string/>
          </property>
          <property name="icon">
-          <iconset resource="../../resources/icons/icons.qrc">
+          <iconset resource="../../../resources/icons/icons.qrc">
            <normaloff>:/icons/play.png</normaloff>
            <normalon>:/icons/pause.png</normalon>:/icons/play.png</iconset>
          </property>
@@ -211,7 +211,7 @@
           <string/>
          </property>
          <property name="icon">
-          <iconset resource="../../resources/icons/icons.qrc">
+          <iconset resource="../../../resources/icons/icons.qrc">
            <normaloff>:/icons/next.png</normaloff>:/icons/next.png</iconset>
          </property>
          <property name="iconSize">
@@ -243,7 +243,7 @@
           <string/>
          </property>
          <property name="icon">
-          <iconset resource="../../resources/icons/icons.qrc">
+          <iconset resource="../../../resources/icons/icons.qrc">
            <normaloff>:/icons/up.png</normaloff>
            <normalon>:/icons/mute.png</normalon>:/icons/up.png</iconset>
          </property>
@@ -430,7 +430,7 @@
   </action>
  </widget>
  <resources>
-  <include location="../../resources/icons/icons.qrc"/>
+  <include location="../../../resources/icons/icons.qrc"/>
  </resources>
  <connections>
   <connection>
