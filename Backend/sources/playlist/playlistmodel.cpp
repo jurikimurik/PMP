@@ -1,5 +1,8 @@
 #include "../../headers/playlist/playlistmodel.h"
 
+#include <QErrorMessage>
+#include <QFile>
+
 PlaylistModel::PlaylistModel(QObject *parent) : QAbstractItemModel(parent)
 {}
 
@@ -82,6 +85,21 @@ QStringList PlaylistModel::getAllInfo(const QMediaMetaData::Key &key) const
         info << data.value(key).toString();
     }
     return info;
+}
+
+bool PlaylistModel::saveToFile(const QString &pathname)
+{
+    QFile file(pathname);
+    if(!file.open(QIODevice::WriteOnly)) {
+        return false;
+    }
+
+    QTextStream stream(&file);
+    for(const PlaylistMediaElement &element : m_mediaElements)
+        stream << element.mediaPath().toString() << "\n";
+
+    file.close();
+    return true;
 }
 
 //IMPORTANT: !!!!!! AFTER EVERY MANUPILATION ON m_mediaElements THIS NEEDS TO BE CALLED !!!!!!

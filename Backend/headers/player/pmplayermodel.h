@@ -5,6 +5,7 @@
 #include <QMediaPlayer>
 #include <QAudioOutput>
 #include <QTime>
+#include <QErrorMessage>
 
 #include "../playlist/playlistmodel.h"
 
@@ -14,9 +15,7 @@ class PMPlayerModel : public QObject
 public:
     explicit PMPlayerModel(QObject *parent = nullptr);
 
-    QTime currentMediaTime() const;
 
-    QTime maxMediaTime() const;
 
 signals:
     void playbackStateChanged(QMediaPlayer::PlaybackState);
@@ -28,12 +27,24 @@ signals:
 public:
     const QMediaPlayer *player() const;
     const QAudioOutput *audioOutput() const;
+
     PlaylistModel *currentPlaylist() const;
     void setCurrentPlaylist(PlaylistModel *newCurrentPlaylist);
+
     PlaylistMediaElement currentElement() const;
     void setCurrentElement(const PlaylistMediaElement &newCurrentElement);
 
-public:
+    QTime currentMediaTime() const;
+    QTime maxMediaTime() const;
+
+    //----------------------------------------------------------------------------------------------------
+
+    bool savePlaylistToFile(const QString &pathname) const;
+    bool loadPlaylistFromFile(const QString &pathname) const;
+
+    //----------------------------------------------------------------------------------------------------
+
+
     void durationChanged(qint64);
     void positionChanged(qint64);
     void setToPosition(int);

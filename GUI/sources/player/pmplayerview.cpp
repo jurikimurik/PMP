@@ -26,6 +26,12 @@ PMPlayerView::PMPlayerView(QWidget *parent, PMPlayerModel *model)
     removeMediaAction = new QAction(tr("Usun media"), m_playlistMenu);
     clearMediaAction = new QAction(tr("Wyczyszcz cala liste"), m_playlistMenu);
     m_playlistMenu->addActions({addMediaAction, removeMediaAction, clearMediaAction});
+    m_playlistMenu->addSeparator();
+
+    savePlaylistAction = new QAction(tr("Zapisz playlistę"), m_playlistMenu);
+    m_playlistMenu->addActions({savePlaylistAction});
+
+    m_errorBox = new QErrorMessage(this);
 
     createConnections();
     durationChanged(m_model->player()->duration());
@@ -73,6 +79,23 @@ void PMPlayerView::positionChanged(qint64 position)
 void PMPlayerView::setToPosition(int position)
 {
     m_model->setToPosition(position);
+}
+
+void PMPlayerView::savePlaylist()
+{
+    QString pathname = QFileDialog::getSaveFileName(this, tr("Zapisz playliste..."), QString(), tr("PLaylista PMP (*.pmplst)"));
+
+    if(pathname.isEmpty())
+        return;
+
+    if(!m_model->savePlaylistToFile(pathname)) {
+        m_errorBox->showMessage(tr("Nie udało się zapisać pliku!"));
+    }
+}
+
+void PMPlayerView::loadPlaylist()
+{
+
 }
 
 void PMPlayerView::clearAllMedia()
@@ -169,6 +192,10 @@ void PMPlayerView::actionTriggered(QAction *action)
         removeMedia();
     } else if (action == clearMediaAction) {
         clearAllMedia();
+    } else if(action == savePlaylistAction) {
+        savePlaylist();
+    } else if(action == loadPlaylistAction) {
+        loadPlaylist();
     }
 }
 

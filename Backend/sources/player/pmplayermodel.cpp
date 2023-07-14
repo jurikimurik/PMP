@@ -1,5 +1,8 @@
 #include "../../headers/player/pmplayermodel.h"
 
+#include <QErrorMessage>
+#include <QFileDialog>
+
 PMPlayerModel::PMPlayerModel(QObject *parent)
     : QObject{parent}
 {
@@ -210,6 +213,16 @@ const QMediaPlayer *PMPlayerModel::player() const
 QTime PMPlayerModel::maxMediaTime() const
 {
     return m_maxMediaTime;
+}
+
+bool PMPlayerModel::savePlaylistToFile(const QString& pathname) const
+{
+    return m_currentPlaylist->saveToFile(pathname);
+}
+
+bool PMPlayerModel::loadPlaylistFromFile(const QString& pathname) const
+{
+
 }
 
 QTime PMPlayerModel::currentMediaTime() const
