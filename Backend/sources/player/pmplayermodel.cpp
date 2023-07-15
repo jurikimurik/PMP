@@ -147,7 +147,7 @@ void PMPlayerModel::playerStatusUpdated(QMediaPlayer::MediaStatus status)
         break;
 
     case QMediaPlayer::LoadedMedia:
-
+        stopMedia();
         break;
 
     case QMediaPlayer::StalledMedia:
