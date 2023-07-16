@@ -34,6 +34,8 @@ PMPlayerView::PMPlayerView(QWidget *parent, PMPlayerModel *model)
 
     m_errorBox = new QErrorMessage(this);
 
+    ui->menubar->addMenu(m_playlistMenu);
+
     createConnections();
     durationChanged(m_model->player()->duration());
 }
