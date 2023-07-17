@@ -22,6 +22,7 @@ PMPlayerView::PMPlayerView(QWidget *parent, PMPlayerModel *model)
     m_playlistView->setModel(m_model->currentPlaylist());
 
     m_playlistMenu = new QMenu(m_playlistView);
+    m_playlistMenu->setTitle(tr("Playlista"));
     addMediaAction = new QAction(tr("Dodaj media"), m_playlistMenu);
     removeMediaAction = new QAction(tr("Usun media"), m_playlistMenu);
     clearMediaAction = new QAction(tr("Wyczyszcz cala liste"), m_playlistMenu);
