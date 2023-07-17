@@ -140,9 +140,14 @@ void PMPlayerView::nextMedia()
 
 void PMPlayerView::openMedia()
 {
-    QUrl fileUrl = QUrl::fromLocalFile(QFileDialog::getOpenFileName(this, tr("Otworz plik")));
-    if(fileUrl.isValid())
-        m_model->openMedia(fileUrl);
+    QStringList listOfPathes = QFileDialog::getOpenFileNames(this, tr("Otworz pliki media"));
+    for(const QString& path : listOfPathes)
+    {
+        QUrl fileUrl = QUrl::fromLocalFile(path);
+        if(fileUrl.isValid())
+            m_model->openMedia(fileUrl);
+    }
+
 }
 
 void PMPlayerView::stopMedia()
