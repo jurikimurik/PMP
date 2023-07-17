@@ -39,6 +39,9 @@ PMPlayerView::PMPlayerView(QWidget *parent, PMPlayerModel *model)
 
     createConnections();
     durationChanged(m_model->player()->duration());
+
+    QString searchedSpeed(QString("x %1").arg(m_model->player()->playbackRate()));
+    ui->speedBox->setCurrentIndex(ui->speedBox->findText(searchedSpeed, Qt::MatchContains));
 }
 
 PMPlayerView::~PMPlayerView()
@@ -93,6 +96,8 @@ void PMPlayerView::playerStatusUpdated(QMediaPlayer::MediaStatus status)
 
     case QMediaPlayer::EndOfMedia:
         ui->statusbar->showMessage(tr("Koniec media."));
+        nextMedia();
+        playPauseMedia();
         break;
 
     case QMediaPlayer::InvalidMedia:
@@ -269,7 +274,6 @@ void PMPlayerView::createConnections()
     connect(ui->timelineSlider, &QSlider::sliderMoved, this, &PMPlayerView::setToPosition);
 
     connect(ui->stopButton, &QPushButton::clicked, this, &PMPlayerView::stopMedia);
-    connect(ui->openButton, &QPushButton::clicked, this, &PMPlayerView::openMedia);
     connect(ui->backwardButton, &QPushButton::clicked, this, &PMPlayerView::previousMedia);
     connect(ui->playButton, &QPushButton::clicked, this, &PMPlayerView::playPauseMedia);
     connect(ui->forwardButton, &QPushButton::clicked, this, &PMPlayerView::nextMedia);

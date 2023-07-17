@@ -87,19 +87,6 @@
       </property>
       <layout class="QHBoxLayout" name="horizontalLayout_3">
        <item>
-        <widget class="QPushButton" name="openButton">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-           <horstretch>3</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text">
-          <string>Otwórz</string>
-         </property>
-        </widget>
-       </item>
-       <item>
         <widget class="QPushButton" name="stopButton">
          <property name="maximumSize">
           <size>
