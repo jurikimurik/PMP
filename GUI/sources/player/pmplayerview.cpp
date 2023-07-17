@@ -49,11 +49,17 @@ PMPlayerView::~PMPlayerView()
 void PMPlayerView::playbackStateChanged(QMediaPlayer::PlaybackState state)
 {
     switch(state) {
-    case QMediaPlayer::StoppedState: ui->playButton->setChecked(false); break;
+    case QMediaPlayer::StoppedState: ui->playButton->setChecked(false);
+        ui->statusbar->showMessage(tr("Media zatrzymano."));
+        break;
 
-    case QMediaPlayer::PlayingState: ui->playButton->setChecked(true); break;
+    case QMediaPlayer::PlayingState: ui->playButton->setChecked(true);
+        ui->statusbar->showMessage(tr("Odtwarzanie media..."));
+        break;
 
-    case QMediaPlayer::PausedState: ui->playButton->setChecked(false); break;
+    case QMediaPlayer::PausedState: ui->playButton->setChecked(false);
+        ui->statusbar->showMessage(tr("Media wstrzymano."));
+        break;
     }
 }
 
