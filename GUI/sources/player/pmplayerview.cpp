@@ -57,6 +57,44 @@ void PMPlayerView::playbackStateChanged(QMediaPlayer::PlaybackState state)
     }
 }
 
+void PMPlayerView::playerStatusUpdated(QMediaPlayer::MediaStatus status)
+{
+    switch(status)
+    {
+    case QMediaPlayer::NoMedia:
+        ui->statusbar->showMessage(tr("Brak zaladowanego media."));
+        break;
+
+    case QMediaPlayer::LoadingMedia:
+        ui->statusbar->showMessage(tr("Media się ładuje..."));
+        break;
+
+    case QMediaPlayer::LoadedMedia:
+        ui->statusbar->showMessage(tr("Media zostało pomyśle załadaowane..."));
+        break;
+
+    case QMediaPlayer::StalledMedia:
+        ui->statusbar->showMessage(tr("Problem z załadowaniem, operacja potrwa dłużej..."));
+        break;
+
+    case QMediaPlayer::BufferingMedia:
+        ui->statusbar->showMessage(tr("Media się ładuję do bufforu, ale może być włączone..."));
+        break;
+
+    case QMediaPlayer::BufferedMedia:
+        ui->statusbar->showMessage(tr("Media zostało całkiem załadowane do buffora."));
+        break;
+
+    case QMediaPlayer::EndOfMedia:
+        ui->statusbar->showMessage(tr("Koniec media."));
+        break;
+
+    case QMediaPlayer::InvalidMedia:
+        ui->statusbar->showMessage(tr("UWAGA! NIEPOPRAWNY PLIK MEDIA!"));
+        break;
+    };
+}
+
 void PMPlayerView::muteChanged(bool isMuted)
 {
     if(isMuted) {
@@ -235,6 +273,7 @@ void PMPlayerView::createConnections()
     connect(ui->colorsButton, &QPushButton::clicked, this, &PMPlayerView::colorOptions);
 
     connect(m_model->player(), &QMediaPlayer::playbackStateChanged, this, &PMPlayerView::playbackStateChanged);
+    connect(m_model->player(), &QMediaPlayer::mediaStatusChanged, this, &PMPlayerView::playerStatusUpdated);
     connect(m_model->audioOutput(), &QAudioOutput::mutedChanged, this, &PMPlayerView::muteChanged);
 
     connect(m_playlistView, &PlaylistView::doubleClicked, m_model, &PMPlayerModel::loadMedia);

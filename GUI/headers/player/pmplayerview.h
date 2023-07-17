@@ -25,6 +25,7 @@ public:
     //Slots connected with GUI (they call functions from model as well)
 public slots:
     void playbackStateChanged(QMediaPlayer::PlaybackState);
+    void playerStatusUpdated(QMediaPlayer::MediaStatus status);
     void muteChanged(bool);
 
 protected slots:
