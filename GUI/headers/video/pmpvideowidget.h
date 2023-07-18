@@ -2,6 +2,7 @@
 #define PMPVIDEOWIDGET_H
 
 #include <QVideoWidget>
+#include <QWindow>
 
 namespace Ui {
 class PMPVideoWidget;
@@ -23,6 +24,10 @@ public slots:
 private:
     Ui::PMPVideoWidget *ui;
     QVideoWidget *m_videoWidget;
+
+    bool isFullscreenNow = false;
+    QLayout *m_parentLayout;
+    QWidget *m_widgetInstead;
 
     // QWidget interface
 protected:
