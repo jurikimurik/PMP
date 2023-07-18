@@ -3,6 +3,7 @@
 
 #include <QAction>
 #include <QContextMenuEvent>
+#include <QGraphicsVideoItem>
 #include <QMainWindow>
 #include <QTime>
 #include "../../../Backend/headers/player/pmplayermodel.h"
@@ -70,6 +71,8 @@ private:
     PMPlayerModel* m_model;
     PlaylistView *m_playlistView;
     QModelIndex m_currentIndex;
+
+    QVideoWidget *m_videoWidget;
 
     void createConnections();
 

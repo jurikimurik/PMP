@@ -6,6 +6,7 @@
 #include <QAudioOutput>
 #include <QTime>
 #include <QErrorMessage>
+#include <QGraphicsVideoItem>
 
 #include "../playlist/playlistmodel.h"
 
@@ -37,6 +38,9 @@ public:
     QTime currentMediaTime() const;
     QTime maxMediaTime() const;
 
+    void setVideoOutput(QGraphicsVideoItem *item);
+    void setVideoOutput(QVideoWidget *widget);
+
     //----------------------------------------------------------------------------------------------------
 
     bool savePlaylistToFile(const QString &pathname) const;
@@ -58,6 +62,7 @@ public:
     void changeVolume(float);
 
     void changeSpeed(float);
+
 
 public slots:
     void loadMedia(const QModelIndex& index);

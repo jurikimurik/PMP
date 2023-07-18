@@ -139,7 +139,7 @@ void PMPlayerModel::playerStatusUpdated(QMediaPlayer::MediaStatus status)
     switch(status)
     {
     case QMediaPlayer::NoMedia:
-
+        stopMedia();
         break;
 
     case QMediaPlayer::LoadingMedia:
@@ -147,7 +147,7 @@ void PMPlayerModel::playerStatusUpdated(QMediaPlayer::MediaStatus status)
         break;
 
     case QMediaPlayer::LoadedMedia:
-        stopMedia();
+
         break;
 
     case QMediaPlayer::StalledMedia:
@@ -163,11 +163,10 @@ void PMPlayerModel::playerStatusUpdated(QMediaPlayer::MediaStatus status)
         break;
 
     case QMediaPlayer::EndOfMedia:
-        stopMedia();
         break;
 
     case QMediaPlayer::InvalidMedia:
-
+        stopMedia();
         break;
     };
 }
@@ -213,6 +212,16 @@ const QMediaPlayer *PMPlayerModel::player() const
 QTime PMPlayerModel::maxMediaTime() const
 {
     return m_maxMediaTime;
+}
+
+void PMPlayerModel::setVideoOutput(QGraphicsVideoItem *item)
+{
+    m_player->setVideoOutput(item);
+}
+
+void PMPlayerModel::setVideoOutput(QVideoWidget *widget)
+{
+    m_player->setVideoOutput(widget);
 }
 
 bool PMPlayerModel::savePlaylistToFile(const QString& pathname) const

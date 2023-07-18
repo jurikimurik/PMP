@@ -35,6 +35,13 @@ PMPlayerView::PMPlayerView(QWidget *parent, PMPlayerModel *model)
 
     m_errorBox = new QErrorMessage(this);
 
+    m_videoWidget = new QVideoWidget(this);
+    m_model->setVideoOutput(m_videoWidget);
+    ui->mediaWidget->layout()->addWidget(m_videoWidget);
+    m_videoWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    m_videoWidget->setAspectRatioMode(Qt::KeepAspectRatioByExpanding);
+    m_videoWidget->show();
+
     ui->menubar->addMenu(m_playlistMenu);
 
     createConnections();
@@ -96,8 +103,7 @@ void PMPlayerView::playerStatusUpdated(QMediaPlayer::MediaStatus status)
 
     case QMediaPlayer::EndOfMedia:
         ui->statusbar->showMessage(tr("Koniec media."));
-        nextMedia();
-        playPauseMedia();
+        stopMedia();
         break;
 
     case QMediaPlayer::InvalidMedia:
