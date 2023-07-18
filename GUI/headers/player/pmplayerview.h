@@ -6,6 +6,7 @@
 #include <QGraphicsVideoItem>
 #include <QMainWindow>
 #include <QTime>
+#include "GUI/headers/video/pmpvideowidget.h"
 #include "../../../Backend/headers/player/pmplayermodel.h"
 #include "../playlist/playlistview.h"
 
@@ -72,7 +73,7 @@ private:
     PlaylistView *m_playlistView;
     QModelIndex m_currentIndex;
 
-    QVideoWidget *m_videoWidget;
+    PMPVideoWidget *m_videoWidget;
 
     void createConnections();
 

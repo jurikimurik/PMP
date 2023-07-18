@@ -35,11 +35,9 @@ PMPlayerView::PMPlayerView(QWidget *parent, PMPlayerModel *model)
 
     m_errorBox = new QErrorMessage(this);
 
-    m_videoWidget = new QVideoWidget(this);
-    m_model->setVideoOutput(m_videoWidget);
+    m_videoWidget = new PMPVideoWidget(this);
+    m_model->setVideoOutput(m_videoWidget->videoWidget());
     ui->mediaWidget->layout()->replaceWidget(ui->graphicsView, m_videoWidget)->widget()->deleteLater();
-    m_videoWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    m_videoWidget->setAspectRatioMode(Qt::KeepAspectRatioByExpanding);
     m_videoWidget->show();
 
     ui->menubar->addMenu(m_playlistMenu);
