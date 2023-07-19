@@ -23,6 +23,9 @@ public:
 
 private:
     QUrl m_mediaPath;
+
+    void loadMetaData();
+    void checkMetaData();
 };
 
 //Due to a bug [QTBUG-76614] in QT framework, this additional comparation methods have been added.

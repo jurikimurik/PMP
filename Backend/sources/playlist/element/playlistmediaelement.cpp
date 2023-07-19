@@ -2,6 +2,7 @@
 
 #include <QMediaPlayer>
 #include <QDebug>
+#include <QFileInfo>
 
 PlaylistMediaElement::PlaylistMediaElement()
 {
@@ -12,13 +13,13 @@ PlaylistMediaElement::PlaylistMediaElement(const QMediaMetaData &meta, const QUr
     : QMediaMetaData(meta), m_mediaPath(urlSource)
 
 {
-
+    checkMetaData();
 }
 
 PlaylistMediaElement::PlaylistMediaElement(const QMediaMetaData &meta, const QString &pathToFile)
     : QMediaMetaData(meta), m_mediaPath(QUrl::fromLocalFile(pathToFile))
 {
-
+    new (this) PlaylistMediaElement(meta, QUrl::fromLocalFile(pathToFile));
 }
 
 PlaylistMediaElement::PlaylistMediaElement(const QUrl &urlSource)
@@ -42,9 +43,24 @@ QUrl PlaylistMediaElement::mediaPath() const
 void PlaylistMediaElement::setMediaPath(const QUrl &newMediaPath)
 {
     m_mediaPath = newMediaPath;
+    loadMetaData();
 }
 
 bool PlaylistMediaElement::isPathValid() const
 {
     return m_mediaPath.isValid();
+}
+
+void PlaylistMediaElement::loadMetaData()
+{
+    new (this) PlaylistMediaElement(m_mediaPath);
+}
+
+void PlaylistMediaElement::checkMetaData()
+{
+    if(stringValue(QMediaMetaData::Title).isEmpty())
+    {
+        QFileInfo info(m_mediaPath.toLocalFile());
+        insert(QMediaMetaData::Title, info.fileName());
+    }
 }
