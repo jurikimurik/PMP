@@ -35,6 +35,10 @@ protected:
     virtual void mouseReleaseEvent(QMouseEvent *event);
     virtual void mouseDoubleClickEvent(QMouseEvent *event);
     virtual void mouseMoveEvent(QMouseEvent *event);
+
+    // QWidget interface
+protected:
+    virtual void closeEvent(QCloseEvent *event);
 };
 
 #endif // PMPVIDEOWIDGET_H

@@ -1,6 +1,8 @@
 #include "../../headers/video/pmpvideowidget.h"
 #include "ui_pmpvideowidget.h"
 
+#include <QMouseEvent>
+
 PMPVideoWidget::PMPVideoWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::PMPVideoWidget)
@@ -8,7 +10,7 @@ PMPVideoWidget::PMPVideoWidget(QWidget *parent) :
     ui->setupUi(this);
 
     m_videoWidget = new QVideoWidget(this);
-    ui->horizontalLayout->addWidget(m_videoWidget);
+    ui->verticalLayout->addWidget(m_videoWidget);
 
     //Default settings
     m_videoWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -32,6 +34,7 @@ void PMPVideoWidget::fullscreenOnOff()
     //When user want to return back, we simply replacing new created widget with video player.
     if(isFullscreenNow) {
         m_parentLayout->replaceWidget(m_widgetInstead, this);
+        setWindowFlags({Qt::Widget});
         m_widgetInstead->deleteLater();
         this->show();
         isFullscreenNow = false;
@@ -39,6 +42,7 @@ void PMPVideoWidget::fullscreenOnOff()
         m_parentLayout = parentWidget()->layout();
         m_widgetInstead = new QWidget(nullptr);
         m_parentLayout->replaceWidget(this, m_widgetInstead);
+        setWindowFlags({Qt::Window, Qt::FramelessWindowHint});
 
         this->setParent(nullptr, {Qt::WindowFullScreen});
         this->showFullScreen();
@@ -63,5 +67,16 @@ void PMPVideoWidget::mouseDoubleClickEvent(QMouseEvent *event)
 
 void PMPVideoWidget::mouseMoveEvent(QMouseEvent *event)
 {
+    //qDebug() << event->pos();
+    event->accept();
+}
 
+void PMPVideoWidget::closeEvent(QCloseEvent *event)
+{
+    if(isFullscreenNow) {
+        fullscreenOnOff();
+        event->ignore();
+    } else {
+        QWidget::closeEvent(event);
+    }
 }
