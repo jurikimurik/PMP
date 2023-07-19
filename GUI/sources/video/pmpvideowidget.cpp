@@ -3,6 +3,16 @@
 
 #include <QMouseEvent>
 
+void PMPVideoWidget::intializeVideoMenu()
+{
+    m_playerMenu = new QMenu(tr("Opcje odtwarzania"), this);
+    m_ignoreRatio = new QAction(tr("Ignoruj proporcje"), this);
+    m_keepRatio = new QAction(tr("Dostosowanie proporcji"), this);
+    m_keepExpandingRatio = new QAction(tr("Dostosuj proporcje i poszerz"), this);
+    m_playerMenu->addActions({m_ignoreRatio, m_keepRatio, m_keepExpandingRatio});
+    connect(m_playerMenu, &QMenu::triggered, this, &PMPVideoWidget::actionTriggered);
+}
+
 PMPVideoWidget::PMPVideoWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::PMPVideoWidget)
@@ -16,6 +26,8 @@ PMPVideoWidget::PMPVideoWidget(QWidget *parent) :
     m_videoWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     m_videoWidget->setAspectRatioMode(Qt::KeepAspectRatioByExpanding);
     setWindowTitle(tr("Odtwarzacz multimedia"));
+
+    intializeVideoMenu();
 }
 
 PMPVideoWidget::~PMPVideoWidget()
@@ -78,5 +90,23 @@ void PMPVideoWidget::closeEvent(QCloseEvent *event)
         event->ignore();
     } else {
         QWidget::closeEvent(event);
+    }
+}
+
+void PMPVideoWidget::contextMenuEvent(QContextMenuEvent *event)
+{
+    m_playerMenu->move(event->globalPos());
+    m_playerMenu->show();
+}
+
+void PMPVideoWidget::actionTriggered(QAction *action)
+{
+    if(action == m_ignoreRatio)
+    {
+        m_videoWidget->setAspectRatioMode(Qt::IgnoreAspectRatio);
+    } else if (action == m_keepRatio) {
+        m_videoWidget->setAspectRatioMode(Qt::KeepAspectRatio);
+    } else if (action == m_keepExpandingRatio) {
+        m_videoWidget->setAspectRatioMode(Qt::KeepAspectRatioByExpanding);
     }
 }
