@@ -2,16 +2,7 @@
 #include "ui_pmpvideowidget.h"
 
 #include <QMouseEvent>
-
-void PMPVideoWidget::intializeVideoMenu()
-{
-    m_playerMenu = new QMenu(tr("Opcje odtwarzania"), this);
-    m_ignoreRatio = new QAction(tr("Ignoruj proporcje"), this);
-    m_keepRatio = new QAction(tr("Dostosowanie proporcji"), this);
-    m_keepExpandingRatio = new QAction(tr("Dostosuj proporcje i poszerz"), this);
-    m_playerMenu->addActions({m_ignoreRatio, m_keepRatio, m_keepExpandingRatio});
-    connect(m_playerMenu, &QMenu::triggered, this, &PMPVideoWidget::actionTriggered);
-}
+#include <QTimer>
 
 PMPVideoWidget::PMPVideoWidget(QWidget *parent) :
     QWidget(parent),
@@ -29,6 +20,17 @@ PMPVideoWidget::PMPVideoWidget(QWidget *parent) :
 
     intializeVideoMenu();
 }
+
+void PMPVideoWidget::intializeVideoMenu()
+{
+    m_playerMenu = new QMenu(tr("Opcje odtwarzania"), this);
+    m_ignoreRatio = new QAction(tr("Ignoruj proporcje"), this);
+    m_keepRatio = new QAction(tr("Dostosowanie proporcji"), this);
+    m_keepExpandingRatio = new QAction(tr("Dostosuj proporcje i poszerz"), this);
+    m_playerMenu->addActions({m_ignoreRatio, m_keepRatio, m_keepExpandingRatio});
+    connect(m_playerMenu, &QMenu::triggered, this, &PMPVideoWidget::actionTriggered);
+}
+
 
 PMPVideoWidget::~PMPVideoWidget()
 {
@@ -64,7 +66,13 @@ void PMPVideoWidget::fullscreenOnOff()
 
 void PMPVideoWidget::mousePressEvent(QMouseEvent *event)
 {
-
+    if(event->button() == Qt::LeftButton)
+    {
+        emit playPause();
+        event->ignore();
+    } else {
+        QWidget::mousePressEvent(event);
+    }
 }
 
 void PMPVideoWidget::mouseReleaseEvent(QMouseEvent *event)
@@ -79,8 +87,7 @@ void PMPVideoWidget::mouseDoubleClickEvent(QMouseEvent *event)
 
 void PMPVideoWidget::mouseMoveEvent(QMouseEvent *event)
 {
-    //qDebug() << event->pos();
-    event->accept();
+
 }
 
 void PMPVideoWidget::closeEvent(QCloseEvent *event)
