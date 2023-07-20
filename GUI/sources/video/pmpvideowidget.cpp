@@ -19,6 +19,8 @@ PMPVideoWidget::PMPVideoWidget(QWidget *parent) :
     setWindowTitle(tr("Odtwarzacz multimedia"));
 
     intializeVideoMenu();
+
+
 }
 
 void PMPVideoWidget::intializeVideoMenu()
@@ -47,6 +49,8 @@ void PMPVideoWidget::fullscreenOnOff()
     //We create QWidget instead of video player window.
     //When user want to return back, we simply replacing new created widget with video player.
     if(isFullscreenNow) {
+        if(m_parentLayout == nullptr || m_widgetInstead == nullptr)
+            return;
         m_parentLayout->replaceWidget(m_widgetInstead, this);
         setWindowFlags({Qt::Widget});
         m_widgetInstead->deleteLater();
@@ -66,9 +70,9 @@ void PMPVideoWidget::fullscreenOnOff()
 
 void PMPVideoWidget::mousePressEvent(QMouseEvent *event)
 {
-    if(event->button() == Qt::LeftButton)
+    if(event->button() == Qt::LeftButton && event->type() != QEvent::MouseButtonDblClick)
     {
-        emit playPause();
+        emit screenClicked();
         event->ignore();
     } else {
         QWidget::mousePressEvent(event);

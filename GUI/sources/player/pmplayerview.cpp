@@ -37,7 +37,9 @@ PMPlayerView::PMPlayerView(QWidget *parent, PMPlayerModel *model)
 
     m_videoWidget = new PMPVideoWidget(this);
     m_model->setVideoOutput(m_videoWidget->videoWidget());
-    ui->mediaWidget->layout()->replaceWidget(ui->graphicsView, m_videoWidget)->widget()->deleteLater();
+    QLayoutItem *returned = ui->mediaWidget->layout()->replaceWidget(ui->graphicsView, m_videoWidget);
+    if(returned != nullptr)
+        returned->widget()->deleteLater();
     m_videoWidget->show();
 
     ui->menubar->addMenu(m_playlistMenu);
