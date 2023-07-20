@@ -5,6 +5,7 @@
 #include <QMediaDevices>
 #include <QAudioDevice>
 #include <QFileDialog>
+#include <QMessageBox>
 
 PMPlayerView::PMPlayerView(QWidget *parent, PMPlayerModel *model)
     : QMainWindow(parent)
@@ -365,6 +366,16 @@ void PMPlayerView::writeSettings()
     settings.setValue("currentrowelement", m_currentIndex.row());
 }
 
+bool PMPlayerView::areUserWantsToQuit()
+{
+    int answer = QMessageBox::question(this, tr("Pytanie"), tr("Naprawde chcesz wyjść?"),
+                                       {QMessageBox::Yes | QMessageBox::No}, QMessageBox::No);
+    if(answer == QMessageBox::Yes)
+        return true;
+    else
+        return false;
+}
+
 void PMPlayerView::contextMenuEvent(QContextMenuEvent *event)
 {
     m_playlistMenu->move(event->globalPos());
@@ -373,6 +384,11 @@ void PMPlayerView::contextMenuEvent(QContextMenuEvent *event)
 
 void PMPlayerView::closeEvent(QCloseEvent *event)
 {
-    writeSettings();
-    event->accept();
+    if(areUserWantsToQuit()) {
+        writeSettings();
+        event->accept();
+    } else {
+        event->ignore();
+    }
+
 }

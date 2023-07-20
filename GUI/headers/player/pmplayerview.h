@@ -82,6 +82,7 @@ private:
     void createConnections();
     void readSettings();
     void writeSettings();
+    bool areUserWantsToQuit();
 
     // QWidget interface
 protected:
