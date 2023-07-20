@@ -18,8 +18,14 @@ PMPlayerView::PMPlayerView(QWidget *parent, PMPlayerModel *model)
         m_model = new PMPlayerModel(this);
 
     m_playlistView = new PlaylistView(this);
-    ui->mediaWidget->layout()->addWidget(m_playlistView);
     m_playlistView->setModel(m_model->currentPlaylist());
+
+    m_splitter = new QSplitter(Qt::Horizontal);
+    ui->graphicsView->setParent(m_splitter);
+    m_splitter->addWidget(ui->graphicsView);
+    m_splitter->addWidget(m_playlistView);
+
+    ui->mediaWidget->layout()->addWidget(m_splitter);
 
     m_playlistMenu = new QMenu(m_playlistView);
     m_playlistMenu->setTitle(tr("Playlista"));
@@ -37,9 +43,9 @@ PMPlayerView::PMPlayerView(QWidget *parent, PMPlayerModel *model)
 
     m_videoWidget = new PMPVideoWidget(this);
     m_model->setVideoOutput(m_videoWidget->videoWidget());
-    QLayoutItem *returned = ui->mediaWidget->layout()->replaceWidget(ui->graphicsView, m_videoWidget);
+    QWidget *returned = m_splitter->replaceWidget(m_splitter->indexOf(ui->graphicsView), m_videoWidget);
     if(returned != nullptr)
-        returned->widget()->deleteLater();
+        returned->deleteLater();
     m_videoWidget->show();
 
     ui->menubar->addMenu(m_playlistMenu);

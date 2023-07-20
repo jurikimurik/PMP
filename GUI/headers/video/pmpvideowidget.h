@@ -21,6 +21,7 @@ public:
 
 signals:
     void screenClicked();
+    void screenDoubleClicked();
 
 public slots:
     void fullscreenOnOff();
@@ -30,8 +31,6 @@ private:
     QVideoWidget *m_videoWidget;
 
     bool isFullscreenNow = false;
-    QLayout *m_parentLayout;
-    QWidget *m_widgetInstead;
 
     QMenu *m_playerMenu;
     QAction *m_ignoreRatio;

@@ -5,6 +5,7 @@
 #include <QContextMenuEvent>
 #include <QGraphicsVideoItem>
 #include <QMainWindow>
+#include <QSplitter>
 #include <QTime>
 #include "GUI/headers/video/pmpvideowidget.h"
 #include "../../../Backend/headers/player/pmplayermodel.h"
@@ -74,6 +75,7 @@ private:
     QModelIndex m_currentIndex;
 
     PMPVideoWidget *m_videoWidget;
+    QSplitter *m_splitter;
 
     void createConnections();
 

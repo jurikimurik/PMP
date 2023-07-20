@@ -49,20 +49,11 @@ void PMPVideoWidget::fullscreenOnOff()
     //We create QWidget instead of video player window.
     //When user want to return back, we simply replacing new created widget with video player.
     if(isFullscreenNow) {
-        if(m_parentLayout == nullptr || m_widgetInstead == nullptr)
-            return;
-        m_parentLayout->replaceWidget(m_widgetInstead, this);
         setWindowFlags({Qt::Widget});
-        m_widgetInstead->deleteLater();
         this->show();
         isFullscreenNow = false;
     } else {
-        m_parentLayout = parentWidget()->layout();
-        m_widgetInstead = new QWidget(nullptr);
-        m_parentLayout->replaceWidget(this, m_widgetInstead);
         setWindowFlags({Qt::Window, Qt::FramelessWindowHint});
-
-        this->setParent(nullptr, {Qt::WindowFullScreen});
         this->showFullScreen();
         isFullscreenNow = true;
     }
@@ -70,9 +61,12 @@ void PMPVideoWidget::fullscreenOnOff()
 
 void PMPVideoWidget::mousePressEvent(QMouseEvent *event)
 {
-    if(event->button() == Qt::LeftButton && event->type() != QEvent::MouseButtonDblClick)
+    if(event->button() == Qt::LeftButton)
     {
         emit screenClicked();
+        event->ignore();
+    } else if(event->type() == QEvent::MouseButtonDblClick) {
+        emit screenDoubleClicked();
         event->ignore();
     } else {
         QWidget::mousePressEvent(event);
