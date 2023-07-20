@@ -19,8 +19,6 @@ PMPVideoWidget::PMPVideoWidget(QWidget *parent) :
     setWindowTitle(tr("Odtwarzacz multimedia"));
 
     intializeVideoMenu();
-
-
 }
 
 void PMPVideoWidget::intializeVideoMenu()
@@ -75,17 +73,19 @@ void PMPVideoWidget::mousePressEvent(QMouseEvent *event)
 
 void PMPVideoWidget::mouseReleaseEvent(QMouseEvent *event)
 {
-
+    return QWidget::mouseReleaseEvent(event);
 }
 
 void PMPVideoWidget::mouseDoubleClickEvent(QMouseEvent *event)
 {
     fullscreenOnOff();
+    return QWidget::mouseDoubleClickEvent(event);
 }
 
 void PMPVideoWidget::mouseMoveEvent(QMouseEvent *event)
 {
-
+    qDebug() << event->pos();
+    return QWidget::mouseMoveEvent(event);
 }
 
 void PMPVideoWidget::closeEvent(QCloseEvent *event)

@@ -55,6 +55,8 @@ PMPlayerView::PMPlayerView(QWidget *parent, PMPlayerModel *model)
 
     QString searchedSpeed(QString("x %1").arg(m_model->player()->playbackRate()));
     ui->speedBox->setCurrentIndex(ui->speedBox->findText(searchedSpeed, Qt::MatchContains));
+
+    readSettings();
 }
 
 PMPlayerView::~PMPlayerView()
@@ -306,8 +308,71 @@ void PMPlayerView::createConnections()
     connect(m_playlistMenu, &QMenu::triggered, this, &PMPlayerView::actionTriggered);
 }
 
+void PMPlayerView::readSettings()
+{
+    QSettings settings;
+
+    QByteArray state = settings.value("windowState", QByteArray()).toByteArray();
+    QByteArray geometry = settings.value("geometry", QByteArray()).toByteArray();
+    QByteArray playlistData = settings.value("currentplaylist", QByteArray()).toByteArray();
+    int currentRow = settings.value("currentrowelement", -1).toInt();
+
+    if(!state.isEmpty())
+        restoreState(state);
+    if(!geometry.isEmpty())
+        restoreGeometry(geometry);
+
+    if(!playlistData.isEmpty()) {
+        QFile tempFile("tempFile");
+        QFileInfo info(tempFile);
+        if(!tempFile.open(QIODevice::ReadWrite)) {
+            qDebug() << "Attention: Can't create temp file!";
+            return;
+        }
+        tempFile.write(playlistData);
+        tempFile.close();
+        m_model->loadPlaylistFromFile(info.absoluteFilePath());
+        tempFile.remove();
+    }
+
+    if(currentRow != -1) {
+        m_playlistView->selectRow(currentRow);
+        m_model->loadMedia(m_playlistView->selectionModel()->selectedRows().value(0));
+    }
+
+
+}
+
+void PMPlayerView::writeSettings()
+{
+    QSettings settings;
+
+    //Save all playlist to file, read from it and then delete temporary file.
+    QFile tempFile("tempFile");
+    QFileInfo info(tempFile);
+    if(!tempFile.open(QIODevice::ReadWrite)) {
+        qDebug() << "Attention: Can't create temp file!";
+        return;
+    }
+    m_model->savePlaylistToFile(info.absoluteFilePath());
+    QByteArray tempFileData = tempFile.readAll();
+    tempFile.close();
+    tempFile.remove();
+
+    settings.setValue("windowState", saveState());
+    settings.setValue("geometry", saveGeometry());
+    settings.setValue("currentplaylist", tempFileData);
+    settings.setValue("currentrowelement", m_currentIndex.row());
+}
+
 void PMPlayerView::contextMenuEvent(QContextMenuEvent *event)
 {
     m_playlistMenu->move(event->globalPos());
     m_playlistMenu->show();
+}
+
+void PMPlayerView::closeEvent(QCloseEvent *event)
+{
+    writeSettings();
+    event->accept();
 }

@@ -7,6 +7,7 @@
 #include <QMainWindow>
 #include <QSplitter>
 #include <QTime>
+#include <QSettings>
 #include "GUI/headers/video/pmpvideowidget.h"
 #include "../../../Backend/headers/player/pmplayermodel.h"
 #include "../playlist/playlistview.h"
@@ -77,10 +78,17 @@ private:
     PMPVideoWidget *m_videoWidget;
     QSplitter *m_splitter;
 
+private:
     void createConnections();
+    void readSettings();
+    void writeSettings();
 
     // QWidget interface
 protected:
     virtual void contextMenuEvent(QContextMenuEvent *event);
+
+    // QWidget interface
+protected:
+    virtual void closeEvent(QCloseEvent *event);
 };
 #endif // PMPLAYERVIEW_H
