@@ -7,6 +7,7 @@
 #include <QTime>
 #include <QErrorMessage>
 #include <QGraphicsVideoItem>
+#include <QQueue>
 
 #include "../playlist/playlistmodel.h"
 
@@ -65,6 +66,11 @@ public:
 
     void changeSpeed(float);
 
+    void addToQueue(const QModelIndex &index, bool isBack = true);
+    void popQueue(bool isBack = true);
+    bool removeFromQueue(const QModelIndex &index);
+    void clearQueue();
+
 
 public slots:
     void loadMedia(const int &index);
@@ -82,6 +88,8 @@ private:
     QTime m_currentMediaTime;
     QTime m_maxMediaTime;
     PlaylistMediaElement m_currentElement;
+
+    QQueue<QUrl> m_queue;
 
     PlaylistModel *m_currentPlaylist;
     Q_PROPERTY(PlaylistMediaElement currentElement READ currentElement WRITE setCurrentElement NOTIFY currentElementChanged)

@@ -38,7 +38,10 @@ void PMPlayerModel::previousMedia()
 
 void PMPlayerModel::nextMedia()
 {
-    loadMedia(m_currentPlaylist->positionOf(m_currentElement)+1);
+    if(m_queue.isEmpty())
+        loadMedia(m_currentPlaylist->positionOf(m_currentElement)+1);
+    else
+        loadMedia(m_currentPlaylist->positionOf(m_currentPlaylist->get(m_queue.dequeue())));
 }
 
 void PMPlayerModel::clearMedia()
@@ -142,6 +145,40 @@ void PMPlayerModel::changeVolume(float value)
 void PMPlayerModel::changeSpeed(float speed)
 {
     m_player->setPlaybackRate(speed);
+}
+
+void PMPlayerModel::addToQueue(const QModelIndex &index, bool isBack)
+{
+    QUrl url = m_currentPlaylist->getSourceURL(index);
+    if(isBack)
+        m_queue.push_back(url);
+    else
+        m_queue.push_front(url);
+}
+
+void PMPlayerModel::popQueue(bool isBack)
+{
+    if(isBack)
+        m_queue.pop_back();
+    else
+        m_queue.pop_front();
+}
+
+bool PMPlayerModel::removeFromQueue(const QModelIndex &index)
+{
+    QUrl url = m_currentPlaylist->getSourceURL(index);
+    int mediaIndex = m_queue.indexOf(url);
+    if(mediaIndex != -1) {
+        m_queue.remove(mediaIndex);
+        //Founded.
+        return true;
+    }
+    return false;
+}
+
+void PMPlayerModel::clearQueue()
+{
+    m_queue.clear();
 }
 
 void PMPlayerModel::loadMedia(const int &index)
