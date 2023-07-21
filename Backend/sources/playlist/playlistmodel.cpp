@@ -51,8 +51,24 @@ void PlaylistModel::remove(const QList<QUrl> &urls)
     updateAllData();
 }
 
+int PlaylistModel::count() const
+{
+    return m_mediaElements.size();
+}
+
+int PlaylistModel::positionOf(const PlaylistMediaElement &element) const
+{
+    for(int index = 0; index < m_mediaElements.size(); ++index)
+    {
+        if(element == m_mediaElements.at(index))
+            return index;
+    }
+
+    return -1;
+}
+
 //Getting copy of playlist element by url
-PlaylistMediaElement PlaylistModel::get(const QUrl &source)
+PlaylistMediaElement PlaylistModel::get(const QUrl &source) const
 {
     for(const PlaylistMediaElement &element : m_mediaElements)
     {
@@ -60,6 +76,11 @@ PlaylistMediaElement PlaylistModel::get(const QUrl &source)
             return element;
     }
     return PlaylistMediaElement();
+}
+
+PlaylistMediaElement PlaylistModel::get(const int &index) const
+{
+    return m_mediaElements.value(index);
 }
 
 //Getting playlist media source url using index in table!
@@ -77,7 +98,7 @@ QUrl PlaylistModel::getSourceURL(const QModelIndex &index) const
 }
 
 //Simply return all song requested data by QMediaMetaData key.
-QStringList PlaylistModel::getAllInfo(const QMediaMetaData::Key &key) const
+QStringList PlaylistModel::getAllInfoOfKey(const QMediaMetaData::Key &key) const
 {
     QStringList info;
     for(const QMediaMetaData &data : m_mediaElements)

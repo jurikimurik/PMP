@@ -17,11 +17,14 @@ public:
     void add(const QUrl &url);
     void remove(const QUrl &url);
     void remove(const QList<QUrl> &urls);
+    int count() const;
+    int positionOf(const PlaylistMediaElement &element) const;
 
-    PlaylistMediaElement get(const QUrl &source);
+    PlaylistMediaElement get(const QUrl &source) const;
+    PlaylistMediaElement get(const int &index) const;
 
     QUrl getSourceURL(const QModelIndex &index) const;
-    QStringList getAllInfo(const QMediaMetaData::Key &key) const;
+    QStringList getAllInfoOfKey(const QMediaMetaData::Key &key) const;
     bool saveToFile(const QString &pathname);
     bool loadFromFile(const QString &pathname);
 
