@@ -53,6 +53,8 @@ public:
     void positionChanged(qint64);
     void setToPosition(int);
 
+    void previousMedia();
+    void nextMedia();
     void clearMedia();
     void openMedia(const QUrl& url);
     void stopMedia();
@@ -65,6 +67,7 @@ public:
 
 
 public slots:
+    void loadMedia(const int &index);
     void loadMedia(const QModelIndex& index);
     void removeMedia(const QModelIndex& index);
     void removeMedia(const QList<QModelIndex>& indexes);

@@ -187,8 +187,7 @@ void PMPlayerView::removeMedia()
 
 void PMPlayerView::previousMedia()
 {
-    QModelIndex newIndex = m_currentIndex.sibling(m_currentIndex.row()-1,m_currentIndex.column());
-    m_model->loadMedia(newIndex);
+    m_model->previousMedia();
 }
 
 void PMPlayerView::playPauseMedia()
@@ -198,8 +197,7 @@ void PMPlayerView::playPauseMedia()
 
 void PMPlayerView::nextMedia()
 {
-    QModelIndex newIndex = m_currentIndex.sibling(m_currentIndex.row()+1,m_currentIndex.column());
-    m_model->loadMedia(newIndex);
+    m_model->nextMedia();
 }
 
 void PMPlayerView::openMedia()
@@ -301,7 +299,7 @@ void PMPlayerView::createConnections()
     connect(m_model->player(), &QMediaPlayer::mediaStatusChanged, this, &PMPlayerView::playerStatusUpdated);
     connect(m_model->audioOutput(), &QAudioOutput::mutedChanged, this, &PMPlayerView::muteChanged);
 
-    connect(m_playlistView, &PlaylistView::doubleClicked, m_model, &PMPlayerModel::loadMedia);
+    connect(m_playlistView, &PlaylistView::doubleClicked, m_model, qOverload<const QModelIndex&>(&PMPlayerModel::loadMedia));
     connect(m_playlistView->selectionModel(), &QItemSelectionModel::currentRowChanged,
             this, &PMPlayerView::currentSelectionChanged);
     connect(m_model, &PMPlayerModel::currentElementChanged, this, &PMPlayerView::currentElementChanged);

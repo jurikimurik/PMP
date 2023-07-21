@@ -31,6 +31,16 @@ void PMPlayerModel::setToPosition(int position)
     m_player->setPosition(position);
 }
 
+void PMPlayerModel::previousMedia()
+{
+    loadMedia(m_currentPlaylist->positionOf(m_currentElement)-1);
+}
+
+void PMPlayerModel::nextMedia()
+{
+    loadMedia(m_currentPlaylist->positionOf(m_currentElement)+1);
+}
+
 void PMPlayerModel::clearMedia()
 {
     QModelIndexList indexes;
@@ -132,6 +142,14 @@ void PMPlayerModel::changeVolume(float value)
 void PMPlayerModel::changeSpeed(float speed)
 {
     m_player->setPlaybackRate(speed);
+}
+
+void PMPlayerModel::loadMedia(const int &index)
+{
+    stopMedia();
+    QUrl url = m_currentPlaylist->get(index).mediaPath();
+    if(url.isValid())
+        m_player->setSource(url);
 }
 
 void PMPlayerModel::playerStatusUpdated(QMediaPlayer::MediaStatus status)
