@@ -66,6 +66,7 @@ public:
 
     void changeSpeed(float);
 
+    void playAsNext(const QModelIndex &index, bool replaceFirst = true);
     void addToQueue(const QModelIndex &index, bool isBack = true);
     void popQueue(bool isBack = true);
     bool removeFromQueue(const QModelIndex &index);

@@ -147,6 +147,14 @@ void PMPlayerModel::changeSpeed(float speed)
     m_player->setPlaybackRate(speed);
 }
 
+void PMPlayerModel::playAsNext(const QModelIndex &index, bool replaceFirst)
+{
+    if(replaceFirst)
+        m_queue.pop_front();
+
+    addToQueue(index, false);
+}
+
 void PMPlayerModel::addToQueue(const QModelIndex &index, bool isBack)
 {
     QUrl url = m_currentPlaylist->getSourceURL(index);
