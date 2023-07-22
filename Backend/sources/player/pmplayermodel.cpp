@@ -149,7 +149,7 @@ void PMPlayerModel::changeSpeed(float speed)
 
 void PMPlayerModel::playAsNext(const QModelIndex &index, bool replaceFirst)
 {
-    if(replaceFirst)
+    if(replaceFirst && !m_queue.isEmpty())
         m_queue.pop_front();
 
     addToQueue(index, false);
@@ -166,7 +166,7 @@ void PMPlayerModel::addToQueue(const QModelIndex &index, bool isBack)
 
 void PMPlayerModel::popQueue(bool isBack)
 {
-    if(isBack)
+    if(isBack && !m_queue.isEmpty())
         m_queue.pop_back();
     else
         m_queue.pop_front();
