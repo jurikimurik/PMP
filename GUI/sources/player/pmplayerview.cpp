@@ -30,6 +30,13 @@ PMPlayerView::PMPlayerView(QWidget *parent, PMPlayerModel *model)
 
     m_playlistMenu = new QMenu(m_playlistView);
     m_playlistMenu->setTitle(tr("Playlista"));
+
+    playAsNextAction = new QAction(tr("Odtwórz jako następny"), m_playlistMenu);
+    addToQueueAction = new QAction(tr("Dodaj do kolejki"), m_playlistMenu);
+    removeFromQueue = new QAction(tr("Usun z kolejki"), m_playlistMenu);
+    m_playlistMenu->addActions({playAsNextAction, addToQueueAction, removeFromQueue});
+    m_playlistMenu->addSeparator();
+
     addMediaAction = new QAction(tr("Dodaj media"), m_playlistMenu);
     removeMediaAction = new QAction(tr("Usun media"), m_playlistMenu);
     clearMediaAction = new QAction(tr("Wyczyszcz cala liste"), m_playlistMenu);
@@ -276,6 +283,8 @@ void PMPlayerView::actionTriggered(QAction *action)
         savePlaylist();
     } else if(action == loadPlaylistAction) {
         loadPlaylist();
+    } else if(action == playAsNextAction) {
+        m_model->playAsNext(m_currentIndex);
     }
 }
 

@@ -67,6 +67,9 @@ private:
     QAction *clearMediaAction;
     QAction *savePlaylistAction;
     QAction *loadPlaylistAction;
+    QAction *playAsNextAction;
+    QAction *addToQueueAction;
+    QAction *removeFromQueue;
 
     QErrorMessage *m_errorBox;
 
