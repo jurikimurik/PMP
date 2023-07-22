@@ -285,6 +285,10 @@ void PMPlayerView::actionTriggered(QAction *action)
         loadPlaylist();
     } else if(action == playAsNextAction) {
         m_model->playAsNext(m_currentIndex);
+    } else if(action == addToQueueAction) {
+        m_model->addToQueue(m_currentIndex);
+    } else if(action == removeFromQueue) {
+        m_model->removeFromQueue(m_currentIndex);
     }
 }
 
