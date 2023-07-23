@@ -272,12 +272,7 @@ void PMPlayerView::currentElementChanged()
     PlaylistMediaElement element = m_model->currentElement();
     for(int i = 0; i < m_playlistView->model()->rowCount(); ++i)
     {
-        QModelIndex index = m_playlistView->model()->index(i, 0);
-        QString mediaName = m_playlistView->model()->data(index).toString();
-        if(element.value(QMediaMetaData::Title).toString() == mediaName) {
-            m_playlistView->selectRow(i);
-            break;
-        }
+        m_playlistView->selectRow(m_model->currentPlaylist()->positionOf(element));
     }
 }
 
@@ -422,21 +417,12 @@ void PMPlayerView::cutToClipboard()
 
 void PMPlayerView::pasteFromClipboard()
 {
-    /*QStringList urlsText = QGuiApplication::clipboard()->text().split("\n");
+
+    QStringList urlsText = QGuiApplication::clipboard()->text().split("\n");
     QVector<QUrl> urls = QUrl::fromStringList(urlsText);
 
     QModelIndex currentIndex = m_currentIndex;
-    int rowOffset = 1;
-    QModelIndexList others;
-    do {
-        others.push_back(currentIndex.siblingAtRow(currentIndex.row()+rowOffset));
-        rowOffset++;
-    }while(others.last() != QModelIndex());
-    others.pop_back();
-    removeMedia(others);
-
-    for(const QUrl& url : urls)
-        m_model->openMedia(url);*/
+    m_model->insertMedia(urls, currentIndex);
 }
 
 void PMPlayerView::contextMenuEvent(QContextMenuEvent *event)
