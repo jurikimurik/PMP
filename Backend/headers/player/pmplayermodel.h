@@ -26,6 +26,8 @@ signals:
 
     void currentElementChanged();
 
+    void currentIndexPlayingChanged();
+
 public:
     const QMediaPlayer *player() const;
     const QAudioOutput *audioOutput() const;
@@ -74,9 +76,10 @@ public:
 
     void insertMedia(const QList<QUrl> &urls, const QModelIndex &after);
 
+    QModelIndex currentIndexPlaying() const;
+    void setCurrentIndexPlaying(const QModelIndex &newCurrentIndexPlaying);
 
 public slots:
-    void loadMedia(const int &index);
     void loadMedia(const QModelIndex& index);
     void removeMedia(const QModelIndex& index);
     void removeMedia(const QList<QModelIndex>& indexes);
@@ -91,11 +94,13 @@ private:
     QTime m_currentMediaTime;
     QTime m_maxMediaTime;
     PlaylistMediaElement m_currentElement;
+    QModelIndex m_currentIndexPlaying;
 
     QQueue<QUrl> m_queue;
 
     PlaylistModel *m_currentPlaylist;
     Q_PROPERTY(PlaylistMediaElement currentElement READ currentElement WRITE setCurrentElement NOTIFY currentElementChanged)
+    Q_PROPERTY(QModelIndex currentIndexPlaying READ currentIndexPlaying WRITE setCurrentIndexPlaying NOTIFY currentIndexPlayingChanged)
 };
 
 #endif // PMPLAYERMODEL_H

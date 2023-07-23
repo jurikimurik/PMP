@@ -95,6 +95,11 @@ int PlaylistModel::positionOf(const PlaylistMediaElement &element) const
     return -1;
 }
 
+QModelIndex PlaylistModel::indexPositionOf(const PlaylistMediaElement &element) const
+{
+    return index(positionOf(element), 0, QModelIndex());
+}
+
 //Getting copy of playlist element by url
 PlaylistMediaElement PlaylistModel::get(const QUrl &source) const
 {

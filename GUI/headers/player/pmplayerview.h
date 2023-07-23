@@ -59,8 +59,7 @@ protected slots:
     void openFullscreen();
     void colorOptions();
 
-    void currentSelectionChanged(const QModelIndex &current);
-    void currentElementChanged();
+    void playedMediaChanged();
     void actionTriggered(QAction*);
 private:
     QMenu *m_playlistMenu;

@@ -262,18 +262,10 @@ void PMPlayerView::colorOptions()
 
 }
 
-void PMPlayerView::currentSelectionChanged(const QModelIndex &current)
+void PMPlayerView::playedMediaChanged()
 {
-    m_currentIndex = current;
-}
-
-void PMPlayerView::currentElementChanged()
-{
-    PlaylistMediaElement element = m_model->currentElement();
-    for(int i = 0; i < m_playlistView->model()->rowCount(); ++i)
-    {
-        m_playlistView->selectRow(m_model->currentPlaylist()->positionOf(element));
-    }
+    m_currentIndex = m_model->currentIndexPlaying();
+    m_playlistView->selectRow(m_currentIndex.row());
 }
 
 void PMPlayerView::actionTriggered(QAction *action)
@@ -325,9 +317,8 @@ void PMPlayerView::createConnections()
     connect(m_model->audioOutput(), &QAudioOutput::mutedChanged, this, &PMPlayerView::muteChanged);
 
     connect(m_playlistView, &PlaylistView::doubleClicked, m_model, qOverload<const QModelIndex&>(&PMPlayerModel::loadMedia));
-    connect(m_playlistView->selectionModel(), &QItemSelectionModel::currentRowChanged,
-            this, &PMPlayerView::currentSelectionChanged);
-    connect(m_model, &PMPlayerModel::currentElementChanged, this, &PMPlayerView::currentElementChanged);
+    connect(m_model, &PMPlayerModel::currentIndexPlayingChanged,
+            this, &PMPlayerView::playedMediaChanged);
 
     connect(m_playlistMenu, &QMenu::triggered, this, &PMPlayerView::actionTriggered);
 }

@@ -33,15 +33,16 @@ void PMPlayerModel::setToPosition(int position)
 
 void PMPlayerModel::previousMedia()
 {
-    loadMedia(m_currentPlaylist->positionOf(m_currentElement)-1);
+    loadMedia(m_currentIndexPlaying.siblingAtRow(m_currentIndexPlaying.row()-1));
 }
 
 void PMPlayerModel::nextMedia()
 {
-    if(m_queue.isEmpty())
-        loadMedia(m_currentPlaylist->positionOf(m_currentElement)+1);
+    if(m_queue.isEmpty()) {
+        loadMedia(m_currentIndexPlaying.siblingAtRow(m_currentIndexPlaying.row()+1));
+    }
     else
-        loadMedia(m_currentPlaylist->positionOf(m_currentPlaylist->get(m_queue.dequeue())));
+        loadMedia(m_currentPlaylist->indexPositionOf(m_currentPlaylist->get(m_queue.dequeue())));
 }
 
 void PMPlayerModel::clearMedia()
@@ -94,6 +95,11 @@ void PMPlayerModel::loadMedia(const QModelIndex &index)
     QUrl url = m_currentPlaylist->getSourceURL(index);
     if(url.isValid())
         m_player->setSource(url);
+    if(index.isValid() && index.row() < m_currentPlaylist->count()) {
+        qDebug() << index.row() << index.column();
+        setCurrentIndexPlaying(index);
+    }
+
 }
 
 void PMPlayerModel::openMedia(const QUrl &url)
@@ -194,14 +200,6 @@ void PMPlayerModel::insertMedia(const QList<QUrl> &urls, const QModelIndex &afte
     m_currentPlaylist->insert(urls, after);
 }
 
-void PMPlayerModel::loadMedia(const int &index)
-{
-    stopMedia();
-    QUrl url = m_currentPlaylist->get(index).mediaPath();
-    if(url.isValid())
-        m_player->setSource(url);
-}
-
 void PMPlayerModel::playerStatusUpdated(QMediaPlayer::MediaStatus status)
 {
     switch(status)
@@ -242,6 +240,19 @@ void PMPlayerModel::playerStatusUpdated(QMediaPlayer::MediaStatus status)
 void PMPlayerModel::changeCurrentElement(const QUrl &source)
 {
     setCurrentElement(m_currentPlaylist->get(source));
+}
+
+QModelIndex PMPlayerModel::currentIndexPlaying() const
+{
+    return m_currentIndexPlaying;
+}
+
+void PMPlayerModel::setCurrentIndexPlaying(const QModelIndex &newCurrentIndexPlaying)
+{
+    if (m_currentIndexPlaying == newCurrentIndexPlaying)
+        return;
+    m_currentIndexPlaying = newCurrentIndexPlaying;
+    emit currentIndexPlayingChanged();
 }
 
 PlaylistMediaElement PMPlayerModel::currentElement() const

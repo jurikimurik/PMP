@@ -21,6 +21,7 @@ public:
     void insert(const QList<QUrl> &urls, const QModelIndex &after);
     int count() const;
     int positionOf(const PlaylistMediaElement &element) const;
+    QModelIndex indexPositionOf(const PlaylistMediaElement &element) const;
 
     PlaylistMediaElement get(const QUrl &source) const;
     PlaylistMediaElement get(const int &index) const;
