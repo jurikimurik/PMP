@@ -8,6 +8,7 @@
 #include <QSplitter>
 #include <QTime>
 #include <QSettings>
+#include <QClipboard>
 #include "GUI/headers/video/pmpvideowidget.h"
 #include "../../../Backend/headers/player/pmplayermodel.h"
 #include "../playlist/playlistview.h"
@@ -42,6 +43,7 @@ protected slots:
 
     void clearAllMedia();
     void removeMedia();
+    void removeMedia(const QModelIndexList &indexes);
     void openMedia();
 
     void stopMedia();
@@ -92,6 +94,10 @@ private:
     void readSettings();
     void writeSettings();
     bool areUserWantsToQuit();
+
+    void copyToClipboard();
+    void cutToClipboard();
+    void pasteFromClipboard();
 
     // QWidget interface
 protected:
