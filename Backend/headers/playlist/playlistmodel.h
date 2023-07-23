@@ -17,6 +17,8 @@ public:
     void add(const QUrl &url);
     void remove(const QUrl &url);
     void remove(const QList<QUrl> &urls);
+    void insert(const QUrl &url, const QModelIndex &after);
+    void insert(const QList<QUrl> &urls, const QModelIndex &after);
     int count() const;
     int positionOf(const PlaylistMediaElement &element) const;
 

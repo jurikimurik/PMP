@@ -189,6 +189,11 @@ void PMPlayerModel::clearQueue()
     m_queue.clear();
 }
 
+void PMPlayerModel::insertMedia(const QList<QUrl> &urls, const QModelIndex &after)
+{
+    m_currentPlaylist->insert(urls, after);
+}
+
 void PMPlayerModel::loadMedia(const int &index)
 {
     stopMedia();

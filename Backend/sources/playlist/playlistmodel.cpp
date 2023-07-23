@@ -51,6 +51,34 @@ void PlaylistModel::remove(const QList<QUrl> &urls)
     updateAllData();
 }
 
+void PlaylistModel::insert(const QUrl &url, const QModelIndex &after)
+{
+    if(!url.isValid())
+        return;
+
+    int newRow = after.row()+1;
+    beginInsertRows(after, newRow, newRow);
+    m_mediaElements.insert(newRow, PlaylistMediaElement(url));
+    endInsertRows();
+
+    updateAllData();
+}
+
+void PlaylistModel::insert(const QList<QUrl> &urls, const QModelIndex &after)
+{
+    QModelIndex changableIndex = after;
+    for(const QUrl &url: urls) {
+        if(changableIndex.isValid()) {
+            insert(url, changableIndex);
+            changableIndex = changableIndex.siblingAtRow(changableIndex.row()+1);
+        } else {
+            qDebug() << "QModelIndex in insert QList<QUrl> is wrong!";
+            return;
+        }
+    }
+
+}
+
 int PlaylistModel::count() const
 {
     return m_mediaElements.size();

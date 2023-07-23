@@ -72,6 +72,8 @@ public:
     bool removeFromQueue(const QModelIndex &index);
     void clearQueue();
 
+    void insertMedia(const QList<QUrl> &urls, const QModelIndex &after);
+
 
 public slots:
     void loadMedia(const int &index);
