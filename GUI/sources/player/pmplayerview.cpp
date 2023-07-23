@@ -196,6 +196,7 @@ void PMPlayerView::clearAllMedia()
 void PMPlayerView::removeMedia()
 {
     m_model->removeMedia(m_playlistView->selectionModel()->selectedRows());
+
 }
 
 void PMPlayerView::removeMedia(const QModelIndexList &indexes)
@@ -282,11 +283,11 @@ void PMPlayerView::actionTriggered(QAction *action)
     } else if(action == loadPlaylistAction) {
         loadPlaylist();
     } else if(action == playAsNextAction) {
-        m_model->playAsNext(m_currentIndex);
+        m_model->playAsNext(m_playlistView->selectionModel()->selectedRows().value(0));
     } else if(action == addToQueueAction) {
-        m_model->addToQueue(m_currentIndex);
+        m_model->addToQueue(m_playlistView->selectionModel()->selectedRows().value(0));
     } else if(action == removeFromQueue) {
-        m_model->removeFromQueue(m_currentIndex);
+        m_model->removeFromQueue(m_playlistView->selectionModel()->selectedRows().value(0));
     } else if(action == copyMediaAction) {
         copyToClipboard();
     } else if(action == cutMediaAction) {
@@ -412,8 +413,8 @@ void PMPlayerView::pasteFromClipboard()
     QStringList urlsText = QGuiApplication::clipboard()->text().split("\n");
     QVector<QUrl> urls = QUrl::fromStringList(urlsText);
 
-    QModelIndex currentIndex = m_currentIndex;
-    m_model->insertMedia(urls, currentIndex);
+    QModelIndex selectedIndex = m_playlistView->selectionModel()->selectedRows().value(0);
+    m_model->insertMedia(urls, selectedIndex);
 }
 
 void PMPlayerView::contextMenuEvent(QContextMenuEvent *event)

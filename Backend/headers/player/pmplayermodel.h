@@ -96,7 +96,7 @@ private:
     PlaylistMediaElement m_currentElement;
     QModelIndex m_currentIndexPlaying;
 
-    QQueue<QUrl> m_queue;
+    QQueue<QPair<QModelIndex, QUrl>> m_queue;
 
     PlaylistModel *m_currentPlaylist;
     Q_PROPERTY(PlaylistMediaElement currentElement READ currentElement WRITE setCurrentElement NOTIFY currentElementChanged)

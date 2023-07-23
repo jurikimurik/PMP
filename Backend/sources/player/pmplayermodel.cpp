@@ -41,8 +41,18 @@ void PMPlayerModel::nextMedia()
     if(m_queue.isEmpty()) {
         loadMedia(m_currentIndexPlaying.siblingAtRow(m_currentIndexPlaying.row()+1));
     }
-    else
-        loadMedia(m_currentPlaylist->indexPositionOf(m_currentPlaylist->get(m_queue.dequeue())));
+    else {
+        QPair<QModelIndex, QUrl> mediaPair = m_queue.dequeue();
+        if(m_currentPlaylist->getSourceURL(mediaPair.first) == mediaPair.second)
+            //If QModelIndex is still pointing at good QUrl, play this
+            loadMedia(mediaPair.first);
+        else {
+            //If QModelIndex pointing on some another QUrl - skip
+            nextMedia();
+        }
+
+    }
+
 }
 
 void PMPlayerModel::clearMedia()
@@ -96,7 +106,6 @@ void PMPlayerModel::loadMedia(const QModelIndex &index)
     if(url.isValid())
         m_player->setSource(url);
     if(index.isValid() && index.row() < m_currentPlaylist->count()) {
-        qDebug() << index.row() << index.column();
         setCurrentIndexPlaying(index);
     }
 
@@ -155,6 +164,7 @@ void PMPlayerModel::changeSpeed(float speed)
 
 void PMPlayerModel::playAsNext(const QModelIndex &index, bool replaceFirst)
 {
+    qDebug() << index.row() << index.column();
     if(replaceFirst && !m_queue.isEmpty())
         m_queue.pop_front();
 
@@ -165,9 +175,9 @@ void PMPlayerModel::addToQueue(const QModelIndex &index, bool isBack)
 {
     QUrl url = m_currentPlaylist->getSourceURL(index);
     if(isBack)
-        m_queue.push_back(url);
+        m_queue.push_back(QPair<QModelIndex, QUrl>(index, url));
     else
-        m_queue.push_front(url);
+        m_queue.push_front(QPair<QModelIndex, QUrl>(index,url));
 }
 
 void PMPlayerModel::popQueue(bool isBack)
@@ -181,7 +191,7 @@ void PMPlayerModel::popQueue(bool isBack)
 bool PMPlayerModel::removeFromQueue(const QModelIndex &index)
 {
     QUrl url = m_currentPlaylist->getSourceURL(index);
-    int mediaIndex = m_queue.indexOf(url);
+    int mediaIndex = m_queue.indexOf(QPair<QModelIndex, QUrl>(index, url));
     if(mediaIndex != -1) {
         m_queue.remove(mediaIndex);
         //Founded.
