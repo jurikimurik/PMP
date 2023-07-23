@@ -37,6 +37,12 @@ PMPlayerView::PMPlayerView(QWidget *parent, PMPlayerModel *model)
     m_playlistMenu->addActions({playAsNextAction, addToQueueAction, removeFromQueue});
     m_playlistMenu->addSeparator();
 
+    copyMediaAction = new QAction(tr("Kopiuj"), m_playlistMenu);
+    cutMediaAction = new QAction(tr("Wytnij"), m_playlistMenu);
+    insertHereAction = new QAction(tr("Wklej tutaj"), m_playlistMenu);
+    m_playlistMenu->addActions({copyMediaAction, cutMediaAction, insertHereAction});
+    m_playlistMenu->addSeparator();
+
     addMediaAction = new QAction(tr("Dodaj media"), m_playlistMenu);
     removeMediaAction = new QAction(tr("Usun media"), m_playlistMenu);
     clearMediaAction = new QAction(tr("Wyczyszcz cala liste"), m_playlistMenu);

@@ -65,11 +65,17 @@ private:
     QAction *addMediaAction;
     QAction *removeMediaAction;
     QAction *clearMediaAction;
+
     QAction *savePlaylistAction;
     QAction *loadPlaylistAction;
+
     QAction *playAsNextAction;
     QAction *addToQueueAction;
     QAction *removeFromQueue;
+
+    QAction *copyMediaAction;
+    QAction *cutMediaAction;
+    QAction *insertHereAction;
 
     QErrorMessage *m_errorBox;
 
