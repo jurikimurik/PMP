@@ -63,6 +63,7 @@ protected slots:
     void actionTriggered(QAction*);
 private:
     QMenu *m_playlistMenu;
+    QMenu *m_mainMenu;
     QAction *addMediaAction;
     QAction *removeMediaAction;
     QAction *clearMediaAction;

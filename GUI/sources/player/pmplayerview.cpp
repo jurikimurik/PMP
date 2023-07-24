@@ -29,18 +29,18 @@ PMPlayerView::PMPlayerView(QWidget *parent, PMPlayerModel *model)
     ui->mediaWidget->layout()->addWidget(m_splitter);
 
     m_playlistMenu = new QMenu(m_playlistView);
-    m_playlistMenu->setTitle(tr("Playlista"));
-
-    playAsNextAction = new QAction(tr("Odtwórz jako następny"), m_playlistMenu);
-    addToQueueAction = new QAction(tr("Dodaj do kolejki"), m_playlistMenu);
-    removeFromQueue = new QAction(tr("Usun z kolejki"), m_playlistMenu);
-    m_playlistMenu->addActions({playAsNextAction, addToQueueAction, removeFromQueue});
-    m_playlistMenu->addSeparator();
+    m_playlistMenu->setTitle(tr("Edytuj"));
 
     copyMediaAction = new QAction(tr("Kopiuj"), m_playlistMenu);
     cutMediaAction = new QAction(tr("Wytnij"), m_playlistMenu);
     insertHereAction = new QAction(tr("Wklej tutaj"), m_playlistMenu);
     m_playlistMenu->addActions({copyMediaAction, cutMediaAction, insertHereAction});
+    m_playlistMenu->addSeparator();
+
+    playAsNextAction = new QAction(tr("Odtwórz jako następny"), m_playlistMenu);
+    addToQueueAction = new QAction(tr("Dodaj do kolejki"), m_playlistMenu);
+    removeFromQueue = new QAction(tr("Usun z kolejki"), m_playlistMenu);
+    m_playlistMenu->addActions({playAsNextAction, addToQueueAction, removeFromQueue});
     m_playlistMenu->addSeparator();
 
     addMediaAction = new QAction(tr("Dodaj media"), m_playlistMenu);
@@ -49,9 +49,12 @@ PMPlayerView::PMPlayerView(QWidget *parent, PMPlayerModel *model)
     m_playlistMenu->addActions({addMediaAction, removeMediaAction, clearMediaAction});
     m_playlistMenu->addSeparator();
 
-    savePlaylistAction = new QAction(tr("Zapisz playlistę"), m_playlistMenu);
-    loadPlaylistAction = new QAction(tr("Zaladuj playlistę"), m_playlistMenu);
-    m_playlistMenu->addActions({savePlaylistAction, loadPlaylistAction});
+    m_mainMenu = new QMenu(tr("Playlist"), this);
+    savePlaylistAction = new QAction(tr("Zapisz playlistę"), m_mainMenu);
+    loadPlaylistAction = new QAction(tr("Zaladuj playlistę"), m_mainMenu);
+    m_mainMenu->addActions({savePlaylistAction, loadPlaylistAction});
+    ui->menubar->addMenu(m_mainMenu);
+    ui->menubar->addMenu(m_playlistMenu);
 
     m_errorBox = new QErrorMessage(this);
 
@@ -322,6 +325,7 @@ void PMPlayerView::createConnections()
             this, &PMPlayerView::playedMediaChanged);
 
     connect(m_playlistMenu, &QMenu::triggered, this, &PMPlayerView::actionTriggered);
+    connect(m_mainMenu, &QMenu::triggered, this, &PMPlayerView::actionTriggered);
 }
 
 void PMPlayerView::readSettings()
