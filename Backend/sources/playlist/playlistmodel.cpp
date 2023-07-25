@@ -154,7 +154,6 @@ bool PlaylistModel::loadFromFile(const QString &pathname)
     m_mediaElements.clear();
     QString url;
     while(stream.readLineInto(&url)) {
-        qDebug() << url;
         m_mediaElements.push_back(PlaylistMediaElement(QUrl(url)));
     }
 
