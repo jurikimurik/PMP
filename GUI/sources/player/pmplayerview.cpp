@@ -368,7 +368,7 @@ void PMPlayerView::writeSettings()
     QSettings settings;
 
     //Save all playlist to file, read from it and then delete temporary file.
-    QFile tempFile("tempFile");
+    QFile tempFile("tempFile.m3u");
     QFileInfo info(tempFile);
     if(!tempFile.open(QIODevice::ReadWrite)) {
         qDebug() << "Attention: Can't create temp file!";
