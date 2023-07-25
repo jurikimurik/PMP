@@ -266,7 +266,7 @@ void PlaylistModel::loadM3UInfoInto(const QString &line, PlaylistMediaElement &i
 
         if(m3uStr.toUpper().contains("#EXTINF:"))
         {
-            QRegularExpression regex(R"(^\s*#EXTINF:(\d*),{0,1}(.*) - {0,1}(.*)|^\s*#EXTINF:(\d*),{0,1}(.*))");
+            QRegularExpression regex(R"(^\s*#EXTINF:(-{0,1}\d*),{0,1}(.*) - {0,1}(.*)|^\s*#EXTINF:(-{0,1}\d*),{0,1}(.*))");
             QRegularExpressionMatch match = regex.match(m3uStr);
             if(match.hasMatch())
             {
@@ -278,14 +278,17 @@ void PlaylistModel::loadM3UInfoInto(const QString &line, PlaylistMediaElement &i
                 QStringList captureTexts = match.capturedTexts();
                 lengthInSeconds = captureTexts.value(1).toInt();
 
-                if(captureTexts.size() == 3)
-                    //Without artist
-                    songName = captureTexts.value(2);
-                else {
+                if(captureTexts.size() == 4) {
                     //With artist
                     artist = captureTexts.value(2);
                     songName = captureTexts.value(3);
+                } else {
+                    //Without artist
+                    lengthInSeconds = captureTexts.value(4).toInt();
+                    songName = captureTexts.value(5);
                 }
+
+
 
                 //If there is no duration, artist or song name - insert it.
                 if(intoElement.value(QMediaMetaData::Duration).toInt() && !lengthInSeconds)
