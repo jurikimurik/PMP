@@ -152,6 +152,10 @@ bool PlaylistModel::loadFromFile(const QString &pathname)
 
 bool PlaylistModel::saveToFile(const QString &pathname)
 {
+    //For M3U file format
+    if(pathname.split(".").last().toLower() == "m3u")
+        return saveToM3UFile(pathname);
+
     QFile file(pathname);
     if(!file.open(QIODevice::WriteOnly)) {
         return false;
@@ -170,6 +174,32 @@ void PlaylistModel::updateAllData()
 {
     beginResetModel();
     endResetModel();
+}
+
+bool PlaylistModel::saveToM3UFile(const QString &pathname)
+{
+    QFile file(pathname);
+    if(!file.open(QIODevice::WriteOnly)) {
+        return false;
+    }
+
+    QTextStream stream(&file);
+    stream << "#EXTM3U" << "\n";
+
+    for(const PlaylistMediaElement &element : m_mediaElements)
+    {
+        int lengthInSeconds = element.value(QMediaMetaData::Duration).toInt() / 1000;
+        QString artist = element.value(QMediaMetaData::AlbumArtist).toString();
+        QString songName = element.value(QMediaMetaData::Title).toString();
+        stream << "#EXTINF:" << lengthInSeconds << ",";
+        if(!artist.isEmpty())
+            stream << artist << " - ";
+        stream << songName << "\n";
+        stream << element.mediaPath().toString() << "\n";
+    }
+
+    file.close();
+    return true;
 }
 
 //---------------------- Reimplementing all necessary methods for QAbstractItemModel below... ----------------------

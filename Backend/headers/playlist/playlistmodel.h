@@ -33,6 +33,8 @@ public:
 
 private:
     void updateAllData();
+    bool saveToM3UFile(const QString &pathname);
+    bool loadFromM3UFile(const QString &pathname);
 
 private:
     QVector<PlaylistMediaElement> m_mediaElements;
