@@ -2,6 +2,8 @@
 
 #include <QErrorMessage>
 #include <QFile>
+#include <QRegularExpression>
+#include <QRegularExpressionMatch>
 
 PlaylistModel::PlaylistModel(QObject *parent) : QAbstractItemModel(parent)
 {}
@@ -138,12 +140,23 @@ bool PlaylistModel::loadFromFile(const QString &pathname)
         return false;
     }
 
-
+    //Checking for M3U
     QTextStream stream(&file);
+    QString firstLine = stream.readLine();
+    if(firstLine.toUpper().contains("#EXTM3U"))
+    {
+        stream.reset();
+        file.close();
+        return loadFromM3UFile(pathname);
+    }
+
+    stream.seek(0);
     m_mediaElements.clear();
     QString url;
-    while(stream.readLineInto(&url))
+    while(stream.readLineInto(&url)) {
+        qDebug() << url;
         m_mediaElements.push_back(PlaylistMediaElement(QUrl(url)));
+    }
 
     file.close();
     updateAllData();
@@ -200,6 +213,91 @@ bool PlaylistModel::saveToM3UFile(const QString &pathname)
 
     file.close();
     return true;
+}
+
+bool PlaylistModel::loadFromM3UFile(const QString &pathname)
+{
+    QFile file(pathname);
+    if(!file.open(QIODevice::ReadOnly)) {
+        return false;
+    }
+
+    QTextStream stream(&file);
+    QString line;
+    QStringList m3uLines;
+    //Every m3u line before media element will be connected with it.
+    //  - After media element will be readed, all m3u lines will add information to media.
+    while(stream.readLineInto(&line)) {
+        if(line.contains("#")) {
+            m3uLines.push_back(line);
+            continue;
+        }
+
+        // Firstly, try to load URL
+        QUrl url(line);
+        if(!url.isValid()) {
+            // If invalid, try to read as path to file
+            url = QUrl::fromLocalFile(line);
+            if(!url.isValid())
+                // If even after that url is still invalid, skip
+                continue;
+        }
+
+        PlaylistMediaElement element(url);
+        if(!m3uLines.isEmpty())
+            loadM3UInfoInto(m3uLines.join("\n"), element);
+        m_mediaElements.push_back(element);
+        m3uLines.clear();
+    }
+    updateAllData();
+    return true;
+}
+
+void PlaylistModel::loadM3UInfoInto(const QString &line, PlaylistMediaElement &intoElement)
+{
+    if(line.isEmpty())
+        return;
+
+    QStringList list = line.split("\n");
+    for(const QString &m3uStr : list)
+    {
+        //Default header
+        if(m3uStr.toUpper().contains("#EXTM3U"))
+            continue;
+
+        if(m3uStr.toUpper().contains("#EXTINF:"))
+        {
+            QRegularExpression regex(R"(^\s*#EXTINF:(\d*),{0,1}(.*) - {0,1}(.*)|^\s*#EXTINF:(\d*),{0,1}(.*))");
+            QRegularExpressionMatch match = regex.match(m3uStr);
+            if(match.hasMatch())
+            {
+                int lengthInSeconds;
+                QString artist;
+                QString songName;
+
+
+                QStringList captureTexts = match.capturedTexts();
+                lengthInSeconds = captureTexts.value(1).toInt();
+
+                if(captureTexts.size() == 3)
+                    //Without artist
+                    songName = captureTexts.value(2);
+                else {
+                    //With artist
+                    artist = captureTexts.value(2);
+                    songName = captureTexts.value(3);
+                }
+
+                //If there is no duration, artist or song name - insert it.
+                if(intoElement.value(QMediaMetaData::Duration).toInt() && !lengthInSeconds)
+                    intoElement.insert(QMediaMetaData::Duration, lengthInSeconds*1000);
+                if(intoElement.value(QMediaMetaData::Title).toString().isEmpty() && !songName.isEmpty())
+                    intoElement.insert(QMediaMetaData::Title, songName);
+                if(intoElement.value(QMediaMetaData::AlbumArtist).toString().isEmpty() && !artist.isEmpty())
+                    intoElement.insert(QMediaMetaData::AlbumArtist, artist);
+            }
+        }
+    }
 }
 
 //---------------------- Reimplementing all necessary methods for QAbstractItemModel below... ----------------------

@@ -36,6 +36,8 @@ private:
     bool saveToM3UFile(const QString &pathname);
     bool loadFromM3UFile(const QString &pathname);
 
+    void loadM3UInfoInto(const QString &line, PlaylistMediaElement& intoElement);
+
 private:
     QVector<PlaylistMediaElement> m_mediaElements;
 
