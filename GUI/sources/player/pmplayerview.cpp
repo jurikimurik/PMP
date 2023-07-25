@@ -167,7 +167,7 @@ void PMPlayerView::setToPosition(int position)
 
 void PMPlayerView::savePlaylist()
 {
-    QString pathname = QFileDialog::getSaveFileName(this, tr("Zapisz playliste..."), QString(), tr("PLaylista PMP (*.pmplst)"));
+    QString pathname = QFileDialog::getSaveFileName(this, tr("Zapisz playliste..."), QString(), tr("M3U Format (*.m3u);;Playlista PMP (*.pmplst)"));
 
     if(pathname.isEmpty())
         return;
@@ -179,7 +179,7 @@ void PMPlayerView::savePlaylist()
 
 void PMPlayerView::loadPlaylist()
 {
-    QString pathname = QFileDialog::getOpenFileName(this, tr("Zapisz playliste..."), QString(), tr("PLaylista PMP (*.pmplst)"));
+    QString pathname = QFileDialog::getOpenFileName(this, tr("Otwórz playliste..."), QString(), tr("M3U Format (*.m3u);;Playlista PMP (*.pmplst)"));
 
     if(pathname.isEmpty())
         return;
