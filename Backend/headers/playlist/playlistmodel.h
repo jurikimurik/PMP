@@ -5,26 +5,24 @@
 #include <QMediaMetaData>
 #include <QMediaPlayer>
 #include "element/playlistmediaelement.h"
+#include "playlist.h"
 
-class PlaylistModel : public QAbstractItemModel
+class PlaylistModel : public QAbstractItemModel, public Playlist
 {
 public:
     PlaylistModel(QObject *parent = nullptr);
 
+    //Reimplemented functions from Playlist (for updateAllData() method)
     void add(const QUrl &url);
     void remove(const QUrl &url);
     void remove(const QList<QUrl> &urls);
+
     void insert(const QUrl &url, const QModelIndex &after);
     void insert(const QList<QUrl> &urls, const QModelIndex &after);
-    int count() const;
-    int positionOf(const PlaylistMediaElement &element) const;
+
     QModelIndex indexPositionOf(const PlaylistMediaElement &element) const;
 
-    PlaylistMediaElement get(const QUrl &source) const;
-    PlaylistMediaElement get(const int &index) const;
-
     QUrl getSourceURL(const QModelIndex &index) const;
-    QStringList getAllInfoOfKey(const QMediaMetaData::Key &key) const;
     bool saveToFile(const QString &pathname);
     bool loadFromFile(const QString &pathname);
 
@@ -34,10 +32,6 @@ private:
     bool loadFromM3UFile(const QString &pathname);
 
     void loadM3UInfoInto(const QString &line, PlaylistMediaElement& intoElement);
-
-private:
-    QVector<PlaylistMediaElement> m_mediaElements;
-    QString m_playlistName;
 
 public:
     virtual QModelIndex index(int row, int column, const QModelIndex &parent) const;
@@ -49,8 +43,7 @@ public:
     // QAbstractItemModel interface
 public:
     virtual QVariant headerData(int section, Qt::Orientation orientation, int role) const;
-    QString playlistName() const;
-    void setPlaylistName(const QString &newPlaylistName);
+
 };
 
 #endif // PLAYLISTMODEL_H

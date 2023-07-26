@@ -8,40 +8,24 @@
 PlaylistModel::PlaylistModel(QObject *parent) : QAbstractItemModel(parent)
 {}
 
-//Adding new media to playlist
 void PlaylistModel::add(const QUrl &url)
 {
-    PlaylistMediaElement newElement(url);
-
-    if(!m_mediaElements.contains(newElement) && newElement.isPathValid() && !newElement.isEmpty())
-    {
-        m_mediaElements.push_back(newElement);
-        updateAllData();
-    }
-}
-
-//Removing one media from playlist using url
-void PlaylistModel::remove(const QUrl &url)
-{
-    for(int i = 0; i < m_mediaElements.size(); ++i)
-    {
-        const PlaylistMediaElement &element = m_mediaElements[i];
-
-        if(element.mediaPath()== url)
-        {
-            m_mediaElements.removeAt(i);
-            updateAllData();
-            return;
-        }
-    }
+    Playlist::add(url);
+    updateAllData();
 }
 
 void PlaylistModel::remove(const QList<QUrl> &urls)
 {
-    for(const QUrl &url : urls)
-        remove(url);
+    Playlist::remove(urls);
     updateAllData();
 }
+
+void PlaylistModel::remove(const QUrl &url)
+{
+    Playlist::remove(url);
+    updateAllData();
+}
+
 
 void PlaylistModel::insert(const QUrl &url, const QModelIndex &after)
 {
@@ -68,44 +52,12 @@ void PlaylistModel::insert(const QList<QUrl> &urls, const QModelIndex &after)
             return;
         }
     }
-
 }
 
-int PlaylistModel::count() const
-{
-    return m_mediaElements.size();
-}
-
-int PlaylistModel::positionOf(const PlaylistMediaElement &element) const
-{
-    for(int index = 0; index < m_mediaElements.size(); ++index)
-    {
-        if(element == m_mediaElements.at(index))
-            return index;
-    }
-
-    return -1;
-}
 
 QModelIndex PlaylistModel::indexPositionOf(const PlaylistMediaElement &element) const
 {
     return index(positionOf(element), 0, QModelIndex());
-}
-
-//Getting copy of playlist element by url
-PlaylistMediaElement PlaylistModel::get(const QUrl &source) const
-{
-    for(const PlaylistMediaElement &element : m_mediaElements)
-    {
-        if(element.mediaPath() == source)
-            return element;
-    }
-    return PlaylistMediaElement();
-}
-
-PlaylistMediaElement PlaylistModel::get(const int &index) const
-{
-    return m_mediaElements.value(index);
 }
 
 //Getting playlist media source url using index in table!
@@ -120,17 +72,6 @@ QUrl PlaylistModel::getSourceURL(const QModelIndex &index) const
             return element.mediaPath();
     }
     return QUrl();
-}
-
-//Simply return all song requested data by QMediaMetaData key.
-QStringList PlaylistModel::getAllInfoOfKey(const QMediaMetaData::Key &key) const
-{
-    QStringList info;
-    for(const QMediaMetaData &data : m_mediaElements)
-    {
-        info << data.value(key).toString();
-    }
-    return info;
 }
 
 bool PlaylistModel::loadFromFile(const QString &pathname)
@@ -315,16 +256,6 @@ void PlaylistModel::loadM3UInfoInto(const QString &line, PlaylistMediaElement &i
             }
         }
     }
-}
-
-QString PlaylistModel::playlistName() const
-{
-    return m_playlistName;
-}
-
-void PlaylistModel::setPlaylistName(const QString &newPlaylistName)
-{
-    m_playlistName = newPlaylistName;
 }
 //---------------------- Reimplementing all necessary methods for QAbstractItemModel below... ----------------------
 
