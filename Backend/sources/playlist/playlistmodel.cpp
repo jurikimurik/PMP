@@ -198,6 +198,9 @@ bool PlaylistModel::saveToM3UFile(const QString &pathname)
     QTextStream stream(&file);
     stream << "#EXTM3U" << "\n";
 
+    if(!m_playlistName.isEmpty())
+        stream << "#PLAYLIST:" << m_playlistName << "\n";
+
     for(const PlaylistMediaElement &element : m_mediaElements)
     {
         int lengthInSeconds = element.value(QMediaMetaData::Duration).toInt() / 1000;
@@ -299,9 +302,30 @@ void PlaylistModel::loadM3UInfoInto(const QString &line, PlaylistMediaElement &i
                     intoElement.insert(QMediaMetaData::AlbumArtist, artist);
             }
         }
+
+        if(m3uStr.toUpper().contains("#PLAYLIST:"))
+        {
+            QRegularExpression regex(R"(^\s*#PLAYLIST:\s*(.*))");
+            QRegularExpressionMatch match = regex.match(m3uStr);
+            if(match.hasMatch())
+            {
+                //PLAYLIST property can be only once in a file.
+                //  - If there will be more: last name will be accepted as playlist name.
+                setPlaylistName(match.captured(1));
+            }
+        }
     }
 }
 
+QString PlaylistModel::playlistName() const
+{
+    return m_playlistName;
+}
+
+void PlaylistModel::setPlaylistName(const QString &newPlaylistName)
+{
+    m_playlistName = newPlaylistName;
+}
 //---------------------- Reimplementing all necessary methods for QAbstractItemModel below... ----------------------
 
 QModelIndex PlaylistModel::index(int row, int column, const QModelIndex &parent) const

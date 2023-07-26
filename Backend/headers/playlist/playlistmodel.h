@@ -8,9 +8,6 @@
 
 class PlaylistModel : public QAbstractItemModel
 {
-signals:
-    void playlistChanged(QStringList);
-
 public:
     PlaylistModel(QObject *parent = nullptr);
 
@@ -40,8 +37,8 @@ private:
 
 private:
     QVector<PlaylistMediaElement> m_mediaElements;
+    QString m_playlistName;
 
-    // QAbstractItemModel interface
 public:
     virtual QModelIndex index(int row, int column, const QModelIndex &parent) const;
     virtual QModelIndex parent(const QModelIndex &child) const;
@@ -52,6 +49,8 @@ public:
     // QAbstractItemModel interface
 public:
     virtual QVariant headerData(int section, Qt::Orientation orientation, int role) const;
+    QString playlistName() const;
+    void setPlaylistName(const QString &newPlaylistName);
 };
 
 #endif // PLAYLISTMODEL_H
