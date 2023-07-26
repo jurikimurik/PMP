@@ -28,6 +28,8 @@ signals:
 
     void currentIndexPlayingChanged();
 
+    void playlistNameChanged(const QString &name) const;
+
 public:
     const QMediaPlayer *player() const;
     const QAudioOutput *audioOutput() const;
@@ -83,6 +85,8 @@ public slots:
     void loadMedia(const QModelIndex& index);
     void removeMedia(const QModelIndex& index);
     void removeMedia(const QList<QModelIndex>& indexes);
+
+    void setPlaylistName(const QString &name);
 
 private slots:
     void playerStatusUpdated(QMediaPlayer::MediaStatus);

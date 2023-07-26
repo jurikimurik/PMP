@@ -30,7 +30,14 @@
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
-      <layout class="QHBoxLayout" name="horizontalLayout">
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QLineEdit" name="playlistNameEdit">
+         <property name="placeholderText">
+          <string>Nazwa playlisty...</string>
+         </property>
+        </widget>
+       </item>
        <item>
         <widget class="QGraphicsView" name="graphicsView"/>
        </item>
@@ -445,5 +452,6 @@
  </connections>
  <slots>
   <slot>changeSpeed()</slot>
+  <slot>changePlaylistName(QString)</slot>
  </slots>
 </ui>
