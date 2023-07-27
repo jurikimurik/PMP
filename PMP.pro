@@ -16,6 +16,7 @@ SOURCES += \
     Backend/sources/playlist/element/playlistmediaelement.cpp \
     Backend/sources/playlist/playlist.cpp \
     Backend/sources/playlist/playlistmodel.cpp \
+    Backend/sources/sourcesmodel/sourcesitem.cpp \
     Backend/sources/sourcesmodel/sourcesmodel.cpp \
     GUI/sources/playlist/playlistview.cpp \
     GUI/sources/player/pmplayerview.cpp \
@@ -27,6 +28,7 @@ HEADERS += \
     Backend/headers/playlist/element/playlistmediaelement.h \
     Backend/headers/playlist/playlist.h \
     Backend/headers/playlist/playlistmodel.h \
+    Backend/headers/sourcesmodel/sourcesitem.h \
     Backend/headers/sourcesmodel/sourcesmodel.h \
     GUI/headers/player/pmplayerview.h \
     GUI/headers/playlist/playlistview.h \

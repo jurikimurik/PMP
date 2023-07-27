@@ -9,6 +9,7 @@
 #include <QTime>
 #include <QSettings>
 #include <QClipboard>
+#include "Backend/headers/sourcesmodel/sourcesmodel.h"
 #include "GUI/headers/video/pmpvideowidget.h"
 #include "../../../Backend/headers/player/pmplayermodel.h"
 #include "../playlist/playlistview.h"
@@ -85,6 +86,9 @@ private:
     PMPlayerModel* m_model;
     PlaylistView *m_playlistView;
     QModelIndex m_currentIndex;
+
+    SourcesModel *m_sourcesModel;
+
 
     PMPVideoWidget *m_videoWidget;
     QSplitter *m_splitter;
