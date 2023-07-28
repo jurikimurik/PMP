@@ -3,8 +3,7 @@
 SourcesModel::SourcesModel(const QList<Playlist> &playlists, QObject *parent)
     : QAbstractItemModel{parent}, m_playlists{playlists}
 {
-    rootItem = new SourcesItem({"Playlists"});
-    setupModelData();
+    updateModelData();
 }
 
 SourcesModel::~SourcesModel()
@@ -33,6 +32,37 @@ int SourcesModel::columnCount(const QModelIndex &parent) const
     return rootItem->columnCount();
 }
 
+void SourcesModel::remove(const Playlist &playlist)
+{
+    if(!m_playlists.contains(playlist))
+        return;
+
+    m_playlists.removeOne(playlist);
+    updateModelData();
+}
+
+QModelIndex SourcesModel::indexOfPlaylist(const QString &name)
+{
+    for(int row = 0; row < rowCount(); ++row)
+    {
+        if(data(index(row, 0), Qt::DisplayRole).toString() == name)
+            return index(row, 0);
+    }
+
+    return QModelIndex();
+}
+
+QModelIndex SourcesModel::indexOfPlaylist(const Playlist &playlist)
+{
+    return indexOfPlaylist(playlist.playlistName());
+}
+
+void SourcesModel::add(const Playlist &playlist)
+{
+    m_playlists.push_back(playlist);
+    updateModelData();
+}
+
 void SourcesModel::changePlaylistName(const QModelIndex &whichPlaylist, const QString &toName)
 {
     if(!hasIndex(whichPlaylist.row(), whichPlaylist.column(),whichPlaylist.parent()))
@@ -44,12 +74,19 @@ void SourcesModel::changePlaylistName(const QModelIndex &whichPlaylist, const QS
     emit dataChanged(whichPlaylist, whichPlaylist);
 }
 
-void SourcesModel::setupModelData()
+void SourcesModel::updateModelData()
 {
+    if(rootItem)
+        delete rootItem;
+
+    rootItem = new SourcesItem({"Playlists"});
+
     for(const Playlist& playlist : m_playlists)
     {
         rootItem->appendChild(new SourcesItem({playlist.playlistName()}, rootItem));
     }
+
+    emit dataChanged(index(0, 0),index(rowCount()-1, columnCount()-1));
 }
 
 QVariant SourcesModel::data(const QModelIndex &index, int role) const

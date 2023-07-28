@@ -22,6 +22,10 @@ public:
     QString playlistName() const;
     void setPlaylistName(const QString &newPlaylistName);
 
+    bool operator==(const Playlist &another) const {
+        return m_playlistName == another.m_playlistName && m_mediaElements == another.m_mediaElements;
+    }
+
 protected:
     QVector<PlaylistMediaElement> m_mediaElements;
     QString m_playlistName;

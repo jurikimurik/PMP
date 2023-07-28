@@ -22,13 +22,19 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     int columnCount(const QModelIndex &parent = QModelIndex()) const override;
 
-    SourcesItem* rootItem;
+    SourcesItem* rootItem = nullptr;
+
+    void add(const Playlist &playlist);
+    void remove(const Playlist &playlist);
+
+    QModelIndex indexOfPlaylist(const Playlist &playlist);
+    QModelIndex indexOfPlaylist(const QString &name);
 
 public slots:
     void changePlaylistName(const QModelIndex &whichPlaylist, const QString &toName);
 
 private:
-    void setupModelData();
+    void updateModelData();
 
 public:
     QVector<Playlist> m_playlists;
