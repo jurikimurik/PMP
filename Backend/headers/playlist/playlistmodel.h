@@ -1,6 +1,7 @@
 #ifndef PLAYLISTMODEL_H
 #define PLAYLISTMODEL_H
 
+
 #include <QAbstractItemModel>
 #include <QMediaMetaData>
 #include <QMediaPlayer>
@@ -9,8 +10,9 @@
 
 class PlaylistModel : public QAbstractItemModel, public Playlist
 {
+    Q_OBJECT
 public:
-    PlaylistModel(QObject *parent = nullptr);
+    explicit PlaylistModel(QObject *parent = nullptr);
 
     //Reimplemented functions from Playlist (for updateAllData() method)
     void add(const QUrl &url);
@@ -25,6 +27,11 @@ public:
     QUrl getSourceURL(const QModelIndex &index) const;
     bool saveToFile(const QString &pathname);
     bool loadFromFile(const QString &pathname);
+
+signals:
+    void playlistNameChanged(const QString &newPLaylistName);
+public slots:
+    void setPlaylistName(const QString &newPlaylistName);
 
 private:
     void updateAllData();

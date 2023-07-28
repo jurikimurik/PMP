@@ -24,7 +24,6 @@ public:
 
     SourcesItem* rootItem;
 
-
 private:
     void setupModelData();
 

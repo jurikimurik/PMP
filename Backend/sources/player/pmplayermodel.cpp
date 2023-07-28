@@ -99,11 +99,6 @@ void PMPlayerModel::removeMedia(const QList<QModelIndex> &indexes)
         loadMedia(indexes.last());
 }
 
-void PMPlayerModel::setPlaylistName(const QString &name)
-{
-    m_currentPlaylist->setPlaylistName(name);
-}
-
 void PMPlayerModel::loadMedia(const QModelIndex &index)
 {
     stopMedia();
@@ -327,7 +322,6 @@ bool PMPlayerModel::loadPlaylistFromFile(const QString& pathname) const
 {
     if(m_currentPlaylist->loadFromFile(pathname))
     {
-        emit playlistNameChanged(m_currentPlaylist->playlistName());
         return true;
     } else
         return false;

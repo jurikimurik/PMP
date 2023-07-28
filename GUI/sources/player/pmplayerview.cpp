@@ -312,8 +312,8 @@ void PMPlayerView::createConnections()
     connect(m_model->player(), &QMediaPlayer::positionChanged, this, &PMPlayerView::positionChanged);
     connect(ui->timelineSlider, &QSlider::sliderMoved, this, &PMPlayerView::setToPosition);
 
-    connect(ui->playlistNameEdit, &QLineEdit::textEdited, m_model, &PMPlayerModel::setPlaylistName);
-    connect(m_model, &PMPlayerModel::playlistNameChanged, ui->playlistNameEdit, &QLineEdit::setText);
+    connect(ui->playlistNameEdit, &QLineEdit::textEdited, m_model->currentPlaylist(), &PlaylistModel::setPlaylistName);
+    connect(m_model->currentPlaylist(), &PlaylistModel::playlistNameChanged, ui->playlistNameEdit, &QLineEdit::setText);
 
     connect(ui->stopButton, &QPushButton::clicked, this, &PMPlayerView::stopMedia);
     connect(ui->backwardButton, &QPushButton::clicked, this, &PMPlayerView::previousMedia);

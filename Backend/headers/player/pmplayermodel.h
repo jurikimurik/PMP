@@ -17,18 +17,13 @@ class PMPlayerModel : public QObject
 public:
     explicit PMPlayerModel(QObject *parent = nullptr);
 
-
-
 signals:
     void playbackStateChanged(QMediaPlayer::PlaybackState);
     void playerChanged();
     void audioOutputChanged();
 
     void currentElementChanged();
-
     void currentIndexPlayingChanged();
-
-    void playlistNameChanged(const QString &name) const;
 
 public:
     const QMediaPlayer *player() const;
@@ -85,8 +80,6 @@ public slots:
     void loadMedia(const QModelIndex& index);
     void removeMedia(const QModelIndex& index);
     void removeMedia(const QList<QModelIndex>& indexes);
-
-    void setPlaylistName(const QString &name);
 
 private slots:
     void playerStatusUpdated(QMediaPlayer::MediaStatus);

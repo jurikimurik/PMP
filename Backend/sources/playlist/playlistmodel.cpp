@@ -103,6 +103,14 @@ bool PlaylistModel::loadFromFile(const QString &pathname)
     return true;
 }
 
+void PlaylistModel::setPlaylistName(const QString &newPlaylistName)
+{
+    if(newPlaylistName == m_playlistName)
+        return;
+    m_playlistName = newPlaylistName;
+    emit playlistNameChanged(m_playlistName);
+}
+
 bool PlaylistModel::saveToFile(const QString &pathname)
 {
     //For M3U file format
