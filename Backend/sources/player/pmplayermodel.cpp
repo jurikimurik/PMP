@@ -11,7 +11,11 @@ PMPlayerModel::PMPlayerModel(QObject *parent)
     m_player->setAudioOutput(m_audioOutput);
 
     m_currentPlaylist = new PlaylistModel(this);
+    m_sourcesModel = new SourcesModel({*m_currentPlaylist}, this);
+    m_currentPlaylistPlaying = m_sourcesModel->index(0, 0);
     connect(m_player, &QMediaPlayer::sourceChanged, this, &PMPlayerModel::changeCurrentElement);
+
+    connect(m_currentPlaylist, &PlaylistModel::playlistNameChanged, this, &PMPlayerModel::updateCurrentPlaylistName);
 }
 
 void PMPlayerModel::durationChanged(qint64 duration)
@@ -250,6 +254,16 @@ void PMPlayerModel::playerStatusUpdated(QMediaPlayer::MediaStatus status)
 void PMPlayerModel::changeCurrentElement(const QUrl &source)
 {
     setCurrentElement(m_currentPlaylist->get(source));
+}
+
+void PMPlayerModel::updateCurrentPlaylistName(const QString &newName)
+{
+    m_sourcesModel->changePlaylistName(m_currentPlaylistPlaying, newName);
+}
+
+SourcesModel *PMPlayerModel::sourcesModel() const
+{
+    return m_sourcesModel;
 }
 
 QModelIndex PMPlayerModel::currentIndexPlaying() const

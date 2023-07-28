@@ -87,9 +87,6 @@ private:
     PlaylistView *m_playlistView;
     QModelIndex m_currentIndex;
 
-    SourcesModel *m_sourcesModel;
-
-
     PMPVideoWidget *m_videoWidget;
     QSplitter *m_splitter;
 

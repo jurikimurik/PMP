@@ -21,8 +21,7 @@ PMPlayerView::PMPlayerView(QWidget *parent, PMPlayerModel *model)
     m_playlistView = new PlaylistView(this);
     m_playlistView->setModel(m_model->currentPlaylist());
 
-    m_sourcesModel = new SourcesModel({*m_model->currentPlaylist()}, this);
-    ui->treeView->setModel(m_sourcesModel);
+    ui->treeView->setModel(m_model->sourcesModel());
 
     ui->playlistNameEdit->setText(m_model->currentPlaylist()->playlistName());
 

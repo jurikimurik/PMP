@@ -40,6 +40,13 @@ QVariant SourcesItem::data(int column) const
     return m_itemData.at(column);
 }
 
+void SourcesItem::setData(int column, QVariant data)
+{
+    if(column < 0 || column >= m_itemData.size())
+        return;
+    m_itemData[column] = data;
+}
+
 int SourcesItem::row() const
 {
     if(m_parentItem)

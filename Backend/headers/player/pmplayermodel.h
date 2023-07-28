@@ -9,6 +9,8 @@
 #include <QGraphicsVideoItem>
 #include <QQueue>
 
+#include "Backend/headers/sourcesmodel/sourcesmodel.h"
+
 #include "../playlist/playlistmodel.h"
 
 class PMPlayerModel : public QObject
@@ -76,6 +78,8 @@ public:
     QModelIndex currentIndexPlaying() const;
     void setCurrentIndexPlaying(const QModelIndex &newCurrentIndexPlaying);
 
+    SourcesModel *sourcesModel() const;
+
 public slots:
     void loadMedia(const QModelIndex& index);
     void removeMedia(const QModelIndex& index);
@@ -84,6 +88,8 @@ public slots:
 private slots:
     void playerStatusUpdated(QMediaPlayer::MediaStatus);
     void changeCurrentElement(const QUrl& source);
+
+    void updateCurrentPlaylistName(const QString &newName);
 
 private:
     QMediaPlayer *m_player;
@@ -95,7 +101,10 @@ private:
 
     QQueue<QPair<QModelIndex, QUrl>> m_queue;
 
+    SourcesModel *m_sourcesModel;
     PlaylistModel *m_currentPlaylist;
+    QModelIndex m_currentPlaylistPlaying;
+
     Q_PROPERTY(PlaylistMediaElement currentElement READ currentElement WRITE setCurrentElement NOTIFY currentElementChanged)
     Q_PROPERTY(QModelIndex currentIndexPlaying READ currentIndexPlaying WRITE setCurrentIndexPlaying NOTIFY currentIndexPlayingChanged)
 };

@@ -24,6 +24,9 @@ public:
 
     SourcesItem* rootItem;
 
+public slots:
+    void changePlaylistName(const QModelIndex &whichPlaylist, const QString &toName);
+
 private:
     void setupModelData();
 

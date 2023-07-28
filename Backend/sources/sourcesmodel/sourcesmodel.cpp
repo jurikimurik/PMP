@@ -33,6 +33,17 @@ int SourcesModel::columnCount(const QModelIndex &parent) const
     return rootItem->columnCount();
 }
 
+void SourcesModel::changePlaylistName(const QModelIndex &whichPlaylist, const QString &toName)
+{
+    if(!hasIndex(whichPlaylist.row(), whichPlaylist.column(),whichPlaylist.parent()))
+        return;
+
+    SourcesItem* pointedItem = static_cast<SourcesItem*>(whichPlaylist.internalPointer());
+    pointedItem->setData(0, toName);
+
+    emit dataChanged(whichPlaylist, whichPlaylist);
+}
+
 void SourcesModel::setupModelData()
 {
     for(const Playlist& playlist : m_playlists)
