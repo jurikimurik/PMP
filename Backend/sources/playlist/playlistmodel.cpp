@@ -135,6 +135,8 @@ void PlaylistModel::updateAllData()
 {
     beginResetModel();
     endResetModel();
+
+    emit mediaChanged(Playlist(m_playlistName, m_mediaElements));
 }
 
 bool PlaylistModel::saveToM3UFile(const QString &pathname)

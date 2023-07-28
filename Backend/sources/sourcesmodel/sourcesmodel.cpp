@@ -1,8 +1,9 @@
 #include "../../headers/sourcesmodel/sourcesmodel.h"
 
-SourcesModel::SourcesModel(const QList<Playlist> &playlists, QObject *parent)
-    : QAbstractItemModel{parent}, m_playlists{playlists}
+SourcesModel::SourcesModel(QObject *parent)
+    : QAbstractItemModel{parent}
 {
+    rootItem = new SourcesItem(Playlist(tr("Playlisty")));
     updateModelData();
 }
 
@@ -34,10 +35,12 @@ int SourcesModel::columnCount(const QModelIndex &parent) const
 
 void SourcesModel::remove(const Playlist &playlist)
 {
-    if(!m_playlists.contains(playlist))
-        return;
+    for(int i = 0; i < rootItem->childCount(); ++i)
+    {
+        if(playlist == rootItem->child(i)->itemData())
+            delete rootItem->child(i);
+    }
 
-    m_playlists.removeOne(playlist);
     updateModelData();
 }
 
@@ -59,7 +62,7 @@ QModelIndex SourcesModel::indexOfPlaylist(const Playlist &playlist)
 
 void SourcesModel::add(const Playlist &playlist)
 {
-    m_playlists.push_back(playlist);
+    rootItem->appendChild(new SourcesItem(playlist, rootItem));
     updateModelData();
 }
 
@@ -69,23 +72,30 @@ void SourcesModel::changePlaylistName(const QModelIndex &whichPlaylist, const QS
         return;
 
     SourcesItem* pointedItem = static_cast<SourcesItem*>(whichPlaylist.internalPointer());
-    pointedItem->setData(0, toName);
+
+    Playlist newPlaylist = pointedItem->itemData();
+    newPlaylist.setPlaylistName(toName);
+
+    pointedItem->setData(newPlaylist);
 
     emit dataChanged(whichPlaylist, whichPlaylist);
 }
 
+void SourcesModel::playlistChanged(const Playlist &playlist)
+{
+    QModelIndex index = indexOfPlaylist(playlist);
+
+    if(!index.isValid())
+        return;
+
+    SourcesItem *item = static_cast<SourcesItem*>(index.internalPointer());
+    item->setData(playlist);
+
+    updateModelData();
+}
+
 void SourcesModel::updateModelData()
 {
-    if(rootItem)
-        delete rootItem;
-
-    rootItem = new SourcesItem({"Playlists"});
-
-    for(const Playlist& playlist : m_playlists)
-    {
-        rootItem->appendChild(new SourcesItem({playlist.playlistName()}, rootItem));
-    }
-
     emit dataChanged(index(0, 0),index(rowCount()-1, columnCount()-1));
 }
 

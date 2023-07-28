@@ -30,6 +30,7 @@ public:
 
 signals:
     void playlistNameChanged(const QString &newPLaylistName);
+    void mediaChanged(const Playlist &newPlaylist);
 public slots:
     void setPlaylistName(const QString &newPlaylistName);
 

@@ -3,6 +3,12 @@
 #include <QErrorMessage>
 #include <QFileDialog>
 
+void PMPlayerModel::connectPlaylistToSourcesModel()
+{
+    connect(m_currentPlaylist, &PlaylistModel::playlistNameChanged, this, &PMPlayerModel::updateCurrentPlaylistName);
+    connect(m_currentPlaylist, &PlaylistModel::mediaChanged, m_sourcesModel, &SourcesModel::playlistChanged);
+}
+
 PMPlayerModel::PMPlayerModel(QObject *parent)
     : QObject{parent}
 {
@@ -11,11 +17,12 @@ PMPlayerModel::PMPlayerModel(QObject *parent)
     m_player->setAudioOutput(m_audioOutput);
 
     m_currentPlaylist = new PlaylistModel(this);
-    m_sourcesModel = new SourcesModel({*m_currentPlaylist}, this);
+    m_sourcesModel = new SourcesModel(this);
+    m_sourcesModel->add(*m_currentPlaylist);
     m_currentPlaylistPlaying = m_sourcesModel->index(0, 0);
     connect(m_player, &QMediaPlayer::sourceChanged, this, &PMPlayerModel::changeCurrentElement);
 
-    connect(m_currentPlaylist, &PlaylistModel::playlistNameChanged, this, &PMPlayerModel::updateCurrentPlaylistName);
+    connectPlaylistToSourcesModel();
 }
 
 void PMPlayerModel::durationChanged(qint64 duration)

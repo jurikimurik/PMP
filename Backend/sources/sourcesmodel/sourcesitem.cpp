@@ -1,6 +1,6 @@
 #include "../../headers/sourcesmodel/sourcesitem.h"
 
-SourcesItem::SourcesItem(const QList<QVariant> &data, SourcesItem *parentItem)
+SourcesItem::SourcesItem(const Playlist &data, SourcesItem *parentItem)
     : m_itemData(data), m_parentItem(parentItem)
 {
 
@@ -30,21 +30,21 @@ int SourcesItem::childCount() const
 
 int SourcesItem::columnCount() const
 {
-    return m_itemData.count();
+    return 1;
 }
 
 QVariant SourcesItem::data(int column) const
 {
-    if(column < 0 || column >= m_itemData.size())
+    if(column != 0) {
         return QVariant();
-    return m_itemData.at(column);
+    }
+
+    return m_itemData.playlistName();
 }
 
-void SourcesItem::setData(int column, QVariant data)
+void SourcesItem::setData(const Playlist& playlist)
 {
-    if(column < 0 || column >= m_itemData.size())
-        return;
-    m_itemData[column] = data;
+    m_itemData = playlist;
 }
 
 int SourcesItem::row() const
@@ -58,5 +58,10 @@ int SourcesItem::row() const
 SourcesItem *SourcesItem::parentItem()
 {
     return m_parentItem;
+}
+
+Playlist SourcesItem::itemData() const
+{
+    return m_itemData;
 }
 

@@ -9,7 +9,7 @@ class SourcesModel : public QAbstractItemModel
 {
     Q_OBJECT
 public:
-    explicit SourcesModel(const QList<Playlist> &playlists = QList<Playlist>(), QObject *parent = nullptr);
+    explicit SourcesModel(QObject *parent = nullptr);
     ~SourcesModel();
 
     QVariant data(const QModelIndex &index, int role) const override;
@@ -32,12 +32,10 @@ public:
 
 public slots:
     void changePlaylistName(const QModelIndex &whichPlaylist, const QString &toName);
+    void playlistChanged(const Playlist &playlist);
 
 private:
     void updateModelData();
-
-public:
-    QVector<Playlist> m_playlists;
 };
 
 #endif // SOURCESMODEL_H

@@ -79,7 +79,9 @@ public:
     void setCurrentIndexPlaying(const QModelIndex &newCurrentIndexPlaying);
 
     SourcesModel *sourcesModel() const;
-
+    
+    void connectPlaylistAndSourcesModel();
+    
 public slots:
     void loadMedia(const QModelIndex& index);
     void removeMedia(const QModelIndex& index);
@@ -107,6 +109,7 @@ private:
 
     Q_PROPERTY(PlaylistMediaElement currentElement READ currentElement WRITE setCurrentElement NOTIFY currentElementChanged)
     Q_PROPERTY(QModelIndex currentIndexPlaying READ currentIndexPlaying WRITE setCurrentIndexPlaying NOTIFY currentIndexPlayingChanged)
+    void connectPlaylistToSourcesModel();
 };
 
 #endif // PMPLAYERMODEL_H

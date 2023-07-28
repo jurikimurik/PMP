@@ -3,11 +3,12 @@
 
 #include <QList>
 #include <QVariant>
+#include "../playlist/playlist.h"
 
 class SourcesItem
 {
 public:
-    explicit SourcesItem(const QList<QVariant> &data, SourcesItem *parentItem = nullptr);
+    explicit SourcesItem(const Playlist &data, SourcesItem *parentItem = nullptr);
     ~SourcesItem();
 
     void appendChild(SourcesItem *child);
@@ -16,13 +17,15 @@ public:
     int childCount() const;
     int columnCount() const;
     QVariant data(int column) const;
-    void setData(int column, QVariant data);
+    void setData(const Playlist &playlist);
     int row() const;
     SourcesItem *parentItem();
 
+    Playlist itemData() const;
+
 private:
     QList<SourcesItem *> m_childItems;
-    QList<QVariant> m_itemData;
+    Playlist m_itemData;
     SourcesItem *m_parentItem;
 };
 #endif // SOURCESITEM_H
