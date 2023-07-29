@@ -39,9 +39,6 @@
         </widget>
        </item>
        <item>
-        <widget class="QTreeView" name="treeView"/>
-       </item>
-       <item>
         <widget class="QGraphicsView" name="graphicsView"/>
        </item>
       </layout>

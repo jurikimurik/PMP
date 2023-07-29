@@ -7,31 +7,8 @@
 #include <QFileDialog>
 #include <QMessageBox>
 
-PMPlayerView::PMPlayerView(QWidget *parent, PMPlayerModel *model)
-    : QMainWindow(parent)
-    , ui(new Ui::PMPlayerView)
-    , m_model(model)
+void PMPlayerView::initializeMenus()
 {
-    ui->setupUi(this);
-    //If there is no model created or connected
-    //  - create a new one.
-    if(m_model == nullptr)
-        m_model = new PMPlayerModel(this);
-
-    m_playlistView = new PlaylistView(this);
-    m_playlistView->setModel(m_model->currentPlaylist());
-
-    ui->treeView->setModel(m_model->sourcesModel());
-
-    ui->playlistNameEdit->setText(m_model->currentPlaylist()->playlistName());
-
-    m_splitter = new QSplitter(Qt::Horizontal);
-    ui->graphicsView->setParent(m_splitter);
-    m_splitter->addWidget(ui->graphicsView);
-    m_splitter->addWidget(m_playlistView);
-
-    ui->mediaWidget->layout()->addWidget(m_splitter);
-
     m_playlistMenu = new QMenu(m_playlistView);
     m_playlistMenu->setTitle(tr("Edytuj"));
 
@@ -59,6 +36,39 @@ PMPlayerView::PMPlayerView(QWidget *parent, PMPlayerModel *model)
     m_mainMenu->addActions({savePlaylistAction, loadPlaylistAction});
     ui->menubar->addMenu(m_mainMenu);
     ui->menubar->addMenu(m_playlistMenu);
+}
+
+PMPlayerView::PMPlayerView(QWidget *parent, PMPlayerModel *model)
+    : QMainWindow(parent)
+    , ui(new Ui::PMPlayerView)
+    , m_model(model)
+{
+    ui->setupUi(this);
+    //If there is no model created or connected
+    //  - create a new one.
+    if(m_model == nullptr)
+        m_model = new PMPlayerModel(this);
+
+    m_playlistView = new PlaylistView(this);
+    m_playlistView->setModel(m_model->currentPlaylist());
+
+    m_sourcesView = new SourcesView(this, m_model->sourcesModel());
+    QVBoxLayout* layout = reinterpret_cast<QVBoxLayout*>(ui->mediaWidget->layout());
+    if(layout)
+        layout->insertWidget(1, m_sourcesView);
+    else
+        qDebug() << "Layout need to be QVBoxLayout!";
+
+    ui->playlistNameEdit->setText(m_model->currentPlaylist()->playlistName());
+
+    m_splitter = new QSplitter(Qt::Horizontal);
+    ui->graphicsView->setParent(m_splitter);
+    m_splitter->addWidget(ui->graphicsView);
+    m_splitter->addWidget(m_playlistView);
+
+    ui->mediaWidget->layout()->addWidget(m_splitter);
+
+    initializeMenus();
 
     m_errorBox = new QErrorMessage(this);
 

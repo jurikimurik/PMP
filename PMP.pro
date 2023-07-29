@@ -20,7 +20,8 @@ SOURCES += \
     Backend/sources/sourcesmodel/sourcesmodel.cpp \
     GUI/sources/playlist/playlistview.cpp \
     GUI/sources/player/pmplayerview.cpp \
-    GUI/sources/video/pmpvideowidget.cpp
+    GUI/sources/video/pmpvideowidget.cpp \
+    GUI/sources/sourcesview/sourcesview.cpp
 
 
 HEADERS += \
@@ -32,11 +33,13 @@ HEADERS += \
     Backend/headers/sourcesmodel/sourcesmodel.h \
     GUI/headers/player/pmplayerview.h \
     GUI/headers/playlist/playlistview.h \
-    GUI/headers/video/pmpvideowidget.h
+    GUI/headers/video/pmpvideowidget.h \
+    GUI/headers/sourcesview/sourcesview.h
 
 FORMS += \
     GUI/ui/player/pmplayerview.ui \
-    GUI/ui/video/pmpvideowidget.ui
+    GUI/ui/video/pmpvideowidget.ui \
+    GUI/ui/sourcesview/sourcesview.ui
 
 TRANSLATIONS += \
     translations/PMP_pl_PL.ts

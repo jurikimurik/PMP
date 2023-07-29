@@ -9,6 +9,7 @@
 #include <QTime>
 #include <QSettings>
 #include <QClipboard>
+#include "GUI/headers/sourcesview/sourcesview.h"
 #include "Backend/headers/sourcesmodel/sourcesmodel.h"
 #include "GUI/headers/video/pmpvideowidget.h"
 #include "../../../Backend/headers/player/pmplayermodel.h"
@@ -90,6 +91,8 @@ private:
     PMPVideoWidget *m_videoWidget;
     QSplitter *m_splitter;
 
+    SourcesView *m_sourcesView;
+
 private:
     void createConnections();
     void readSettings();
@@ -101,6 +104,8 @@ private:
     void pasteFromClipboard();
 
     // QWidget interface
+    void initializeMenus();
+
 protected:
     virtual void contextMenuEvent(QContextMenuEvent *event);
 
