@@ -57,7 +57,7 @@ QModelIndex SourcesModel::indexOfPlaylist(const QString &name)
 
 QModelIndex SourcesModel::indexOfPlaylist(const Playlist &playlist)
 {
-    return indexOfPlaylist(playlist.playlistName());
+    return indexOfPlaylist(playlist.name());
 }
 
 void SourcesModel::add(const Playlist &playlist)
@@ -74,7 +74,7 @@ void SourcesModel::changePlaylistName(const QModelIndex &whichPlaylist, const QS
     SourcesItem* pointedItem = static_cast<SourcesItem*>(whichPlaylist.internalPointer());
 
     Playlist newPlaylist = pointedItem->itemData();
-    newPlaylist.setPlaylistName(toName);
+    newPlaylist.setname(toName);
 
     pointedItem->setData(newPlaylist);
 

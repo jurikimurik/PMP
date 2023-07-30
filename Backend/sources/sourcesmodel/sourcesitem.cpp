@@ -39,7 +39,7 @@ QVariant SourcesItem::data(int column) const
         return QVariant();
     }
 
-    return m_itemData.playlistName();
+    return m_itemData.name();
 }
 
 void SourcesItem::setData(const Playlist& playlist)

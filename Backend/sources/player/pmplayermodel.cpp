@@ -5,7 +5,7 @@
 
 void PMPlayerModel::connectPlaylistToSourcesModel()
 {
-    connect(m_currentPlaylist, &PlaylistModel::playlistNameChanged, this, &PMPlayerModel::updateCurrentPlaylistName);
+    connect(m_currentPlaylist, &PlaylistModel::nameChanged, this, &PMPlayerModel::updateCurrentPlaylistName);
     connect(m_currentPlaylist, &PlaylistModel::mediaChanged, m_sourcesModel, &SourcesModel::playlistChanged);
 }
 
@@ -20,6 +20,7 @@ PMPlayerModel::PMPlayerModel(QObject *parent)
     m_sourcesModel = new SourcesModel(this);
     m_sourcesModel->add(*m_currentPlaylist);
     m_currentPlaylistPlaying = m_sourcesModel->index(0, 0);
+
     connect(m_player, &QMediaPlayer::sourceChanged, this, &PMPlayerModel::changeCurrentElement);
 
     connectPlaylistToSourcesModel();

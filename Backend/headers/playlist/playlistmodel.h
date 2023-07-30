@@ -29,10 +29,10 @@ public:
     bool loadFromFile(const QString &pathname);
 
 signals:
-    void playlistNameChanged(const QString &newPLaylistName);
+    void nameChanged(const QString &newPLaylistName);
     void mediaChanged(const Playlist &newPlaylist);
 public slots:
-    void setPlaylistName(const QString &newPlaylistName);
+    void setname(const QString &newPlaylistName);
 
 private:
     void updateAllData();

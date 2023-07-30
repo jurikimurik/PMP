@@ -59,7 +59,7 @@ PMPlayerView::PMPlayerView(QWidget *parent, PMPlayerModel *model)
     else
         qDebug() << "Layout need to be QVBoxLayout!";
 
-    ui->playlistNameEdit->setText(m_model->currentPlaylist()->playlistName());
+    ui->playlistNameEdit->setText(m_model->currentPlaylist()->name());
 
     m_splitter = new QSplitter(Qt::Horizontal);
     ui->graphicsView->setParent(m_splitter);
@@ -321,8 +321,8 @@ void PMPlayerView::createConnections()
     connect(m_model->player(), &QMediaPlayer::positionChanged, this, &PMPlayerView::positionChanged);
     connect(ui->timelineSlider, &QSlider::sliderMoved, this, &PMPlayerView::setToPosition);
 
-    connect(ui->playlistNameEdit, &QLineEdit::textEdited, m_model->currentPlaylist(), &PlaylistModel::setPlaylistName);
-    connect(m_model->currentPlaylist(), &PlaylistModel::playlistNameChanged, ui->playlistNameEdit, &QLineEdit::setText);
+    connect(ui->playlistNameEdit, &QLineEdit::textEdited, m_model->currentPlaylist(), &PlaylistModel::setname);
+    connect(m_model->currentPlaylist(), &PlaylistModel::nameChanged, ui->playlistNameEdit, &QLineEdit::setText);
 
     connect(ui->stopButton, &QPushButton::clicked, this, &PMPlayerView::stopMedia);
     connect(ui->backwardButton, &QPushButton::clicked, this, &PMPlayerView::previousMedia);

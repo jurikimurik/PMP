@@ -19,8 +19,8 @@ public:
     PlaylistMediaElement get(const QUrl &source) const;
     PlaylistMediaElement get(const int &index) const;
 
-    QString playlistName() const;
-    void setPlaylistName(const QString &newPlaylistName);
+    QString name() const;
+    void setname(const QString &newPlaylistName);
 
     bool operator==(const Playlist &another) const {
         return m_playlistName == another.m_playlistName && m_mediaElements == another.m_mediaElements;

@@ -61,10 +61,10 @@ void PMPVideoWidget::mousePressEvent(QMouseEvent *event)
 {
     if(event->button() == Qt::LeftButton)
     {
-        emit screenClicked();
+        emit clicked();
         event->ignore();
     } else if(event->type() == QEvent::MouseButtonDblClick) {
-        emit screenDoubleClicked();
+        emit doubleClicked();
         event->ignore();
     } else {
         QWidget::mousePressEvent(event);

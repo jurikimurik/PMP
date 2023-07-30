@@ -72,12 +72,12 @@ PlaylistMediaElement Playlist::get(const int &index) const
 }
 
 
-QString Playlist::playlistName() const
+QString Playlist::name() const
 {
     return m_playlistName;
 }
 
-void Playlist::setPlaylistName(const QString &newPlaylistName)
+void Playlist::setname(const QString &newPlaylistName)
 {
     m_playlistName = newPlaylistName;
 }

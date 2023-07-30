@@ -20,8 +20,8 @@ public:
     QVideoWidget *videoWidget() const;
 
 signals:
-    void screenClicked();
-    void screenDoubleClicked();
+    void clicked();
+    void doubleClicked();
 
 public slots:
     void fullscreenOnOff();
