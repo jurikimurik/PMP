@@ -164,14 +164,14 @@ void PMPlayerView::durationChanged(qint64 duration)
 {
     ui->timelineSlider->setMaximum(duration);
     m_model->durationChanged(duration);
-    ui->maxTimeLabel->setText(m_model->maxMediaTime().toString("hh:mm:ss"));
+    ui->maxTimeLabel->setText(m_model->maxMediaDuration().toString("hh:mm:ss"));
 }
 
 void PMPlayerView::positionChanged(qint64 position)
 {
     ui->timelineSlider->setValue(position);
     m_model->positionChanged(position);
-    ui->currentTimeLabel->setText(m_model->currentMediaTime().toString("hh:mm:ss"));
+    ui->currentTimeLabel->setText(m_model->mediaDuration().toString("hh:mm:ss"));
 }
 
 void PMPlayerView::setToPosition(int position)
@@ -202,38 +202,38 @@ void PMPlayerView::loadPlaylist()
         m_errorBox->showMessage(tr("Nie udało się otworzyć pliku!"));
     }
 
-    m_model->loadMedia(m_currentIndex);
+    m_model->load(m_currentIndex);
 }
 
 void PMPlayerView::clearAllMedia()
 {
-    m_model->clearMedia();
+    m_model->clear();
 }
 
 void PMPlayerView::removeMedia()
 {
-    m_model->removeMedia(m_playlistView->selectionModel()->selectedRows());
+    m_model->remove(m_playlistView->selectionModel()->selectedRows());
 
 }
 
 void PMPlayerView::removeMedia(const QModelIndexList &indexes)
 {
-    m_model->removeMedia(indexes);
+    m_model->remove(indexes);
 }
 
 void PMPlayerView::previous()
 {
-    m_model->previousMedia();
+    m_model->previous();
 }
 
 void PMPlayerView::playPause()
 {
-    m_model->playPauseMedia();
+    m_model->playPause();
 }
 
 void PMPlayerView::next()
 {
-    m_model->nextMedia();
+    m_model->next();
 }
 
 void PMPlayerView::openMedia()
@@ -243,19 +243,19 @@ void PMPlayerView::openMedia()
     {
         QUrl fileUrl = QUrl::fromLocalFile(path);
         if(fileUrl.isValid())
-            m_model->openMedia(fileUrl);
+            m_model->openURL(fileUrl);
     }
 
 }
 
 void PMPlayerView::stop()
 {
-    m_model->stopMedia();
+    m_model->stop();
 }
 
 void PMPlayerView::mute()
 {
-    m_model->muteMedia();
+    m_model->mute();
 }
 
 void PMPlayerView::changeVolume(int)
@@ -337,7 +337,7 @@ void PMPlayerView::createConnections()
     connect(m_model->player(), &QMediaPlayer::mediaStatusChanged, this, &PMPlayerView::playerStatusUpdated);
     connect(m_model->audioOutput(), &QAudioOutput::mutedChanged, this, &PMPlayerView::muteChanged);
 
-    connect(m_playlistView, &PlaylistView::doubleClicked, m_model, qOverload<const QModelIndex&>(&PMPlayerModel::loadMedia));
+    connect(m_playlistView, &PlaylistView::doubleClicked, m_model, qOverload<const QModelIndex&>(&PMPlayerModel::load));
     connect(m_model, &PMPlayerModel::currentIndexPlayingChanged,
             this, &PMPlayerView::playedMediaChanged);
 
@@ -374,7 +374,7 @@ void PMPlayerView::readSettings()
 
     if(currentRow != -1) {
         m_playlistView->selectRow(currentRow);
-        m_model->loadMedia(m_playlistView->selectionModel()->selectedRows().value(0));
+        m_model->load(m_playlistView->selectionModel()->selectedRows().value(0));
     }
 
 
@@ -435,7 +435,7 @@ void PMPlayerView::pasteFromClipboard()
     QVector<QUrl> urls = QUrl::fromStringList(urlsText);
 
     QModelIndex selectedIndex = m_playlistView->selectionModel()->selectedRows().value(0);
-    m_model->insertMedia(urls, selectedIndex);
+    m_model->insertURL(urls, selectedIndex);
 }
 
 void PMPlayerView::contextMenuEvent(QContextMenuEvent *event)

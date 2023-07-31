@@ -43,57 +43,57 @@ void PMPlayerModel::setToPosition(int position)
     m_player->setPosition(position);
 }
 
-void PMPlayerModel::previousMedia()
+void PMPlayerModel::previous()
 {
-    loadMedia(m_currentIndexPlaying.siblingAtRow(m_currentIndexPlaying.row()-1));
+    load(m_currentIndexPlaying.siblingAtRow(m_currentIndexPlaying.row()-1));
 }
 
-void PMPlayerModel::nextMedia()
+void PMPlayerModel::next()
 {
     if(m_queue.isEmpty()) {
-        loadMedia(m_currentIndexPlaying.siblingAtRow(m_currentIndexPlaying.row()+1));
+        load(m_currentIndexPlaying.siblingAtRow(m_currentIndexPlaying.row()+1));
     }
     else {
         QPair<QModelIndex, QUrl> mediaPair = m_queue.dequeue();
         if(m_currentPlaylist->getSourceURL(mediaPair.first) == mediaPair.second)
             //If QModelIndex is still pointing at good QUrl, play this
-            loadMedia(mediaPair.first);
+            load(mediaPair.first);
         else {
             //If QModelIndex pointing on some another QUrl - skip
-            nextMedia();
+            next();
         }
 
     }
 
 }
 
-void PMPlayerModel::clearMedia()
+void PMPlayerModel::clear()
 {
     QModelIndexList indexes;
     for(int i = 0; i < m_currentPlaylist->rowCount(QModelIndex()); ++i)
         indexes << m_currentPlaylist->index(i, 0, QModelIndex());
 
     if(!indexes.isEmpty())
-        removeMedia(indexes);
+        remove(indexes);
 }
 
-void PMPlayerModel::removeMedia(const QModelIndex &index)
+void PMPlayerModel::remove(const QModelIndex &index)
 {
     QUrl url = m_currentPlaylist->getSourceURL(index);
     if(url == m_player->source()) {
-        stopMedia();
+        stop();
         m_player->setSource(QUrl());
     }
 
     if(url.isValid()) {
         m_currentPlaylist->remove(url);
         if(m_player->source() == QUrl())
-            loadMedia(index);
+            load(index);
     }
 
 }
 
-void PMPlayerModel::removeMedia(const QList<QModelIndex> &indexes)
+void PMPlayerModel::remove(const QList<QModelIndex> &indexes)
 {
     QList<QUrl> urls;
     for(const QModelIndex &index : indexes) {
@@ -101,19 +101,19 @@ void PMPlayerModel::removeMedia(const QList<QModelIndex> &indexes)
         urls.push_back(url);
 
         if(url == m_player->source()) {
-            stopMedia();
+            stop();
             m_player->setSource(QUrl());
         }
     }
 
     m_currentPlaylist->remove(urls);
     if(m_player->source() == QUrl())
-        loadMedia(indexes.last());
+        load(indexes.last());
 }
 
-void PMPlayerModel::loadMedia(const QModelIndex &index)
+void PMPlayerModel::load(const QModelIndex &index)
 {
-    stopMedia();
+    stop();
     QUrl url = m_currentPlaylist->getSourceURL(index);
     if(url.isValid())
         m_player->setSource(url);
@@ -123,12 +123,12 @@ void PMPlayerModel::loadMedia(const QModelIndex &index)
 
 }
 
-void PMPlayerModel::openMedia(const QUrl &url)
+void PMPlayerModel::openURL(const QUrl &url)
 {
     m_currentPlaylist->add(url);
 }
 
-void PMPlayerModel::stopMedia()
+void PMPlayerModel::stop()
 {
     //If something is playing right now
     if(m_player->isPlaying())
@@ -139,10 +139,10 @@ void PMPlayerModel::stopMedia()
     emit playbackStateChanged(m_player->playbackState());
 }
 
-void PMPlayerModel::playPauseMedia()
+void PMPlayerModel::playPause()
 {
     if(m_player->source().isEmpty())
-        loadMedia(m_currentPlaylist->index(0, 0, QModelIndex()));
+        load(m_currentPlaylist->index(0, 0, QModelIndex()));
 
     //If something is playing right now
     if(m_player->isPlaying())
@@ -154,7 +154,7 @@ void PMPlayerModel::playPauseMedia()
     }
 }
 
-void PMPlayerModel::muteMedia()
+void PMPlayerModel::mute()
 {
     if(m_audioOutput->isMuted())
     {
@@ -224,7 +224,7 @@ void PMPlayerModel::clearQueue()
 
 //-------------------------------------------------------------
 
-void PMPlayerModel::insertMedia(const QList<QUrl> &urls, const QModelIndex &after)
+void PMPlayerModel::insertURL(const QList<QUrl> &urls, const QModelIndex &after)
 {
     m_currentPlaylist->insert(urls, after);
 }
@@ -234,7 +234,7 @@ void PMPlayerModel::playerStatusUpdated(QMediaPlayer::MediaStatus status)
     switch(status)
     {
     case QMediaPlayer::NoMedia:
-        stopMedia();
+        stop();
         break;
 
     case QMediaPlayer::LoadingMedia:
@@ -261,7 +261,7 @@ void PMPlayerModel::playerStatusUpdated(QMediaPlayer::MediaStatus status)
         break;
 
     case QMediaPlayer::InvalidMedia:
-        stopMedia();
+        stop();
         break;
     };
 }
@@ -327,7 +327,7 @@ const QMediaPlayer *PMPlayerModel::player() const
     return m_player;
 }
 
-QTime PMPlayerModel::maxMediaTime() const
+QTime PMPlayerModel::maxMediaDuration() const
 {
     return m_maxMediaTime;
 }
@@ -356,7 +356,7 @@ bool PMPlayerModel::loadPlaylistFromFile(const QString& pathname) const
         return false;
 }
 
-QTime PMPlayerModel::currentMediaTime() const
+QTime PMPlayerModel::mediaDuration() const
 {
     return m_currentMediaTime;
 }

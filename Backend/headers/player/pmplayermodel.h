@@ -37,8 +37,8 @@ public:
     PlaylistMediaElement currentElement() const;
     void setCurrentElement(const PlaylistMediaElement &newCurrentElement);
 
-    QTime currentMediaTime() const;
-    QTime maxMediaTime() const;
+    QTime mediaDuration() const;
+    QTime maxMediaDuration() const;
 
     void setVideoOutput(QGraphicsVideoItem *item);
     void setVideoOutput(QVideoWidget *widget);
@@ -55,14 +55,14 @@ public:
     void positionChanged(qint64);
     void setToPosition(int);
 
-    void previousMedia();
-    void nextMedia();
-    void clearMedia();
-    void openMedia(const QUrl& url);
-    void stopMedia();
-    void playPauseMedia();
+    void previous();
+    void next();
+    void clear();
+    void openURL(const QUrl& url);
+    void stop();
+    void playPause();
 
-    void muteMedia();
+    void mute();
     void changeVolume(float);
 
     void changeSpeed(float);
@@ -73,19 +73,17 @@ public:
     bool removeFromQueue(const QModelIndex &index);
     void clearQueue();
 
-    void insertMedia(const QList<QUrl> &urls, const QModelIndex &after);
+    void insertURL(const QList<QUrl> &urls, const QModelIndex &after);
 
     QModelIndex currentIndexPlaying() const;
     void setCurrentIndexPlaying(const QModelIndex &newCurrentIndexPlaying);
 
     SourcesModel *sourcesModel() const;
     
-    void connectPlaylistAndSourcesModel();
-    
 public slots:
-    void loadMedia(const QModelIndex& index);
-    void removeMedia(const QModelIndex& index);
-    void removeMedia(const QList<QModelIndex>& indexes);
+    void load(const QModelIndex& index);
+    void remove(const QModelIndex& index);
+    void remove(const QList<QModelIndex>& indexes);
 
 private slots:
     void playerStatusUpdated(QMediaPlayer::MediaStatus);
