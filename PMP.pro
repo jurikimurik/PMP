@@ -56,4 +56,5 @@ RESOURCES += \
     resources/icons/icons.qrc
 
 DISTFILES += \
+    additional/backend.qmodel \
     additional/gui.qmodel
