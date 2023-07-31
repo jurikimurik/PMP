@@ -54,3 +54,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     resources/icons/icons.qrc
+
+DISTFILES += \
+    additional/gui.qmodel
