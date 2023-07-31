@@ -103,7 +103,7 @@ bool PlaylistModel::loadFromFile(const QString &pathname)
     return true;
 }
 
-void PlaylistModel::setname(const QString &newPlaylistName)
+void PlaylistModel::setName(const QString &newPlaylistName)
 {
     if(newPlaylistName == m_playlistName)
         return;
@@ -262,7 +262,7 @@ void PlaylistModel::loadM3UInfoInto(const QString &line, PlaylistMediaElement &i
             {
                 //PLAYLIST property can be only once in a file.
                 //  - If there will be more: last name will be accepted as playlist name.
-                setname(match.captured(1));
+                setName(match.captured(1));
             }
         }
     }

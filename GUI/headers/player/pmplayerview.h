@@ -48,17 +48,17 @@ protected slots:
     void removeMedia(const QModelIndexList &indexes);
     void openMedia();
 
-    void stopMedia();
-    void previousMedia();
-    void playPauseMedia();
-    void nextMedia();
+    void stop();
+    void previous();
+    void playPause();
+    void next();
 
-    void muteMedia();
+    void mute();
     void changeVolume(int);
 
     void changeSpeed();
 
-    void openFullscreen();
+    void fullscreen();
     void colorOptions();
 
     void playedMediaChanged();
@@ -103,13 +103,11 @@ private:
     void cutToClipboard();
     void pasteFromClipboard();
 
-    // QWidget interface
     void initializeMenus();
 
 protected:
     virtual void contextMenuEvent(QContextMenuEvent *event);
 
-    // QWidget interface
 protected:
     virtual void closeEvent(QCloseEvent *event);
 };

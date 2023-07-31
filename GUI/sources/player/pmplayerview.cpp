@@ -142,7 +142,7 @@ void PMPlayerView::playerStatusUpdated(QMediaPlayer::MediaStatus status)
 
     case QMediaPlayer::EndOfMedia:
         ui->statusbar->showMessage(tr("Koniec media."));
-        stopMedia();
+        stop();
         break;
 
     case QMediaPlayer::InvalidMedia:
@@ -221,17 +221,17 @@ void PMPlayerView::removeMedia(const QModelIndexList &indexes)
     m_model->removeMedia(indexes);
 }
 
-void PMPlayerView::previousMedia()
+void PMPlayerView::previous()
 {
     m_model->previousMedia();
 }
 
-void PMPlayerView::playPauseMedia()
+void PMPlayerView::playPause()
 {
     m_model->playPauseMedia();
 }
 
-void PMPlayerView::nextMedia()
+void PMPlayerView::next()
 {
     m_model->nextMedia();
 }
@@ -248,12 +248,12 @@ void PMPlayerView::openMedia()
 
 }
 
-void PMPlayerView::stopMedia()
+void PMPlayerView::stop()
 {
     m_model->stopMedia();
 }
 
-void PMPlayerView::muteMedia()
+void PMPlayerView::mute()
 {
     m_model->muteMedia();
 }
@@ -270,7 +270,7 @@ void PMPlayerView::changeSpeed()
     m_model->changeSpeed(speed);
 }
 
-void PMPlayerView::openFullscreen()
+void PMPlayerView::fullscreen()
 {
 
 }
@@ -321,15 +321,15 @@ void PMPlayerView::createConnections()
     connect(m_model->player(), &QMediaPlayer::positionChanged, this, &PMPlayerView::positionChanged);
     connect(ui->timelineSlider, &QSlider::sliderMoved, this, &PMPlayerView::setToPosition);
 
-    connect(ui->playlistNameEdit, &QLineEdit::textEdited, m_model->currentPlaylist(), &PlaylistModel::setname);
+    connect(ui->playlistNameEdit, &QLineEdit::textEdited, m_model->currentPlaylist(), &PlaylistModel::setName);
     connect(m_model->currentPlaylist(), &PlaylistModel::nameChanged, ui->playlistNameEdit, &QLineEdit::setText);
 
-    connect(ui->stopButton, &QPushButton::clicked, this, &PMPlayerView::stopMedia);
-    connect(ui->backwardButton, &QPushButton::clicked, this, &PMPlayerView::previousMedia);
-    connect(ui->playButton, &QPushButton::clicked, this, &PMPlayerView::playPauseMedia);
-    connect(ui->forwardButton, &QPushButton::clicked, this, &PMPlayerView::nextMedia);
-    connect(ui->fullscreenButton, &QPushButton::clicked, this, &PMPlayerView::openFullscreen);
-    connect(ui->volumeButton, &QPushButton::clicked, this, &PMPlayerView::muteMedia);
+    connect(ui->stopButton, &QPushButton::clicked, this, &PMPlayerView::stop);
+    connect(ui->backwardButton, &QPushButton::clicked, this, &PMPlayerView::previous);
+    connect(ui->playButton, &QPushButton::clicked, this, &PMPlayerView::playPause);
+    connect(ui->forwardButton, &QPushButton::clicked, this, &PMPlayerView::next);
+    connect(ui->fullscreenButton, &QPushButton::clicked, this, &PMPlayerView::fullscreen);
+    connect(ui->volumeButton, &QPushButton::clicked, this, &PMPlayerView::mute);
     connect(ui->volumeSlider, &QSlider::valueChanged, this, &PMPlayerView::changeVolume);
     connect(ui->colorsButton, &QPushButton::clicked, this, &PMPlayerView::colorOptions);
 

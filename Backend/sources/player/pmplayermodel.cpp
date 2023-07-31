@@ -183,6 +183,11 @@ void PMPlayerModel::playAsNext(const QModelIndex &index, bool replaceFirst)
     addToQueue(index, false);
 }
 
+//----------------------------QUEUE----------------------------
+/*Queue is a another type of playlist, that is temporary.
+Queue has more priority than list, so app will try to play
+all media from queue first.*/
+
 void PMPlayerModel::addToQueue(const QModelIndex &index, bool isBack)
 {
     QUrl url = m_currentPlaylist->getSourceURL(index);
@@ -216,6 +221,8 @@ void PMPlayerModel::clearQueue()
 {
     m_queue.clear();
 }
+
+//-------------------------------------------------------------
 
 void PMPlayerModel::insertMedia(const QList<QUrl> &urls, const QModelIndex &after)
 {

@@ -31,8 +31,9 @@ public:
 signals:
     void nameChanged(const QString &newPLaylistName);
     void mediaChanged(const Playlist &newPlaylist);
+
 public slots:
-    void setname(const QString &newPlaylistName);
+    void setName(const QString &newPlaylistName);
 
 private:
     void updateAllData();
